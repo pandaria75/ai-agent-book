@@ -163,6 +163,8 @@ The validator checks exact model identity, direct-vs-proxy provenance, both
 hosted tool types, citations, clarification order, continuation linkage, token
 usage, reported provider cost when available, and credential-free raw evidence.
 
+![[Pasted image 20260916115046.png]]
+
 ## Official sources
 
 - [GPT-5.6 Sol model](https://developers.openai.com/api/docs/models/gpt-5.6-sol)

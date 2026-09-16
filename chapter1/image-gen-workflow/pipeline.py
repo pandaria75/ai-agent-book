@@ -1,8 +1,8 @@
 """
 实验 1-4 的三条路线实现。
 
-工作流路线（workflow）：改写节点（Kimi kimi-k3）→ 生图节点（通义万相 wan2.2-t2i-flash）
-原生路线（native）：Gemini 3 Pro Image（Nano Banana 2）直接出图，一次调用
+工作流路线（workflow）：改写节点（Mimo mimo-v2.5-pro）→ 生图节点（通义万相 wan2.2-t2i-flash）
+原生路线（native）：Qwen Image 3.0 直接出图，一次调用
 原生路线 GPT-Image 2（native_gptimage）：OpenAI gpt-image-2 直接出图，一次调用
 
 每次真实 API 调用都产生一条 call record（模型名、请求参数、响应 ID、
@@ -14,7 +14,7 @@ import json
 import time
 import uuid
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 import requests
 
@@ -108,24 +108,23 @@ def _finish(record: Dict[str, Any], t0: float) -> Dict[str, Any]:
 
 
 def rewrite_prompt(requirement: str) -> Tuple[Dict[str, str], Dict[str, Any]]:
-    """工作流路线节点 1：用 Kimi 把口语化需求改写为 SD 风格提示词。"""
+    """工作流路线节点 1：用 Mimo 把口语化需求改写为 SD 风格提示词。"""
     from openai import OpenAI
 
     record = _new_call_record(
-        provider="moonshot",
+        provider="mimo",
         model=Config.REWRITE_MODEL,
-        endpoint=f"{Config.KIMI_BASE_URL}/chat/completions",
+        endpoint=f"{Config.MIMO_BASE_URL}/chat/completions",
     )
     record["request"] = {
         "messages": [
             {"role": "system", "content": REWRITE_SYSTEM_PROMPT},
             {"role": "user", "content": requirement},
         ],
-        # kimi-k3 只允许 temperature=1（默认值），显式传其他值会被 400 拒绝
     }
     t0 = time.monotonic()
     try:
-        client = OpenAI(api_key=Config.KIMI_API_KEY, base_url=Config.KIMI_BASE_URL)
+        client = OpenAI(api_key=Config.MIMO_API_KEY, base_url=Config.MIMO_BASE_URL)
         resp = client.chat.completions.create(
             model=Config.REWRITE_MODEL,
             messages=record["request"]["messages"],
@@ -151,7 +150,7 @@ def generate_image_wanx(
     prompt: str, negative_prompt: str = ""
 ) -> Tuple[bytes, str, List[Dict[str, Any]]]:
     """提交万相文生图异步任务并轮询取图。返回 (图片字节, mime, call records)。"""
-    headers = {
+    submit_headers = {
         "Authorization": f"Bearer {Config.DASHSCOPE_API_KEY}",
         "Content-Type": "application/json",
         "X-DashScope-Async": "enable",
@@ -167,7 +166,7 @@ def generate_image_wanx(
     try:
         r = requests.post(
             submit_url,
-            headers=headers,
+            headers=submit_headers,
             json={"model": Config.WANX_MODEL, **submit["request"]},
             timeout=60,
         )
@@ -185,6 +184,7 @@ def generate_image_wanx(
         raise
 
     poll_url = f"{Config.DASHSCOPE_BASE_URL}/tasks/{task_id}"
+    poll_headers = {"Authorization": f"Bearer {Config.DASHSCOPE_API_KEY}"}
     poll = _new_call_record("dashscope", Config.WANX_MODEL, poll_url)
     poll["task_id"] = task_id
     t0 = time.monotonic()
@@ -192,8 +192,10 @@ def generate_image_wanx(
     try:
         while True:
             time.sleep(Config.TASK_POLL_INTERVAL)
-            r = requests.get(poll_url, headers=headers, timeout=30)
+            r = requests.get(poll_url, headers=poll_headers, timeout=30)
             body = r.json()
+            if r.status_code != 200:
+                raise RuntimeError(f"任务查询失败 HTTP {r.status_code}: {body}")
             status = body.get("output", {}).get("task_status")
             if status == "SUCCEEDED":
                 break
@@ -228,67 +230,57 @@ def generate_image_wanx(
 
 
 # ---------------------------------------------------------------------------
-# 原生路线：Gemini 3 Pro Image（Nano Banana 2）原生图像生成
+# 原生路线：Qwen Image 3.0 原生图像生成
 # ---------------------------------------------------------------------------
 
 
-def generate_image_gemini(
-    requirement: str,
-) -> Tuple[bytes, str, Dict[str, Any], Optional[str]]:
-    """把口语化需求原样发给 Gemini 3 Pro Image（Nano Banana 2），一次调用直接出图。
-
-    返回 (图片字节, mime, call record, 模型附带文本)。
-    """
-    from google import genai
-    from google.genai import types
-
+def generate_image_qwen(requirement: str) -> Tuple[bytes, str, Dict[str, Any]]:
+    """把口语化需求原样发给 Qwen Image 3.0，同步调用直接出图。"""
+    endpoint = f"{Config.QWEN_IMAGE_BASE_URL}/services/aigc/multimodal-generation/generation"
     record = _new_call_record(
-        provider="google",
-        model=Config.GEMINI_IMAGE_MODEL,
-        endpoint="google-genai: models.generate_content",
+        provider="dashscope",
+        model=Config.QWEN_IMAGE_MODEL,
+        endpoint=endpoint,
     )
     record["request"] = {
-        "contents": requirement,
-        "config": {"response_modalities": ["IMAGE"]},
+        "input": {
+            "messages": [{"role": "user", "content": [{"text": requirement}]}],
+        },
+        "parameters": {
+            "size": Config.QWEN_IMAGE_SIZE,
+            "n": 1,
+            "prompt_extend": Config.QWEN_PROMPT_EXTEND,
+        },
     }
     t0 = time.monotonic()
     try:
-        client = genai.Client(api_key=Config.GEMINI_API_KEY)
-        resp = client.models.generate_content(
-            model=Config.GEMINI_IMAGE_MODEL,
-            contents=requirement,
-            config=types.GenerateContentConfig(response_modalities=["IMAGE"]),
+        r = requests.post(
+            endpoint,
+            headers={
+                "Authorization": f"Bearer {Config.QWEN_IMAGE_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={"model": Config.QWEN_IMAGE_MODEL, **record["request"]},
+            timeout=600,
         )
-        record["response_id"] = getattr(resp, "response_id", None)
-        if resp.usage_metadata:
-            record["usage"] = {
-                "prompt_tokens": resp.usage_metadata.prompt_token_count,
-                "candidates_tokens": resp.usage_metadata.candidates_token_count,
-                "total_tokens": resp.usage_metadata.total_token_count,
-            }
-        image_bytes, mime, text = None, None, None
-        for cand in resp.candidates or []:
-            content = getattr(cand, "content", None)
-            if not content:
-                continue
-            for part in content.parts or []:
-                if getattr(part, "inline_data", None) and part.inline_data.data:
-                    raw = part.inline_data.data
-                    image_bytes = (
-                        base64.b64decode(raw) if isinstance(raw, str) else bytes(raw)
-                    )
-                    mime = part.inline_data.mime_type or "image/png"
-                elif getattr(part, "text", None):
-                    text = part.text
-        if image_bytes is None:
-            raise RuntimeError(f"响应中没有图片部分（text={text!r}）")
+        body = r.json()
+        record["response_id"] = body.get("request_id")
+        record["usage"] = body.get("usage", {})
+        if r.status_code != 200:
+            raise RuntimeError(f"Qwen 生图失败 HTTP {r.status_code}: {body}")
+        content = body["output"]["choices"][0]["message"]["content"]
+        image_url = next(item["image"] for item in content if "image" in item)
+        dl = requests.get(image_url, timeout=60)
+        dl.raise_for_status()
+        mime = dl.headers.get("Content-Type", "image/png").split(";")[0]
+        record["image_url"] = image_url.split("?")[0]
         _finish(record, t0)
-        return image_bytes, mime, record, text
+        return dl.content, mime, record
     except Exception as e:
         record["status"] = "error"
         record["error"] = f"{type(e).__name__}: {e}"
         _finish(record, t0)
-        raise RuntimeError(f"原生路线调用失败: {e}") from e
+        raise RuntimeError(f"Qwen 原生路线调用失败: {e}") from e
 
 
 # ---------------------------------------------------------------------------
@@ -377,13 +369,13 @@ def run_workflow_route(requirement: str) -> Dict[str, Any]:
 
 def run_native_route(requirement: str) -> Dict[str, Any]:
     """原生路线：一次调用直接出图。"""
-    image_bytes, mime, rec, text = generate_image_gemini(requirement)
+    image_bytes, mime, rec = generate_image_qwen(requirement)
     return {
         "route": "native",
         "rewrite": None,
         "image_bytes": image_bytes,
         "mime": mime,
-        "nodes": [{"node": "native_generate", "call": rec, "output": {"text": text}}],
+        "nodes": [{"node": "native_generate", "call": rec, "output": {"text": None}}],
         "error": None,
     }
 

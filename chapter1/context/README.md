@@ -810,6 +810,7 @@ python main.py --mode single \
   --context-mode full \
   --provider siliconflow
 ```
+![[Pasted image 20260915215734.png]]
 
 #### 6. 运行消融实验
 
@@ -831,16 +832,22 @@ python main.py --mode ablation --ablation-modes full no_history --output my_abla
 
 关键参数：
 
-| 参数 | 说明 |
-|------|------|
-| `--mode` | `single` / `ablation` / `interactive`（默认） |
-| `--task` | `single` 模式的任务文本 |
-| `--context-mode` | `single` 模式的上下文模式（`full`、`no_history`、`no_reasoning`、`no_tool_calls`、`no_tool_results`） |
-| `--ablation-modes` | `ablation` 模式下要测的模式子集（默认全部五种） |
-| `--cases` | `ablation` 模式下每种模式跑的用例数（默认 1） |
-| `--provider` / `--model` | LLM 提供商与可选模型覆盖 |
-| `--output` | 单次结果或消融原始结果的 JSON 输出路径 |
+| 参数                       | 说明                                                                                      |
+| ------------------------ | --------------------------------------------------------------------------------------- |
+| `--mode`                 | `single` / `ablation` / `interactive`（默认）                                               |
+| `--task`                 | `single` 模式的任务文本                                                                        |
+| `--context-mode`         | `single` 模式的上下文模式（`full`、`no_history`、`no_reasoning`、`no_tool_calls`、`no_tool_results`） |
+| `--ablation-modes`       | `ablation` 模式下要测的模式子集（默认全部五种）                                                           |
+| `--cases`                | `ablation` 模式下每种模式跑的用例数（默认 1）                                                           |
+| `--provider` / `--model` | LLM 提供商与可选模型覆盖                                                                          |
+| `--output`               | 单次结果或消融原始结果的 JSON 输出路径                                                                  |
 
+##### 本地运行结果
+![[Pasted image 20260915231640.png]]
+
+![](ablation_study_results.png)
+
+[[ablation_study_report.md]]
 ### 消融实验
 
 #### 已验收的 Kimi K3 真实执行（2026-08-25）

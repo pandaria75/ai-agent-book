@@ -1,0 +1,41 @@
+{
+  "call_id": "c2a0a91c59b5",
+  "provider": "mimo",
+  "model": "mimo-v2.5-pro",
+  "endpoint": "https://token-plan-cn.xiaomimimo.com/v1/chat/completions",
+  "started_at": "2026-09-16T07:04:59.910955+00:00",
+  "finished_at": "2026-09-16T07:05:25.057284+00:00",
+  "latency_ms": 25146.3,
+  "status": "ok",
+  "request": {
+    "messages": [
+      {
+        "role": "system",
+        "content": "你是 Stable Diffusion 风格的文生图提示词专家。用户会给你一句口语化的中文需求，\n你需要把它改写成经典文生图模型（如 Stable Diffusion / FLUX）能消化的提示词。\n\n要求：\n1. prompt 字段：逗号分隔的英文 tag，先主体后细节，包含质量词\n   （如 masterpiece, best quality, highly detailed），必要时包含画风、构图、光线、情绪词。\n2. negative_prompt 字段：逗号分隔的英文负面提示词（如 lowres, bad anatomy, blurry, watermark, text 等）。\n3. style_notes 字段：一句中文，说明你这次改写做了哪些关键增补/取舍。\n4. 只输出一个 JSON 对象，不要输出任何其他文字。格式：\n{\"prompt\": \"...\", \"negative_prompt\": \"...\", \"style_notes\": \"...\"}\n"
+      },
+      {
+        "role": "user",
+        "content": "帮我画一个 AGI 实现以后程序员的工作场景"
+      }
+    ]
+  },
+  "response_id": "665bfeb1-57af-4ffc-a899-d8ee321c4c9c_8e933ebf3cba4f498f2865fb53d6e0ad",
+  "usage": {
+    "completion_tokens": 1053,
+    "prompt_tokens": 215,
+    "total_tokens": 1268,
+    "completion_tokens_details": {
+      "accepted_prediction_tokens": null,
+      "audio_tokens": null,
+      "reasoning_tokens": 895,
+      "rejected_prediction_tokens": null
+    },
+    "prompt_tokens_details": {
+      "audio_tokens": null,
+      "cache_write_tokens": null,
+      "cached_tokens": 0
+    }
+  },
+  "error": null,
+  "raw_output": "{\"prompt\": \"programmer in a post-AGI workspace, futuristic office setting, collaborating with artificial intelligence, holographic interfaces, automated coding tools, cyberpunk style, neon lighting, innovative atmosphere, soft glow, masterpiece, best quality, highly detailed, intricate details, realistic, sci-fi art\", \"negative_prompt\": \"lowres, bad anatomy, blurry, watermark, text, error, extra fingers, poorly drawn hands, deformed face, out of frame, low quality, worst quality\", \"style_notes\": \"增补了未来科技元素如全息界面和AI交互，突出了科幻画风和霓虹光线效果，以增强AGI实现后的未来感；取舍了具体程序员外貌描述，保持通用性和聚焦场景。\"}"
+}

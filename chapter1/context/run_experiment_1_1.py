@@ -22,23 +22,31 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List
 
+# Load the .env next to this script before importing the shared configuration.
+# This keeps the runner independent of the directory from which it is launched.
+try:
+    from dotenv import load_dotenv
+
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+except ImportError:
+    pass
+
 from agent import HIDDEN_RESULT_STYLES, ContextAwareAgent, ContextMode
-from config import PROVIDERS, SUPPORTED_PROVIDERS, canonical_provider
+from config import Config, PROVIDERS, SUPPORTED_PROVIDERS, canonical_provider
 from grounding import assess_groundedness, observation_quantities
 
 
 EXPERIMENT_ID = "1-1"
 MODES = list(ContextMode)
-CANONICAL_TASK = """According to the company's quarterly revenue:
-- Q1: 2.5 million USD
-- Q2: 2.1 million EUR
-- Q3: 1.8 million GBP
-- Q4: 380 million JPY
+CANONICAL_TASK = """根据公司的季度收入数据：
+- Q1：250 万美元（USD）
+- Q2：210 万欧元（EUR）
+- Q3：180 万英镑（GBP）
+- Q4：3.8 亿日元（JPY）
 
-Use the available currency-conversion and calculation tools to convert every
-non-USD quarter to USD, then calculate the annual total and quarterly average.
-Report both values rounded to two decimal places. Do not estimate exchange
-rates yourself; use the tool observations."""
+请使用可用的货币转换工具和计算工具，将所有非美元季度收入转换为美元，
+然后计算年度总收入和季度平均收入。请将两个结果四舍五入到小数点后两位。
+不要自行估算汇率，必须使用工具返回的观测结果。请用中文回答。"""
 
 EXPECTED_NUMBERS = ("9602895.73", "2400723.93")
 
@@ -565,9 +573,10 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--provider",
-        default="kimi",
+        default=None,
         choices=SUPPORTED_PROVIDERS,
-        help="Provider to run every arm against (default: kimi).",
+        help="Provider to run every arm against (default: .env LLM_PROVIDER, "
+             "then doubao).",
     )
     parser.add_argument(
         "--model",
@@ -607,10 +616,11 @@ def main() -> int:
     if args.max_iterations < 2:
         parser.error("--max-iterations must be at least 2")
 
-    # An unset --model means "whatever this provider's default is", resolved
-    # from the shared registry rather than from a constant that happens to name
-    # one provider's model.
-    model = args.model or provider_spec(args.provider).default_model
+    # CLI values win over .env values. The provider registry supplies the
+    # provider-specific default model and base URL; its base URL resolver also
+    # honors the provider's *_BASE_URL environment variable.
+    provider = args.provider or Config.LLM_PROVIDER or "doubao"
+    model = args.model or Config.MODEL_NAME or provider_spec(provider).default_model
     modes = [ContextMode(name) for name in args.modes] if args.modes else list(MODES)
     task = TASK_VARIANTS[args.task]
     hidden_result_content = HIDDEN_RESULT_STYLES[args.hidden_result]
@@ -620,14 +630,14 @@ def main() -> int:
         and set(modes) == set(MODES)
     )
 
-    key, key_env = resolve_key(args.provider)
+    key, key_env = resolve_key(provider)
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output_dir = args.output_dir or Path("validation") / f"real_{stamp}"
     command = [
         sys.executable,
         Path(__file__).name,
         "--provider",
-        args.provider,
+        provider,
         "--model",
         model,
         "--task",
@@ -648,7 +658,7 @@ def main() -> int:
         agent = ContextAwareAgent(
             key,
             context_mode=mode,
-            provider=args.provider,
+            provider=provider,
             model=model,
             verbose=False,
             hidden_result_content=hidden_result_content,
@@ -684,6 +694,13 @@ def main() -> int:
         "command": command,
         "credential_source_env": key_env,
         "credential_value_recorded": False,
+        "configuration_source": {
+            "provider": "--provider" if args.provider else "LLM_PROVIDER",
+            "model": "--model" if args.model else (
+                "MODEL_NAME" if Config.MODEL_NAME else "provider_default"
+            ),
+            "base_url": "provider_registry_or_provider_BASE_URL",
+        },
         "host": {
             "platform": platform.platform(),
             "python": sys.version,

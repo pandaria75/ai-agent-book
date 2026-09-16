@@ -28,14 +28,14 @@
 
 ```
 工作流路线（workflow）：
-  用户需求 ──> [节点 1: 提示词改写, Kimi kimi-k3]
+  用户需求 ──> [节点 1: 提示词改写, Mimo mimo-v2.5-pro]
                  输出 SD 风格 JSON：{prompt（逗号分隔英文 tag + 质量词）,
                                       negative_prompt, style_notes}
              ──> [节点 2: 文生图, 通义万相 wan2.2-t2i-flash]
                  输入改写后的 prompt / negative_prompt，输出图片
 
 原生路线 A（native）：
-  用户需求 ──> [Gemini gemini-3-pro-image（书稿所称 Nano Banana 2）]
+  用户需求 ──> [Qwen qwen-image-3.0]
                  一次调用直接输出图片（response_modalities=["IMAGE"]）
 
 原生路线 B（native_gptimage）：
@@ -48,9 +48,8 @@
 
 ## 模型选型实录（如实记录）
 
-- **原生路线 A（native）**：**`gemini-3-pro-image`**（书稿所称 Nano Banana 2）——
-  ListModels 实测可用，5 句需求全部一次成功（20260821T040450Z 轮）；早期轮次
-  `agi-programmer` 偶发内容过滤（候选响应 content 为 None），重跑后恢复，非不可用。
+- **原生路线 A（native）**：**`qwen-image-3.0`**——通过 DashScope 同步多模态接口直接
+  根据原始中文需求出图；可通过 `QWEN_PROMPT_EXTEND` 控制是否启用百炼内置提示词增强。
 - **原生路线 B（native_gptimage）**：OpenAI **`gpt-image-2`**（GPT-Image 2，
   images/generations 接口）——全部 5 句需求均一次成功。该账户此前 GPT-5.x 因
   `credit_balance_exhausted` 失败过，但图像接口可用。
@@ -62,8 +61,7 @@
   改用 **DashScope 国际站通义万相 `wan2.2-t2i-flash`**（经典扩散式文生图模型，接受
   SD 风格提示词与负面提示词，异步任务接口）。注意：该模型服务端会再做一次内部提示词
   扩写（响应中的 `actual_prompt` 字段），已一并留证。
-- **改写节点 LLM**：Moonshot **`kimi-k3`**（OpenAI 兼容接口）。
-  kimi-k3 只允许 temperature=1（默认值），显式传其他值被 400 拒绝。
+- **改写节点 LLM**：Mimo **`mimo-v2.5-pro`**（OpenAI 兼容接口）。
 
 ## 配置与运行
 
@@ -72,22 +70,23 @@
 cp chapter1/image-gen-workflow/env.example .env   # 填入各 API Key（或 export 环境变量）
 
 cd chapter1/image-gen-workflow
-pip install -r requirements.txt   # google-genai openai requests python-dotenv
+pip install -r requirements.txt   # openai requests python-dotenv pytest
 
-# 标准运行：全部 5 句需求 × 4 条路线（workflow/native/native_gemini_pro/native_gptimage）
+# 标准运行：全部 5 句需求 × 3 条路线（workflow/native/native_gptimage）
 python main.py
 
 # 只跑某条路线 / 某句需求
 python main.py --route workflow
-python main.py --route native_gemini_pro
+python main.py --route native
 python main.py --requirement windowsill-plant
 
 # 离线测试（不发真实请求）
 python -m pytest
 ```
 
-所需环境变量见 `env.example`：`KIMI_API_KEY`、`DASHSCOPE_API_KEY`、`GEMINI_API_KEY`、
-`OPENAI_API_KEY`（`SILICONFLOW_API_KEY` 为首选方案保留，本次未实际使用）。
+所需环境变量见 `env.example`：工作流路线使用 `MIMO_API_KEY`、`DASHSCOPE_API_KEY`，
+Qwen 原生路线使用 `QWEN_IMAGE_API_KEY`，GPT-Image 2 对照路线使用 `OPENAI_API_KEY`。
+每次运行只校验所选路线需要的变量（`SILICONFLOW_API_KEY` 为首选方案保留，本次未实际使用）。
 
 ## 目录与证据
 

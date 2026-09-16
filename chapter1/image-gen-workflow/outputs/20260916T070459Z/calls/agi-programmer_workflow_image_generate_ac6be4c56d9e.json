@@ -1,0 +1,24 @@
+{
+  "call_id": "ac6be4c56d9e",
+  "provider": "dashscope",
+  "model": "wan2.2-t2i-flash",
+  "endpoint": "https://ws-08xu7txjsfbz296m.cn-beijing.maas.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis",
+  "started_at": "2026-09-16T07:05:25.057320+00:00",
+  "finished_at": "2026-09-16T07:05:25.295728+00:00",
+  "latency_ms": 238.4,
+  "status": "ok",
+  "request": {
+    "input": {
+      "prompt": "programmer in a post-AGI workspace, futuristic office setting, collaborating with artificial intelligence, holographic interfaces, automated coding tools, cyberpunk style, neon lighting, innovative atmosphere, soft glow, masterpiece, best quality, highly detailed, intricate details, realistic, sci-fi art",
+      "negative_prompt": "lowres, bad anatomy, blurry, watermark, text, error, extra fingers, poorly drawn hands, deformed face, out of frame, low quality, worst quality"
+    },
+    "parameters": {
+      "size": "1024*1024",
+      "n": 1
+    }
+  },
+  "response_id": "e448dda2-d7f7-9c1a-a05d-8d4733083a03",
+  "usage": {},
+  "error": null,
+  "task_id": "934310c1-fa31-421d-a06d-7992760040c5"
+}

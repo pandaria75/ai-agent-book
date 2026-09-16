@@ -1,0 +1,23 @@
+{
+  "call_id": "6c6d2f278aba",
+  "provider": "dashscope",
+  "model": "wan2.2-t2i-flash",
+  "endpoint": "https://ws-08xu7txjsfbz296m.cn-beijing.maas.aliyuncs.com/api/v1/tasks/934310c1-fa31-421d-a06d-7992760040c5",
+  "started_at": "2026-09-16T07:05:25.295772+00:00",
+  "finished_at": "2026-09-16T07:05:35.601421+00:00",
+  "latency_ms": 10305.7,
+  "status": "ok",
+  "request": {},
+  "response_id": "ca04ad04-5e40-933f-a469-9ba8ddec120c",
+  "usage": {
+    "image_count": 1
+  },
+  "error": null,
+  "task_id": "934310c1-fa31-421d-a06d-7992760040c5",
+  "task_metrics": {
+    "submit_time": "2026-09-16 15:05:23.531",
+    "scheduled_time": "2026-09-16 15:05:23.581",
+    "end_time": "2026-09-16 15:05:31.196"
+  },
+  "actual_prompt": "Cyberpunk sci-fi illustration: A diverse team of programmers in a high-tech post-AGI office—glass-walled, vertically layered with floating walkways and bioluminescent ceiling grids. One Asian woman in smart-fabric attire gestures at a large, translucent holographic interface displaying real-time neural code flow and 3D architecture diagrams; beside her, a Black engineer interacts with AI avatars materializing as shimmering, semi-transparent humanoid forms. Neon-blue and magenta ambient lighting reflects off polished chrome surfaces and matte-black workstations embedded with micro-drones and auto-scribing terminals. Background features dynamic data streams, floating UI widgets, and distant cityscape vistas through panoramic windows. Hyper-detailed, cinematic realism, 8K resolution, volumetric lighting, shallow depth of field."
+}

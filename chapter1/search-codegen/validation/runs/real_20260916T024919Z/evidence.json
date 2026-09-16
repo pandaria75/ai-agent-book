@@ -1,0 +1,319 @@
+{
+  "schema_version": "1.1",
+  "experiment_id": "1-3",
+  "evidence_mode": "real_api",
+  "created_at": "2026-09-16T02:49:19.588079+00:00",
+  "canonical_source": "book/chapter1.md#实验-1-3-gpt-5-6-原生-deep-research-能力",
+  "host": {
+    "platform": "Windows-11-10.0.26220-SP0",
+    "python": "3.13.15 (main, Sep  1 2026, 14:16:48) [MSC v.1944 64 bit (AMD64)]",
+    "machine": "AMD64"
+  },
+  "repository": {
+    "commit": "0c9390c3438bf7dd40603ae9421600bbe2c0dd01",
+    "branch": "main",
+    "worktree_dirty": true
+  },
+  "credentials_recorded": false,
+  "independent_asean_reference": {
+    "pair": [
+      "Kuala Lumpur",
+      "Singapore"
+    ],
+    "distance_km": 309.3,
+    "pair_count": 45,
+    "coordinates": {
+      "Bandar Seri Begawan": [
+        4.9031,
+        114.9398
+      ],
+      "Phnom Penh": [
+        11.5564,
+        104.9282
+      ],
+      "Jakarta": [
+        -6.2088,
+        106.8456
+      ],
+      "Vientiane": [
+        17.9757,
+        102.6331
+      ],
+      "Kuala Lumpur": [
+        3.139,
+        101.6869
+      ],
+      "Naypyidaw": [
+        19.7633,
+        96.0785
+      ],
+      "Manila": [
+        14.5995,
+        120.9842
+      ],
+      "Singapore": [
+        1.3521,
+        103.8198
+      ],
+      "Bangkok": [
+        13.7563,
+        100.5018
+      ],
+      "Hanoi": [
+        21.0278,
+        105.8342
+      ]
+    }
+  },
+  "runs": [
+    {
+      "backend": "openai",
+      "started": true,
+      "base_url": "https://token-plan-cn.xiaomimimo.com/v1",
+      "requested_model": "mimo-v2.5-pro",
+      "asean": {
+        "success": false,
+        "error": {
+          "code": "responses_feature_not_supported",
+          "message": "store=true requires gateway-managed response state and is planned for phase two.",
+          "param": "",
+          "type": "unsupported_feature"
+        },
+        "response": null,
+        "request": {
+          "model": "mimo-v2.5-pro",
+          "instructions": "You are a deep-research assistant. 你是一名深度研究助手。\n\nHard rule / 硬性规则: when the user's research request leaves material\npreferences ambiguous — for example which data source to use or which\ntechnical indicators to compute — ask a concise clarifying question FIRST\n(for example “您偏好使用哪个数据源？需要分析哪些技术指标？”), and do NOT\ncall any tool until the user answers.\n当用户的研究请求没有明确数据来源或具体分析指标时，必须先向用户提问澄清，\n在用户回答之前不要调用任何工具。\n\nAfter clarification, use the configured web search provider for current facts and cite\nsources, and use the hosted Python/code-interpreter tool for quantitative\nanalysis; do not claim a calculation was run unless the response contains a\ncompleted code_interpreter_call.\n澄清之后：使用配置的 web search 获取最新事实并引用来源链接；所有定量计算必须通过\ncode_interpreter 实际执行，不得口算或声称运行了代码。",
+          "input": "Research the current official capitals and reliable coordinates\nfor the ten ASEAN member states. You must use hosted web search and cite the\nsources. Then you must use the hosted Python tool—not mental arithmetic—to\nenumerate all 45 capital pairs with the haversine formula and identify the\nclosest pair and distance. Include the coordinates, formula assumptions,\ncalculation result, retrieval date, and clickable citations. Do not say Python\nwas used unless a code_interpreter_call completes.\n\nTavily search results (cite these URLs):\n[1] Capitals of 10 ASEAN member countries\nURL: https://www.facebook.com/groups/898899773959040/posts/2032690937246579\nMyanmar -Capital City : Naypyidaw 7. Singapore -Capital City : Singapore 8. Thailand -Capital City : Bangkok 9. Timor Leste -Capital City :\n\n[2] ASEAN Member States MFAIC\nURL: https://www.mfaic.gov.kh/2021-04-01-ASEAN-Member-States\n# Search\n\nASEAN Member States\n\n### Brunei Darussalam\n\nHead of State : His Majesty Sultan Haji Hassanal Bolkiah Mu’izzaddin Waddaulah\n\nCapital : Bandar Seri Begawan\n\nNational Flag : Click Here for detail Specification.\n\nLanguage(s) : Malay, English\n\nCurrency : B$ (Brunei Dollar)\n\nMinistry of Foreign Affairs & Trade of Brunei Darussalam Website: www.mfa.gov.bn\n\n### Cambodia\n\nHead of State : His Majesty King Norodom Sihamoni\n\nHead of Government : Prime Minister Samdech Moha Borvor Thipadei Hun Manet\n\nCapital : Phnom Penh\n\nNational Flag : Click Here for detail Specification.\n\nLanguage : Khmer\n\nCurrency : Riel\n\nMinistry of Foreign Affairs & International Cooperation of Cambodia Website: www.mfaic.gov.kh\n\n### Indonesia\n\nHead of State : President Prabowo Subianto\n\nCapital : Jakarta [...] Capital : Jakarta\n\nLanguage : Indonesian\n\nCurrency : Rupiah\n\nMinistry of Foreign Affairs of Indonesia Website: www.kemlu.go.id\n\n### Lao PDR\n\nHead of State : President Thongloun Sisoulith\n\nHead of Government : Prime Minister Sonexay Siphandone\n\nCapital : Vientiane\n\nNational Flag : Click Here for detail Specification.\n\nLanguage : Lao\n\nCurrency : Kip\n\nMinistry of Foreign Affairs of Lao PDR Website: www.mofa.gov.la\n\n### Malaysia\n\nHead of State : His Majesty Seri Paduka Baginda Yang Di-Pertuan Agong Sultan Ibrahim\n\nHead of Government : Prime Minister Dato’ Seri Anwar bin Ibrahim\n\nCapital : Kuala Lumpur\n\nNational Flag : Click Here for detail Specification.\n\nLanguage(s) : Malay, English, Chinese, Tamil\n\nCurrency : Ringgit\n\nMinistry of Foreign Affairs of Malaysia Website: www.kln.gov.my [...] ASEAN-Malaysia National Secretariat Website: www.kln.gov.my/myasean\n\n### Myanmar\n\nHead of State : President Senior General Min Aung Hlaing\n\nCapital : Nay Pyi Taw\n\nNational Flag : Click Here for detail Specification.\n\nLanguage : Myanmar\n\nCurrency : Kyat\n\nMinistry of Foreign Affairs of Myanmar Website: www.mofa.gov.mm\n\n### Philippines\n\nHead of State : President Ferdinand Romualdez Marcos Jr.\n\nCapital : Manila\n\nNational Flag : Click Here for detail Specification.\n\nLanguage(s) : Filipino, English, Spanish\n\nCurrency : Peso\n\nDepartment of Foreign Affairs of the Philippines Website: www.dfa.gov.ph\n\n### Singapore\n\nHead of State : President Tharman Shanmugaratnam\n\nHead of Government : Prime Minister Lawrence Wong\n\nCapital : Singapore\n\nNational Flag : Click Here for detail Specification.\n\n[3] ASEAN countries capitals and cities\nURL: https://www.facebook.com/groups/872904791075541/posts/1066016478431037\nASEAN was founded by five countries: Indonesia, Malaysia, the Philippines, Singapore, and Thailand. It was eventually expanded to include Brunei\n\n[4] What Is ASEAN? | Council on Foreign Relations\nURL: https://www.cfr.org/backgrounders/what-asean\n### Table of Contents\n\n## Introduction\n\nThe Association of Southeast Asian Nations (ASEAN) is a regional grouping that aims to promote economic and security cooperation among its ten members: Brunei, Cambodia, Indonesia, Laos, Malaysia, Myanmar, the Philippines, Singapore, Thailand, and Vietnam. As of 2024, ASEAN countries have a total population of 678 million people—making it the third most populous region in the world—and a combined gross domestic product (GDP) of $3.9 trillion. The group has played a central role in Asian economic integration, joining negotiations to form the world’s largest free trade agreement and signing six free trade deals with other governments in the region.\n\n[5] Member states of ASEAN\nURL: https://en.wikipedia.org/wiki/Member_states_of_ASEAN\nNations (ASEAN) has 11 member states … is headquartered in Jakarta, Indonesia. Capital Area (km2) The present members of Capital Area (km2) Canberra 7,686,850",
+          "reasoning": {
+            "effort": "high"
+          },
+          "background": false,
+          "store": true,
+          "text": {
+            "verbosity": "high"
+          },
+          "max_output_tokens": 16000,
+          "tools": [
+            {
+              "type": "code_interpreter",
+              "container": {
+                "type": "auto",
+                "memory_limit": "4g"
+              }
+            }
+          ],
+          "tool_choice": "auto"
+        },
+        "raw_response": {
+          "error": {
+            "code": "responses_feature_not_supported",
+            "message": "store=true requires gateway-managed response state and is planned for phase two.",
+            "param": "",
+            "type": "unsupported_feature"
+          }
+        },
+        "tool_calls": [],
+        "citations": [],
+        "usage": {},
+        "model": "mimo-v2.5-pro",
+        "provider": "custom",
+        "base_url": "https://token-plan-cn.xiaomimimo.com/v1",
+        "elapsed_seconds": 0.228557
+      },
+      "asean_validation": {
+        "checks": {
+          "request_succeeded": false,
+          "model_identity_exact": true,
+          "web_search_completed": false,
+          "code_interpreter_completed": false,
+          "url_citations_present": false,
+          "closest_pair_matches_independent_reference": false,
+          "distance_reported": false
+        },
+        "passed": false,
+        "output_types": [],
+        "independent_reference": {
+          "pair": [
+            "Kuala Lumpur",
+            "Singapore"
+          ],
+          "distance_km": 309.3,
+          "pair_count": 45
+        }
+      },
+      "clarification": {
+        "ambiguous_task": "搜索最近一个月的比特币走势，做技术分析。",
+        "first": {
+          "success": false,
+          "error": {
+            "code": "responses_feature_not_supported",
+            "message": "store=true requires gateway-managed response state and is planned for phase two.",
+            "param": "",
+            "type": "unsupported_feature"
+          },
+          "response": null,
+          "request": {
+            "model": "mimo-v2.5-pro",
+            "instructions": "You are a deep-research assistant. 你是一名深度研究助手。\n\nHard rule / 硬性规则: when the user's research request leaves material\npreferences ambiguous — for example which data source to use or which\ntechnical indicators to compute — ask a concise clarifying question FIRST\n(for example “您偏好使用哪个数据源？需要分析哪些技术指标？”), and do NOT\ncall any tool until the user answers.\n当用户的研究请求没有明确数据来源或具体分析指标时，必须先向用户提问澄清，\n在用户回答之前不要调用任何工具。\n\nAfter clarification, use the configured web search provider for current facts and cite\nsources, and use the hosted Python/code-interpreter tool for quantitative\nanalysis; do not claim a calculation was run unless the response contains a\ncompleted code_interpreter_call.\n澄清之后：使用配置的 web search 获取最新事实并引用来源链接；所有定量计算必须通过\ncode_interpreter 实际执行，不得口算或声称运行了代码。",
+            "input": "搜索最近一个月的比特币走势，做技术分析。\n\nTavily search results (cite these URLs):\n[1] 比特币实时价格走势图 - Mitrade\nURL: https://www.mitrade.com/cn/insights/markets/crypto/BTCUSD\n作者  Insights\n\n9 月 04 日 周五\n\n周五（9月4日）市场将迎来美国8月非农数据，市场普遍预计，继7月意外下滑后，8月非农就业岗位预计将新增5.5万个。若非农表现符合市场预期，有望提振市场风险偏好升温。但若非农表现强劲，投资者需警惕市场对美联储加息预期升温，届时将推升收益率。美银最新研究报告中指出，8月非农就业数据不过是“开场热身”，真正决定美联储9月是否加息的关键变量是下周即将公布的CPI通胀数据。周四（9月3日）美联储理事沃勒释放鸽派信号，称本月的议息决定很大程度受到下周出炉的通胀报告左右，而他开始看到一些通胀回落的迹象。\n\nplaceholder\n\n流动性风险担忧恐加剧！欧元/美元、澳元/美元、比特币、以太币技术分析周四（8月20日）美国财政部长贝森特“加码”稳定债市，但在美国债务总额突破40万亿背景下，投资者仍押注美国财政部相关措施可能只能为美债市场带来短暂缓解，10年期美债收益率回升至4.7%上方，完全收复周三的跌幅，30年期美债收益率也收复近半跌幅，表明美债相关风险尚未解除。\n\n作者  Insights\n\n8 月 21 日 周五\n\n周四（8月20日）美国财政部长贝森特“加码”稳定债市，但在美国债务总额突破40万亿背景下，投资者仍押注美国财政部相关措施可能只能为美债市场带来短暂缓解，10年期美债收益率回升至4.7%上方，完全收复周三的跌幅，30年期美债收益率也收复近半跌幅，表明美债相关风险尚未解除。\n\nplaceholder\n\n【财经纵览】：贝森特“加码”难挡长债收益率回升、WTI原油涨超2%，美股承压，比特币四连涨！尽管贝森特“加码”稳定债市，但在美国债务总额突破40万亿背景下，投资者仍押注美国财政部相关措施可能只能为美债市场带来短暂缓解，10年期美债收益率回升至4.7%上方，完全收复周三的跌幅，30年期美债收益率也收复近半跌幅。 [...] 外汇\n\n商品\n\n股票\n\n指数\n\n加密货币\n\nETFs\n\n债券\n\n代币化ETF\n\n代币化商品\n\n名称最新价涨跌额涨跌幅\n\n欧元/美元1.15369-0.00109-0.09%美元/日元154.919+0.580+0.38%英镑/美元1.34793-0.00176-0.13%美元/土耳其里拉48.56852+0.13659+0.28%美元/瑞郎0.81769+0.00058+0.07%澳元/加元0.99106-0.00123-0.12%澳元/瑞郎0.58280-0.00045-0.08%澳元/日元110.430+0.273+0.25%澳元/纽元1.23584+0.00093+0.08%澳元/新加坡元0.90690+0.00046+0.05%\n\n## 相关分析\n\nplaceholder\n\n美国8月非农来袭！美元/日元、黄金、比特币、标普500指数技术分析周五（9月4日）市场将迎来美国8月非农数据，市场普遍预计，继7月意外下滑后，8月非农就业岗位预计将新增5.5万个。若非农表现符合市场预期，有望提振市场风险偏好升温。但若非农表现强劲，投资者需警惕市场对美联储加息预期升温，届时将推升收益率。美银最新研究报告中指出，8月非农就业数据不过是“开场热身”，真正决定美联储9月是否加息的关键变量是下周即将公布的CPI通胀数据。周四（9月3日）美联储理事沃勒释放鸽派信号，称本月的议息决定很大程度受到下周出炉的通胀报告左右，而他开始看到一些通胀回落的迹象。\n\n作者  Insights\n\n9 月 04 日 周五 [...] 投资慧眼加密货币BTC/USD\n\n# 比特币\n\nBTC/USD\n\n0.00USD\n\n-2137.87  (-2.71%)\n\n今天\n\n-2.71%\n\n本周\n\n-2.72%\n\n1月\n\n21.21%\n\n6月\n\n9.1%\n\n今年开始到现在\n\n-13.07%\n\n1年\n\n-33.27%\n\n## 关键数据点\n\n开盘价\n\n昨日收盘价\n\n当日价格范围\n\n52周价格范围\n\n79034.14\n\n79020.9\n\n76626.8979038.81\n\n57749.24126073.43\n\n## 指标 info info\n\n指标说明\n\n指标功能会自动分析出每种指标下各品种的数值与方向，并给出技术面的总结。\n\n目前，我们会自动计算MACD、RSI、KDJ、StochRSI、ATR、CCI、WR、TRIX、MA九种技术指标，并且您可以自由切换时间周期。\n\n需要注意的是，技术分析本身只是投资参考的一部分，并且用数值来判断方向没有绝对的标准。结果仅供参考，我们不对指标的计算准确性与分析结论负责。\n\n1分\n\n5分\n\n15分\n\n30分\n\n1小时\n\n2小时\n\n4小时\n\n日k\n\n周k\n\n月k\n\n周k\n\n卖出(4)中性(3)买入(4)\n\n均线指标\n\n超卖\n\n中性\n\n卖出买入\n\n超卖超买\n\n超卖\n\n中性\n\n卖出买入\n\n超卖超买\n\n超卖\n\n副图指标\n\n超卖\n\n## 相关文章\n\nplaceholder\n\n比特币价格预测：随着清算风险上升，BTC仍维持区间震荡Bitcoin (BTC) 面临轻微压力，周二撰写本文时交投于 77,000 美元下方，此前一天曾出现反弹。机构需求显示出回归的早期迹象，现货交易所交易基金（ETF）周一录得资金流入，结束了连续四天的资金流出。\n\n来源  Fxstreet\n\n59 分钟前\n\n[2] 比特币历史 - 维基百科，自由的百科全书\nURL: https://zh.wikipedia.org/zh-hans/%E6%AF%94%E7%89%B9%E5%B9%A3%E6%AD%B7%E5%8F%B2\n##### 9月\n\n[编辑]\n\n 2017年9月8日，有消息称中国决定在叫停首次代币发售（ICO）后，限定时间内陆续关闭中国境内所有的虚拟货币交易所，比特币当日跌幅超20%。财新网称已有业内人士确认此消息，但各交易平台称尚未收到消息。财新网主编胡舒立报道称记者已从接近“互联网金融风险专项整治工作领导小组”的人士处确认了此消息，且该决议已经部署到地方。由于中国区消息未得确认，导致比特币与境外平台相差最高至5000元人民币（约780美元），此后一周持续传言称中国区两大平台（okcoin与火币）将关闭，导致中国区交易平台的价格在23000元至28000元人民币间频繁波动。(/wiki/Wikipedia:%E5%88%97%E6%98%8E%E6%9D%A5%E6%BA%90 \"Wikipedia:列明来源\")\n 2017年9月14日，比特币中国宣布根据中国有关部委文件精神，决定即日起停止资产交易平台新用户注册，9月30日停止所有交易业务，矿池等业务继续正常运营。\n 2017年9月15日，证券时报报道，有关人士称监管机构已约谈并要求各交易平台最晚应于9月15日24时前发布公告，明确停止虚拟币交易的最终时间，北京市相关部门的清退公告也已流出并得到该人士确认。比特币兑换价格已自9月2日最高点32350元跌破至18000元左右，下跌超过40%。多家中国平台发布有关公告。\n 2017年9月16日，网络流传一份“关于部署‘阻断比特币海外交易行为’技术预案的通知”文档，引发多方关注。\n\n##### 10月\n\n[编辑] [...] ##### 10月\n\n[编辑]\n\n 2017年9月底至10月，比特币价格继续波动、反弹。华尔街各巨头CEO对比特币的态度不一。韩国加力核查虚拟货币交易所，禁止首次代币发售（ICO）、代币保证金交易（借钱购买虚拟货币）。迪拜正式推出名为“emCash”的加密货币，将用于支付政府和非政府服务费用。\n 2017年10月11日，比特币价格突破5,000美元，随后快速上涨至5500美元以上，而在5,500~5,700美元间徘徊。\n 2017年10月20日，UTC时间17时，比特币价格在6,000美元上下徘徊，创下历史新高，而在同日13:39至15:14，在1小时35分中内，价格由5,640美元迅速上涨至5,975元。\n\n##### 11月\n\n[编辑]\n\n 2017年11月3日，比特币价格首次突破7000美元。\n 2017年11月19日，比特币的美元计价价格首次突破8000美元大关，比7000美元只相差16日。\n 2017年11月26日，比特币价格快速上涨，美元兑比特币价格首次突破9000美元，比8000美元只相差了更短的7日，比上月增长了50%，今年来已升值8到10倍。\n 2017年11月28日，比特币交易价格首次突破10000美元。\n\n##### 12月\n\n[编辑]\n\n 2017年12月7日，比特币交易价格首次突破15000美元及100000元人民币\n\n#### 2018年\n\n[编辑]\n\n 2018年6月，比特币下跌趋势开始明朗\n 2018年12月，比特币较历史最高点下跌80%以上\n\n#### 2021年\n\n[编辑]\n\n[3] BTC USD — 比特幣價格和圖表\nURL: https://tw.tradingview.com/symbols/BTCUSD\nCOINBASE:BTCUSD\n\n由RTA-Education提供\n\n【RTA加密貨幣行情分析-BTC】波動率持續收斂，BTC 近一月或將迎來波動放大BTC 上周整体围绕 65000 美元区间震荡，始终未能有效站稳这一日线级别关键阻力位。当前历史波动率持续下行，短期行情波动放大大概率将在近一个月内显现。 盤面現階段空頭動能持續走弱，疊加上週週線收線後，週線 MACD 形成水下金叉，週線級別底背離結構正式確認。不過幣價依舊未能有效突破 65,000 美元關鍵壓力，好在低點持續抬升，後續重點觀察本週價格走勢。 倘若後市收盤價站穩 65000 美元，三季度行情走出寬幅震蕩的機率將顯著上升；60000 美元區間極有可能成為本輪自 120000 美元高點回落調整週期的底部。 結合加密資產歷史牛熊週期規律：每一輪牛市見頂後的熊市底部，價格往往\n\n\n\nCOINBASE:BTCUSD\n\n由RTA-Education提供\n\n【RTA加密貨幣行情分析-BTC】週期築底訊號顯現：65000 突破與否決定第三季震盪格局上週 BTC 價格多數時段維持在 64,000 美元區間震盪；日線維度已顯現下跌動能衰竭訊號，但幣價至今未能有效突破 65,000 美元關鍵壓力位。若後續收盤價站穩 65,000 美元，第三季整體走寬幅震盪行情的機率將大幅抬升。 目前馬上要步入 7 月下旬，7 月是全年多空格局的核心分水嶺，市場最晚將於 7 月底完成 60000 美元關口的有效破位驗證。現階段盤面空頭動能持續偏弱，疊加上週週線收盤後，週線 MACD 形成水下金叉，週線級別底背離結構正式確立。一旦日線收盤站穩 65000 美元，60000 美元區間成為本輪自 120000 美元高點回落下跌週期底部的可能性極高。 從加\n\n\n\nCOINBASE:BTCUSD\n\n由RTA-Education提供 [...] ﻿\n\n### 強制平倉\n\n﻿\n\n多單\n\n空單\n\n價格\n\n## 新聞﻿\n\n﻿\n\n繼續閱讀\n\n## 投資想法﻿\n\n﻿\n\n【RTA加密貨幣行情分析-BTC】IV 靠近歷史新低，切勿複製 2023 年上漲劇本上週 BTC 整體承壓運行於 65000 美元下方，盤面圍繞 60000 美元區間橫盤震盪已近 70 天，價格始終未能有效突破 65000 美元關鍵壓力關口。 隨著橫盤週期不斷拉長，選擇權市場隱含波動率（IV）持續回落，逐步逼近歷史低點區間。 2023 年 8 月曾創下隱含波動率歷史低點：1 月期 IV 28.31%、3 月期 IV 33.83%、6 月期 IV 38.60%；彼時在波動率觸底後，市場於同年 10 月開啟大幅上漲行情，BTC 在 22 週內累計漲幅。 目前隱含波動率雖再度靠近歷史低點，但需要格外留意市場結構已發生明顯變化：自 BTC 現貨 ETF 上市後，整體隱含波動率\n\nCOINBASE:BTCUSD\n\n由RTA-Education提供\n\nBTC多空看法在這樣一個盤勢突然有動靜的時期 多數人都持多頭突破看法 還是給各位我個人的淺見 上個牛市從6月到8月 走了42%的上漲走勢 17000走到突破20000 甚至在大小週期 都變成了多頭趨勢 那次十月初會見最底的觀念還鮮少人關注 但後來9月吧做了一個假突破之後 後面不斷下落最終在10月初出現最低的價格 在這個期間我認為要關注的價格如圖 也是跟上次相同的大趨勢突破成形的價格 我認為現階段80000才是真正多空的分水嶺 並不是70000這個價格的突破 意思是你要相對低大量現貨現在還是很美的價格 如果你追求是絕對低合約操作 那還是有出現在10月的可能性\n\nCOINBASE:BTCUSD\n\n由tradetreeeeee提供 [...] 加密市場以其波動性而聞名，因此在將加密資產增加到其投資組合之前，應該研究所有可用的統計數據。很多時候，技術分析會派上用場。 我們為比特幣（BTC）準備了技術評級： 今天的技術分析顯示強力買入訊號， 並根據一週評級BTC顯示買入訊號。 您最好深入研究下個月的評級 — 顯示中立。 從比特幣交易想法中尋找靈感，並透過我們的加密貨幣動態消息追蹤加密貨幣市場的動態。\n\n比特幣(BTC)與任何其他加密貨幣資產一樣可靠 — 全球市場的這個領域波動性極大。舉例來說，今天比特幣的波動率估計為5.80%。這僅代表在做出決定之前，您必須準備並檢視所有可用資訊。\n\n您可以在我們的公開聊天、看法Minds或對Ideas的評論中，與其他使用者討論比特幣 (BTC)。\n\n[4] 比特幣（BTC）歷史價格走勢：行情和 K 線圖數據免費下載 CSV 格式｜Bitget\nURL: https://www.bitget.com/zh-TC/price/bitcoin/historical-data\n| 2026-09-02 | $77,402.14 | $77,737.55 | $76,248.31 | $77,300.48 | $26.53B |\n| 2026-09-01 | $78,539.86 | $79,196.51 | $76,399.06 | $77,403.62 | $30.61B |\n| 2026-08-31 | $77,673.7 | $79,247.35 | $77,378.43 | $78,548.63 | $30.61B |\n| 2026-08-30 | $78,246.17 | $79,373.18 | $77,056.14 | $77,667.57 | $19.31B |\n| 2026-08-29 | $77,830.89 | $78,327.95 | $77,381.9 | $78,245.81 | $14.05B |\n| 2026-08-28 | $80,264.65 | $81,346.96 | $76,909.35 | $77,830.29 | $39.36B |\n| 2026-08-27 | $79,037.92 | $80,806.56 | $78,591.1 | $80,257.54 | $34.03B |\n| 2026-08-26 | $78,538.58 | $79,240.5 | $77,639.83 | $79,027.42 | $29.33B |\n| 2026-08-25 | $78,960.1 | $81,235.03 | $77,870.63 | $78,564.98 | $46.73B |\n| 2026-08-24 | $77,748.87 | $79,970.11 | $76,688.83 | $78,964.48 | $55.50B | [...] | 2026-08-23 | $77,082.84 | $78,036.86 | $75,624.95 | $77,755.26 | $31.16B |\n| 2026-08-22 | $78,332.55 | $78,801.15 | $76,526.71 | $77,083.41 | $42.13B |\n| 2026-08-21 | $73,031.08 | $79,463.71 | $73,011.41 | $78,335.18 | $74.48B |\n| 2026-08-20 | $69,268.25 | $73,369.81 | $68,867.53 | $73,032.76 | $55.44B |\n| 2026-08-19 | $64,680.05 | $69,996.95 | $64,111.07 | $69,266.19 | $46.23B |\n| 2026-08-18 | $64,506.52 | $64,987.71 | $63,980.32 | $64,680.71 | $18.73B |\n| 2026-08-17 | $62,819.38 | $64,547.85 | $62,687.1 | $64,506.26 | $21.56B |\n| 2026-08-16 | $63,023.42 | $63,310.78 | $62,648.58 | $62,818.65 | $9.08B |\n| 2026-08-15 | $62,974.34 | $63,119.13 | $62,850.96 | $63,024.32 | $10.03B |\n| 2026-08-14 | $63,402.09 | $63,551.56 | $62,487.7 | $62,975.59 | $20.28B | [...] | 日期 | 開盤價\\ | 最高價 | 最低價 | 收盤價\\\\ | 交易量 |\n ---  ---  --- |\n| 2026-09-11 | $76,559.12 | $79,818.34 | $76,162.92 | $77,173.79 | $37.41B |\n| 2026-09-10 | $78,260.39 | $78,520.97 | $76,470.64 | $76,568.12 | $30.12B |\n| 2026-09-09 | $78,440.6 | $79,737.3 | $77,768.15 | $78,259.52 | $29.19B |\n| 2026-09-08 | $79,114.91 | $79,463.28 | $77,635.69 | $78,438.58 | $34.68B |\n| 2026-09-07 | $80,349.2 | $80,432.31 | $78,684.93 | $79,115.85 | $23.41B |\n| 2026-09-06 | $79,824.6 | $80,530.65 | $79,327.5 | $80,350.04 | $19.39B |\n| 2026-09-05 | $79,671.7 | $80,194.51 | $79,465.06 | $79,823.87 | $18.56B |\n| 2026-09-04 | $81,271.54 | $81,433.15 | $78,641.62 | $79,671.97 | $37.50B |\n| 2026-09-03 | $77,300.17 | $82,262.21 | $76,940.88 | $81,271.75 | $40.50B |\n\n[5] 比特币历史价格走势图_比特币历史行情_K线图_历年价格回顾\nURL: https://history.btc126.com\n| 时间 | 开盘价($) | 最高价($) | 最低价($) | 收盘价($) | 交易量($) | 日涨幅 |\n ---  ---  --- \n| 2026-08-21 | 73031.08 | 79463.71 | 73011.41 | 78335.18 | 74,478,039,014 | 7.26% |\n| 2026-08-20 | 69268.25 | 73369.81 | 68867.53 | 73032.76 | 55,444,322,363 | 5.43% |\n| 2026-08-19 | 64680.05 | 69996.95 | 64111.07 | 69266.19 | 46,228,098,443 | 7.09% |\n| 2026-08-18 | 64506.52 | 64987.71 | 63980.32 | 64680.71 | 18,728,001,793 | 0.27% |\n| 2026-08-17 | 62819.38 | 64547.85 | 62687.10 | 64506.26 | 21,555,405,073 | 2.69% |\n| 2026-08-16 | 63023.42 | 63310.78 | 62648.58 | 62818.65 | 9,078,986,635 | -0.32% |\n| 2026-08-15 | 62974.34 | 63119.13 | 62850.96 | 63024.32 | 10,033,057,106 | 0.08% |\n| 2026-08-14 | 63402.09 | 63551.56 | 62487.70 | 62975.59 | 20,280,053,024 | -0.67% | [...] | 2026-08-04 | 63458.41 | 64466.94 | 63277.68 | 64055.95 | 23,662,357,784 | 0.94% |\n| 2026-08-03 | 63485.44 | 64020.32 | 62226.58 | 63460.90 | 26,038,889,824 | -0.04% |\n| 2026-08-02 | 62763.45 | 63714.61 | 62745.25 | 63482.00 | 15,901,776,708 | 1.14% |\n| 2026-08-01 | 62813.67 | 63091.60 | 62233.01 | 62763.32 | 13,553,286,543 | -0.08% |\n| 2026-07-31 | 64723.97 | 65328.18 | 62410.87 | 62813.75 | 30,439,749,629 | -2.95% |\n| 2026-07-30 | 63908.63 | 65071.44 | 63533.91 | 64725.31 | 26,250,039,650 | 1.28% |\n| 2026-07-29 | 63871.39 | 64638.70 | 63206.21 | 63908.17 | 28,611,167,472 | 0.06% |\n| 2026-07-28 | 63723.49 | 64026.92 | 62714.80 | 63871.36 | 24,128,738,898 | 0.23% |\n| 2026-07-27 | 65340.59 | 65658.34 | 63562.49 | 63724.90 | 26,183,821,002 | -2.47% | [...] | 2026-08-13 | 63404.43 | 63926.33 | 62799.29 | 63402.17 | 18,765,583,756 | -0.00% |\n| 2026-08-12 | 63551.87 | 64381.08 | 63251.11 | 63402.43 | 23,063,864,553 | -0.24% |\n| 2026-08-11 | 63910.18 | 64433.68 | 63185.47 | 63551.87 | 20,824,820,662 | -0.56% |\n| 2026-08-10 | 64845.38 | 65321.84 | 63752.57 | 63910.59 | 22,384,770,392 | -1.44% |\n| 2026-08-09 | 64906.55 | 65401.69 | 64677.60 | 64844.89 | 13,234,538,380 | -0.09% |\n| 2026-08-08 | 64882.55 | 65140.48 | 64797.11 | 64904.69 | 12,350,094,271 | 0.03% |\n| 2026-08-07 | 64257.49 | 65330.61 | 64113.27 | 64880.19 | 22,165,720,102 | 0.97% |\n| 2026-08-06 | 64595.45 | 64934.49 | 64098.48 | 64262.11 | 18,529,402,711 | -0.52% |\n| 2026-08-05 | 64054.88 | 64954.35 | 63829.72 | 64597.50 | 23,568,584,891 | 0.85% |",
+            "reasoning": {
+              "effort": "medium"
+            },
+            "background": false,
+            "store": true,
+            "text": {
+              "verbosity": "medium"
+            },
+            "max_output_tokens": 4000,
+            "tools": [
+              {
+                "type": "code_interpreter",
+                "container": {
+                  "type": "auto",
+                  "memory_limit": "4g"
+                }
+              }
+            ],
+            "tool_choice": "auto"
+          },
+          "raw_response": {
+            "error": {
+              "code": "responses_feature_not_supported",
+              "message": "store=true requires gateway-managed response state and is planned for phase two.",
+              "param": "",
+              "type": "unsupported_feature"
+            }
+          },
+          "tool_calls": [],
+          "citations": [],
+          "usage": {},
+          "model": "mimo-v2.5-pro",
+          "provider": "custom",
+          "base_url": "https://token-plan-cn.xiaomimimo.com/v1",
+          "elapsed_seconds": 0.212554
+        },
+        "user_reply": null,
+        "second": null,
+        "validation": {
+          "checks": {
+            "first_turn_clarified_before_tools": false,
+            "continuation_used_previous_response_id": false,
+            "followup_succeeded": false,
+            "followup_web_search_completed": false,
+            "followup_code_interpreter_completed": false,
+            "followup_citations_present": false,
+            "followup_reports_ma_rsi_macd": false
+          },
+          "passed": false
+        }
+      },
+      "api_turns": [
+        {
+          "request": {
+            "model": "mimo-v2.5-pro",
+            "instructions": "You are a deep-research assistant. 你是一名深度研究助手。\n\nHard rule / 硬性规则: when the user's research request leaves material\npreferences ambiguous — for example which data source to use or which\ntechnical indicators to compute — ask a concise clarifying question FIRST\n(for example “您偏好使用哪个数据源？需要分析哪些技术指标？”), and do NOT\ncall any tool until the user answers.\n当用户的研究请求没有明确数据来源或具体分析指标时，必须先向用户提问澄清，\n在用户回答之前不要调用任何工具。\n\nAfter clarification, use the configured web search provider for current facts and cite\nsources, and use the hosted Python/code-interpreter tool for quantitative\nanalysis; do not claim a calculation was run unless the response contains a\ncompleted code_interpreter_call.\n澄清之后：使用配置的 web search 获取最新事实并引用来源链接；所有定量计算必须通过\ncode_interpreter 实际执行，不得口算或声称运行了代码。",
+            "input": "Research the current official capitals and reliable coordinates\nfor the ten ASEAN member states. You must use hosted web search and cite the\nsources. Then you must use the hosted Python tool—not mental arithmetic—to\nenumerate all 45 capital pairs with the haversine formula and identify the\nclosest pair and distance. Include the coordinates, formula assumptions,\ncalculation result, retrieval date, and clickable citations. Do not say Python\nwas used unless a code_interpreter_call completes.\n\nTavily search results (cite these URLs):\n[1] Capitals of 10 ASEAN member countries\nURL: https://www.facebook.com/groups/898899773959040/posts/2032690937246579\nMyanmar -Capital City : Naypyidaw 7. Singapore -Capital City : Singapore 8. Thailand -Capital City : Bangkok 9. Timor Leste -Capital City :\n\n[2] ASEAN Member States MFAIC\nURL: https://www.mfaic.gov.kh/2021-04-01-ASEAN-Member-States\n# Search\n\nASEAN Member States\n\n### Brunei Darussalam\n\nHead of State : His Majesty Sultan Haji Hassanal Bolkiah Mu’izzaddin Waddaulah\n\nCapital : Bandar Seri Begawan\n\nNational Flag : Click Here for detail Specification.\n\nLanguage(s) : Malay, English\n\nCurrency : B$ (Brunei Dollar)\n\nMinistry of Foreign Affairs & Trade of Brunei Darussalam Website: www.mfa.gov.bn\n\n### Cambodia\n\nHead of State : His Majesty King Norodom Sihamoni\n\nHead of Government : Prime Minister Samdech Moha Borvor Thipadei Hun Manet\n\nCapital : Phnom Penh\n\nNational Flag : Click Here for detail Specification.\n\nLanguage : Khmer\n\nCurrency : Riel\n\nMinistry of Foreign Affairs & International Cooperation of Cambodia Website: www.mfaic.gov.kh\n\n### Indonesia\n\nHead of State : President Prabowo Subianto\n\nCapital : Jakarta [...] Capital : Jakarta\n\nLanguage : Indonesian\n\nCurrency : Rupiah\n\nMinistry of Foreign Affairs of Indonesia Website: www.kemlu.go.id\n\n### Lao PDR\n\nHead of State : President Thongloun Sisoulith\n\nHead of Government : Prime Minister Sonexay Siphandone\n\nCapital : Vientiane\n\nNational Flag : Click Here for detail Specification.\n\nLanguage : Lao\n\nCurrency : Kip\n\nMinistry of Foreign Affairs of Lao PDR Website: www.mofa.gov.la\n\n### Malaysia\n\nHead of State : His Majesty Seri Paduka Baginda Yang Di-Pertuan Agong Sultan Ibrahim\n\nHead of Government : Prime Minister Dato’ Seri Anwar bin Ibrahim\n\nCapital : Kuala Lumpur\n\nNational Flag : Click Here for detail Specification.\n\nLanguage(s) : Malay, English, Chinese, Tamil\n\nCurrency : Ringgit\n\nMinistry of Foreign Affairs of Malaysia Website: www.kln.gov.my [...] ASEAN-Malaysia National Secretariat Website: www.kln.gov.my/myasean\n\n### Myanmar\n\nHead of State : President Senior General Min Aung Hlaing\n\nCapital : Nay Pyi Taw\n\nNational Flag : Click Here for detail Specification.\n\nLanguage : Myanmar\n\nCurrency : Kyat\n\nMinistry of Foreign Affairs of Myanmar Website: www.mofa.gov.mm\n\n### Philippines\n\nHead of State : President Ferdinand Romualdez Marcos Jr.\n\nCapital : Manila\n\nNational Flag : Click Here for detail Specification.\n\nLanguage(s) : Filipino, English, Spanish\n\nCurrency : Peso\n\nDepartment of Foreign Affairs of the Philippines Website: www.dfa.gov.ph\n\n### Singapore\n\nHead of State : President Tharman Shanmugaratnam\n\nHead of Government : Prime Minister Lawrence Wong\n\nCapital : Singapore\n\nNational Flag : Click Here for detail Specification.\n\n[3] ASEAN countries capitals and cities\nURL: https://www.facebook.com/groups/872904791075541/posts/1066016478431037\nASEAN was founded by five countries: Indonesia, Malaysia, the Philippines, Singapore, and Thailand. It was eventually expanded to include Brunei\n\n[4] What Is ASEAN? | Council on Foreign Relations\nURL: https://www.cfr.org/backgrounders/what-asean\n### Table of Contents\n\n## Introduction\n\nThe Association of Southeast Asian Nations (ASEAN) is a regional grouping that aims to promote economic and security cooperation among its ten members: Brunei, Cambodia, Indonesia, Laos, Malaysia, Myanmar, the Philippines, Singapore, Thailand, and Vietnam. As of 2024, ASEAN countries have a total population of 678 million people—making it the third most populous region in the world—and a combined gross domestic product (GDP) of $3.9 trillion. The group has played a central role in Asian economic integration, joining negotiations to form the world’s largest free trade agreement and signing six free trade deals with other governments in the region.\n\n[5] Member states of ASEAN\nURL: https://en.wikipedia.org/wiki/Member_states_of_ASEAN\nNations (ASEAN) has 11 member states … is headquartered in Jakarta, Indonesia. Capital Area (km2) The present members of Capital Area (km2) Canberra 7,686,850",
+            "reasoning": {
+              "effort": "high"
+            },
+            "background": false,
+            "store": true,
+            "text": {
+              "verbosity": "high"
+            },
+            "max_output_tokens": 16000,
+            "tools": [
+              {
+                "type": "code_interpreter",
+                "container": {
+                  "type": "auto",
+                  "memory_limit": "4g"
+                }
+              }
+            ],
+            "tool_choice": "auto"
+          },
+          "http_status": 400,
+          "response": {
+            "error": {
+              "code": "responses_feature_not_supported",
+              "message": "store=true requires gateway-managed response state and is planned for phase two.",
+              "param": "",
+              "type": "unsupported_feature"
+            }
+          },
+          "elapsed_seconds": 0.228557
+        },
+        {
+          "request": {
+            "model": "mimo-v2.5-pro",
+            "instructions": "You are a deep-research assistant. 你是一名深度研究助手。\n\nHard rule / 硬性规则: when the user's research request leaves material\npreferences ambiguous — for example which data source to use or which\ntechnical indicators to compute — ask a concise clarifying question FIRST\n(for example “您偏好使用哪个数据源？需要分析哪些技术指标？”), and do NOT\ncall any tool until the user answers.\n当用户的研究请求没有明确数据来源或具体分析指标时，必须先向用户提问澄清，\n在用户回答之前不要调用任何工具。\n\nAfter clarification, use the configured web search provider for current facts and cite\nsources, and use the hosted Python/code-interpreter tool for quantitative\nanalysis; do not claim a calculation was run unless the response contains a\ncompleted code_interpreter_call.\n澄清之后：使用配置的 web search 获取最新事实并引用来源链接；所有定量计算必须通过\ncode_interpreter 实际执行，不得口算或声称运行了代码。",
+            "input": "搜索最近一个月的比特币走势，做技术分析。\n\nTavily search results (cite these URLs):\n[1] 比特币实时价格走势图 - Mitrade\nURL: https://www.mitrade.com/cn/insights/markets/crypto/BTCUSD\n作者  Insights\n\n9 月 04 日 周五\n\n周五（9月4日）市场将迎来美国8月非农数据，市场普遍预计，继7月意外下滑后，8月非农就业岗位预计将新增5.5万个。若非农表现符合市场预期，有望提振市场风险偏好升温。但若非农表现强劲，投资者需警惕市场对美联储加息预期升温，届时将推升收益率。美银最新研究报告中指出，8月非农就业数据不过是“开场热身”，真正决定美联储9月是否加息的关键变量是下周即将公布的CPI通胀数据。周四（9月3日）美联储理事沃勒释放鸽派信号，称本月的议息决定很大程度受到下周出炉的通胀报告左右，而他开始看到一些通胀回落的迹象。\n\nplaceholder\n\n流动性风险担忧恐加剧！欧元/美元、澳元/美元、比特币、以太币技术分析周四（8月20日）美国财政部长贝森特“加码”稳定债市，但在美国债务总额突破40万亿背景下，投资者仍押注美国财政部相关措施可能只能为美债市场带来短暂缓解，10年期美债收益率回升至4.7%上方，完全收复周三的跌幅，30年期美债收益率也收复近半跌幅，表明美债相关风险尚未解除。\n\n作者  Insights\n\n8 月 21 日 周五\n\n周四（8月20日）美国财政部长贝森特“加码”稳定债市，但在美国债务总额突破40万亿背景下，投资者仍押注美国财政部相关措施可能只能为美债市场带来短暂缓解，10年期美债收益率回升至4.7%上方，完全收复周三的跌幅，30年期美债收益率也收复近半跌幅，表明美债相关风险尚未解除。\n\nplaceholder\n\n【财经纵览】：贝森特“加码”难挡长债收益率回升、WTI原油涨超2%，美股承压，比特币四连涨！尽管贝森特“加码”稳定债市，但在美国债务总额突破40万亿背景下，投资者仍押注美国财政部相关措施可能只能为美债市场带来短暂缓解，10年期美债收益率回升至4.7%上方，完全收复周三的跌幅，30年期美债收益率也收复近半跌幅。 [...] 外汇\n\n商品\n\n股票\n\n指数\n\n加密货币\n\nETFs\n\n债券\n\n代币化ETF\n\n代币化商品\n\n名称最新价涨跌额涨跌幅\n\n欧元/美元1.15369-0.00109-0.09%美元/日元154.919+0.580+0.38%英镑/美元1.34793-0.00176-0.13%美元/土耳其里拉48.56852+0.13659+0.28%美元/瑞郎0.81769+0.00058+0.07%澳元/加元0.99106-0.00123-0.12%澳元/瑞郎0.58280-0.00045-0.08%澳元/日元110.430+0.273+0.25%澳元/纽元1.23584+0.00093+0.08%澳元/新加坡元0.90690+0.00046+0.05%\n\n## 相关分析\n\nplaceholder\n\n美国8月非农来袭！美元/日元、黄金、比特币、标普500指数技术分析周五（9月4日）市场将迎来美国8月非农数据，市场普遍预计，继7月意外下滑后，8月非农就业岗位预计将新增5.5万个。若非农表现符合市场预期，有望提振市场风险偏好升温。但若非农表现强劲，投资者需警惕市场对美联储加息预期升温，届时将推升收益率。美银最新研究报告中指出，8月非农就业数据不过是“开场热身”，真正决定美联储9月是否加息的关键变量是下周即将公布的CPI通胀数据。周四（9月3日）美联储理事沃勒释放鸽派信号，称本月的议息决定很大程度受到下周出炉的通胀报告左右，而他开始看到一些通胀回落的迹象。\n\n作者  Insights\n\n9 月 04 日 周五 [...] 投资慧眼加密货币BTC/USD\n\n# 比特币\n\nBTC/USD\n\n0.00USD\n\n-2137.87  (-2.71%)\n\n今天\n\n-2.71%\n\n本周\n\n-2.72%\n\n1月\n\n21.21%\n\n6月\n\n9.1%\n\n今年开始到现在\n\n-13.07%\n\n1年\n\n-33.27%\n\n## 关键数据点\n\n开盘价\n\n昨日收盘价\n\n当日价格范围\n\n52周价格范围\n\n79034.14\n\n79020.9\n\n76626.8979038.81\n\n57749.24126073.43\n\n## 指标 info info\n\n指标说明\n\n指标功能会自动分析出每种指标下各品种的数值与方向，并给出技术面的总结。\n\n目前，我们会自动计算MACD、RSI、KDJ、StochRSI、ATR、CCI、WR、TRIX、MA九种技术指标，并且您可以自由切换时间周期。\n\n需要注意的是，技术分析本身只是投资参考的一部分，并且用数值来判断方向没有绝对的标准。结果仅供参考，我们不对指标的计算准确性与分析结论负责。\n\n1分\n\n5分\n\n15分\n\n30分\n\n1小时\n\n2小时\n\n4小时\n\n日k\n\n周k\n\n月k\n\n周k\n\n卖出(4)中性(3)买入(4)\n\n均线指标\n\n超卖\n\n中性\n\n卖出买入\n\n超卖超买\n\n超卖\n\n中性\n\n卖出买入\n\n超卖超买\n\n超卖\n\n副图指标\n\n超卖\n\n## 相关文章\n\nplaceholder\n\n比特币价格预测：随着清算风险上升，BTC仍维持区间震荡Bitcoin (BTC) 面临轻微压力，周二撰写本文时交投于 77,000 美元下方，此前一天曾出现反弹。机构需求显示出回归的早期迹象，现货交易所交易基金（ETF）周一录得资金流入，结束了连续四天的资金流出。\n\n来源  Fxstreet\n\n59 分钟前\n\n[2] 比特币历史 - 维基百科，自由的百科全书\nURL: https://zh.wikipedia.org/zh-hans/%E6%AF%94%E7%89%B9%E5%B9%A3%E6%AD%B7%E5%8F%B2\n##### 9月\n\n[编辑]\n\n 2017年9月8日，有消息称中国决定在叫停首次代币发售（ICO）后，限定时间内陆续关闭中国境内所有的虚拟货币交易所，比特币当日跌幅超20%。财新网称已有业内人士确认此消息，但各交易平台称尚未收到消息。财新网主编胡舒立报道称记者已从接近“互联网金融风险专项整治工作领导小组”的人士处确认了此消息，且该决议已经部署到地方。由于中国区消息未得确认，导致比特币与境外平台相差最高至5000元人民币（约780美元），此后一周持续传言称中国区两大平台（okcoin与火币）将关闭，导致中国区交易平台的价格在23000元至28000元人民币间频繁波动。(/wiki/Wikipedia:%E5%88%97%E6%98%8E%E6%9D%A5%E6%BA%90 \"Wikipedia:列明来源\")\n 2017年9月14日，比特币中国宣布根据中国有关部委文件精神，决定即日起停止资产交易平台新用户注册，9月30日停止所有交易业务，矿池等业务继续正常运营。\n 2017年9月15日，证券时报报道，有关人士称监管机构已约谈并要求各交易平台最晚应于9月15日24时前发布公告，明确停止虚拟币交易的最终时间，北京市相关部门的清退公告也已流出并得到该人士确认。比特币兑换价格已自9月2日最高点32350元跌破至18000元左右，下跌超过40%。多家中国平台发布有关公告。\n 2017年9月16日，网络流传一份“关于部署‘阻断比特币海外交易行为’技术预案的通知”文档，引发多方关注。\n\n##### 10月\n\n[编辑] [...] ##### 10月\n\n[编辑]\n\n 2017年9月底至10月，比特币价格继续波动、反弹。华尔街各巨头CEO对比特币的态度不一。韩国加力核查虚拟货币交易所，禁止首次代币发售（ICO）、代币保证金交易（借钱购买虚拟货币）。迪拜正式推出名为“emCash”的加密货币，将用于支付政府和非政府服务费用。\n 2017年10月11日，比特币价格突破5,000美元，随后快速上涨至5500美元以上，而在5,500~5,700美元间徘徊。\n 2017年10月20日，UTC时间17时，比特币价格在6,000美元上下徘徊，创下历史新高，而在同日13:39至15:14，在1小时35分中内，价格由5,640美元迅速上涨至5,975元。\n\n##### 11月\n\n[编辑]\n\n 2017年11月3日，比特币价格首次突破7000美元。\n 2017年11月19日，比特币的美元计价价格首次突破8000美元大关，比7000美元只相差16日。\n 2017年11月26日，比特币价格快速上涨，美元兑比特币价格首次突破9000美元，比8000美元只相差了更短的7日，比上月增长了50%，今年来已升值8到10倍。\n 2017年11月28日，比特币交易价格首次突破10000美元。\n\n##### 12月\n\n[编辑]\n\n 2017年12月7日，比特币交易价格首次突破15000美元及100000元人民币\n\n#### 2018年\n\n[编辑]\n\n 2018年6月，比特币下跌趋势开始明朗\n 2018年12月，比特币较历史最高点下跌80%以上\n\n#### 2021年\n\n[编辑]\n\n[3] BTC USD — 比特幣價格和圖表\nURL: https://tw.tradingview.com/symbols/BTCUSD\nCOINBASE:BTCUSD\n\n由RTA-Education提供\n\n【RTA加密貨幣行情分析-BTC】波動率持續收斂，BTC 近一月或將迎來波動放大BTC 上周整体围绕 65000 美元区间震荡，始终未能有效站稳这一日线级别关键阻力位。当前历史波动率持续下行，短期行情波动放大大概率将在近一个月内显现。 盤面現階段空頭動能持續走弱，疊加上週週線收線後，週線 MACD 形成水下金叉，週線級別底背離結構正式確認。不過幣價依舊未能有效突破 65,000 美元關鍵壓力，好在低點持續抬升，後續重點觀察本週價格走勢。 倘若後市收盤價站穩 65000 美元，三季度行情走出寬幅震蕩的機率將顯著上升；60000 美元區間極有可能成為本輪自 120000 美元高點回落調整週期的底部。 結合加密資產歷史牛熊週期規律：每一輪牛市見頂後的熊市底部，價格往往\n\n\n\nCOINBASE:BTCUSD\n\n由RTA-Education提供\n\n【RTA加密貨幣行情分析-BTC】週期築底訊號顯現：65000 突破與否決定第三季震盪格局上週 BTC 價格多數時段維持在 64,000 美元區間震盪；日線維度已顯現下跌動能衰竭訊號，但幣價至今未能有效突破 65,000 美元關鍵壓力位。若後續收盤價站穩 65,000 美元，第三季整體走寬幅震盪行情的機率將大幅抬升。 目前馬上要步入 7 月下旬，7 月是全年多空格局的核心分水嶺，市場最晚將於 7 月底完成 60000 美元關口的有效破位驗證。現階段盤面空頭動能持續偏弱，疊加上週週線收盤後，週線 MACD 形成水下金叉，週線級別底背離結構正式確立。一旦日線收盤站穩 65000 美元，60000 美元區間成為本輪自 120000 美元高點回落下跌週期底部的可能性極高。 從加\n\n\n\nCOINBASE:BTCUSD\n\n由RTA-Education提供 [...] ﻿\n\n### 強制平倉\n\n﻿\n\n多單\n\n空單\n\n價格\n\n## 新聞﻿\n\n﻿\n\n繼續閱讀\n\n## 投資想法﻿\n\n﻿\n\n【RTA加密貨幣行情分析-BTC】IV 靠近歷史新低，切勿複製 2023 年上漲劇本上週 BTC 整體承壓運行於 65000 美元下方，盤面圍繞 60000 美元區間橫盤震盪已近 70 天，價格始終未能有效突破 65000 美元關鍵壓力關口。 隨著橫盤週期不斷拉長，選擇權市場隱含波動率（IV）持續回落，逐步逼近歷史低點區間。 2023 年 8 月曾創下隱含波動率歷史低點：1 月期 IV 28.31%、3 月期 IV 33.83%、6 月期 IV 38.60%；彼時在波動率觸底後，市場於同年 10 月開啟大幅上漲行情，BTC 在 22 週內累計漲幅。 目前隱含波動率雖再度靠近歷史低點，但需要格外留意市場結構已發生明顯變化：自 BTC 現貨 ETF 上市後，整體隱含波動率\n\nCOINBASE:BTCUSD\n\n由RTA-Education提供\n\nBTC多空看法在這樣一個盤勢突然有動靜的時期 多數人都持多頭突破看法 還是給各位我個人的淺見 上個牛市從6月到8月 走了42%的上漲走勢 17000走到突破20000 甚至在大小週期 都變成了多頭趨勢 那次十月初會見最底的觀念還鮮少人關注 但後來9月吧做了一個假突破之後 後面不斷下落最終在10月初出現最低的價格 在這個期間我認為要關注的價格如圖 也是跟上次相同的大趨勢突破成形的價格 我認為現階段80000才是真正多空的分水嶺 並不是70000這個價格的突破 意思是你要相對低大量現貨現在還是很美的價格 如果你追求是絕對低合約操作 那還是有出現在10月的可能性\n\nCOINBASE:BTCUSD\n\n由tradetreeeeee提供 [...] 加密市場以其波動性而聞名，因此在將加密資產增加到其投資組合之前，應該研究所有可用的統計數據。很多時候，技術分析會派上用場。 我們為比特幣（BTC）準備了技術評級： 今天的技術分析顯示強力買入訊號， 並根據一週評級BTC顯示買入訊號。 您最好深入研究下個月的評級 — 顯示中立。 從比特幣交易想法中尋找靈感，並透過我們的加密貨幣動態消息追蹤加密貨幣市場的動態。\n\n比特幣(BTC)與任何其他加密貨幣資產一樣可靠 — 全球市場的這個領域波動性極大。舉例來說，今天比特幣的波動率估計為5.80%。這僅代表在做出決定之前，您必須準備並檢視所有可用資訊。\n\n您可以在我們的公開聊天、看法Minds或對Ideas的評論中，與其他使用者討論比特幣 (BTC)。\n\n[4] 比特幣（BTC）歷史價格走勢：行情和 K 線圖數據免費下載 CSV 格式｜Bitget\nURL: https://www.bitget.com/zh-TC/price/bitcoin/historical-data\n| 2026-09-02 | $77,402.14 | $77,737.55 | $76,248.31 | $77,300.48 | $26.53B |\n| 2026-09-01 | $78,539.86 | $79,196.51 | $76,399.06 | $77,403.62 | $30.61B |\n| 2026-08-31 | $77,673.7 | $79,247.35 | $77,378.43 | $78,548.63 | $30.61B |\n| 2026-08-30 | $78,246.17 | $79,373.18 | $77,056.14 | $77,667.57 | $19.31B |\n| 2026-08-29 | $77,830.89 | $78,327.95 | $77,381.9 | $78,245.81 | $14.05B |\n| 2026-08-28 | $80,264.65 | $81,346.96 | $76,909.35 | $77,830.29 | $39.36B |\n| 2026-08-27 | $79,037.92 | $80,806.56 | $78,591.1 | $80,257.54 | $34.03B |\n| 2026-08-26 | $78,538.58 | $79,240.5 | $77,639.83 | $79,027.42 | $29.33B |\n| 2026-08-25 | $78,960.1 | $81,235.03 | $77,870.63 | $78,564.98 | $46.73B |\n| 2026-08-24 | $77,748.87 | $79,970.11 | $76,688.83 | $78,964.48 | $55.50B | [...] | 2026-08-23 | $77,082.84 | $78,036.86 | $75,624.95 | $77,755.26 | $31.16B |\n| 2026-08-22 | $78,332.55 | $78,801.15 | $76,526.71 | $77,083.41 | $42.13B |\n| 2026-08-21 | $73,031.08 | $79,463.71 | $73,011.41 | $78,335.18 | $74.48B |\n| 2026-08-20 | $69,268.25 | $73,369.81 | $68,867.53 | $73,032.76 | $55.44B |\n| 2026-08-19 | $64,680.05 | $69,996.95 | $64,111.07 | $69,266.19 | $46.23B |\n| 2026-08-18 | $64,506.52 | $64,987.71 | $63,980.32 | $64,680.71 | $18.73B |\n| 2026-08-17 | $62,819.38 | $64,547.85 | $62,687.1 | $64,506.26 | $21.56B |\n| 2026-08-16 | $63,023.42 | $63,310.78 | $62,648.58 | $62,818.65 | $9.08B |\n| 2026-08-15 | $62,974.34 | $63,119.13 | $62,850.96 | $63,024.32 | $10.03B |\n| 2026-08-14 | $63,402.09 | $63,551.56 | $62,487.7 | $62,975.59 | $20.28B | [...] | 日期 | 開盤價\\ | 最高價 | 最低價 | 收盤價\\\\ | 交易量 |\n ---  ---  --- |\n| 2026-09-11 | $76,559.12 | $79,818.34 | $76,162.92 | $77,173.79 | $37.41B |\n| 2026-09-10 | $78,260.39 | $78,520.97 | $76,470.64 | $76,568.12 | $30.12B |\n| 2026-09-09 | $78,440.6 | $79,737.3 | $77,768.15 | $78,259.52 | $29.19B |\n| 2026-09-08 | $79,114.91 | $79,463.28 | $77,635.69 | $78,438.58 | $34.68B |\n| 2026-09-07 | $80,349.2 | $80,432.31 | $78,684.93 | $79,115.85 | $23.41B |\n| 2026-09-06 | $79,824.6 | $80,530.65 | $79,327.5 | $80,350.04 | $19.39B |\n| 2026-09-05 | $79,671.7 | $80,194.51 | $79,465.06 | $79,823.87 | $18.56B |\n| 2026-09-04 | $81,271.54 | $81,433.15 | $78,641.62 | $79,671.97 | $37.50B |\n| 2026-09-03 | $77,300.17 | $82,262.21 | $76,940.88 | $81,271.75 | $40.50B |\n\n[5] 比特币历史价格走势图_比特币历史行情_K线图_历年价格回顾\nURL: https://history.btc126.com\n| 时间 | 开盘价($) | 最高价($) | 最低价($) | 收盘价($) | 交易量($) | 日涨幅 |\n ---  ---  --- \n| 2026-08-21 | 73031.08 | 79463.71 | 73011.41 | 78335.18 | 74,478,039,014 | 7.26% |\n| 2026-08-20 | 69268.25 | 73369.81 | 68867.53 | 73032.76 | 55,444,322,363 | 5.43% |\n| 2026-08-19 | 64680.05 | 69996.95 | 64111.07 | 69266.19 | 46,228,098,443 | 7.09% |\n| 2026-08-18 | 64506.52 | 64987.71 | 63980.32 | 64680.71 | 18,728,001,793 | 0.27% |\n| 2026-08-17 | 62819.38 | 64547.85 | 62687.10 | 64506.26 | 21,555,405,073 | 2.69% |\n| 2026-08-16 | 63023.42 | 63310.78 | 62648.58 | 62818.65 | 9,078,986,635 | -0.32% |\n| 2026-08-15 | 62974.34 | 63119.13 | 62850.96 | 63024.32 | 10,033,057,106 | 0.08% |\n| 2026-08-14 | 63402.09 | 63551.56 | 62487.70 | 62975.59 | 20,280,053,024 | -0.67% | [...] | 2026-08-04 | 63458.41 | 64466.94 | 63277.68 | 64055.95 | 23,662,357,784 | 0.94% |\n| 2026-08-03 | 63485.44 | 64020.32 | 62226.58 | 63460.90 | 26,038,889,824 | -0.04% |\n| 2026-08-02 | 62763.45 | 63714.61 | 62745.25 | 63482.00 | 15,901,776,708 | 1.14% |\n| 2026-08-01 | 62813.67 | 63091.60 | 62233.01 | 62763.32 | 13,553,286,543 | -0.08% |\n| 2026-07-31 | 64723.97 | 65328.18 | 62410.87 | 62813.75 | 30,439,749,629 | -2.95% |\n| 2026-07-30 | 63908.63 | 65071.44 | 63533.91 | 64725.31 | 26,250,039,650 | 1.28% |\n| 2026-07-29 | 63871.39 | 64638.70 | 63206.21 | 63908.17 | 28,611,167,472 | 0.06% |\n| 2026-07-28 | 63723.49 | 64026.92 | 62714.80 | 63871.36 | 24,128,738,898 | 0.23% |\n| 2026-07-27 | 65340.59 | 65658.34 | 63562.49 | 63724.90 | 26,183,821,002 | -2.47% | [...] | 2026-08-13 | 63404.43 | 63926.33 | 62799.29 | 63402.17 | 18,765,583,756 | -0.00% |\n| 2026-08-12 | 63551.87 | 64381.08 | 63251.11 | 63402.43 | 23,063,864,553 | -0.24% |\n| 2026-08-11 | 63910.18 | 64433.68 | 63185.47 | 63551.87 | 20,824,820,662 | -0.56% |\n| 2026-08-10 | 64845.38 | 65321.84 | 63752.57 | 63910.59 | 22,384,770,392 | -1.44% |\n| 2026-08-09 | 64906.55 | 65401.69 | 64677.60 | 64844.89 | 13,234,538,380 | -0.09% |\n| 2026-08-08 | 64882.55 | 65140.48 | 64797.11 | 64904.69 | 12,350,094,271 | 0.03% |\n| 2026-08-07 | 64257.49 | 65330.61 | 64113.27 | 64880.19 | 22,165,720,102 | 0.97% |\n| 2026-08-06 | 64595.45 | 64934.49 | 64098.48 | 64262.11 | 18,529,402,711 | -0.52% |\n| 2026-08-05 | 64054.88 | 64954.35 | 63829.72 | 64597.50 | 23,568,584,891 | 0.85% |",
+            "reasoning": {
+              "effort": "medium"
+            },
+            "background": false,
+            "store": true,
+            "text": {
+              "verbosity": "medium"
+            },
+            "max_output_tokens": 4000,
+            "tools": [
+              {
+                "type": "code_interpreter",
+                "container": {
+                  "type": "auto",
+                  "memory_limit": "4g"
+                }
+              }
+            ],
+            "tool_choice": "auto"
+          },
+          "http_status": 400,
+          "response": {
+            "error": {
+              "code": "responses_feature_not_supported",
+              "message": "store=true requires gateway-managed response state and is planned for phase two.",
+              "param": "",
+              "type": "unsupported_feature"
+            }
+          },
+          "elapsed_seconds": 0.212554
+        }
+      ],
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0,
+        "reported_cost_usd": null,
+        "reported_cost_available": false
+      }
+    }
+  ],
+  "acceptance": {
+    "policy": "multi-provider: acceptance is not gated on the official OpenAI account; any provider whose Responses API closes the hosted search + code-execution loop server-side is eligible",
+    "eligible_acceptance_backends": [
+      "openai",
+      "dashscope"
+    ],
+    "eligible_backends_attempted": [
+      "openai"
+    ],
+    "acceptance_backend": null,
+    "per_backend": {
+      "openai": {
+        "started": true,
+        "requested_model": "mimo-v2.5-pro",
+        "asean_passed": false,
+        "clarification_passed": false
+      }
+    },
+    "openrouter_is_diagnostic_not_acceptance": false,
+    "passed": false,
+    "reference_docs": [
+      "https://developers.openai.com/api/docs/guides/tools-web-search",
+      "https://developers.openai.com/api/docs/guides/tools-code-interpreter",
+      "https://help.aliyun.com/zh/model-studio/qwen-code-interpreter"
+    ]
+  }
+}

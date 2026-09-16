@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "1-4",
+  "evidence_mode": "real_api",
+  "created_at": "2026-09-16T06:03:19.504734+00:00",
+  "canonical_source": "book/chapter1.md#实验-1-4-文生图工作流与原生图像生成的对照",
+  "credential_source_env": [
+    "MIMO_API_KEY",
+    "DASHSCOPE_API_KEY",
+    "QWEN_IMAGE_API_KEY",
+    "OPENAI_API_KEY"
+  ],
+  "credential_value_recorded": false,
+  "host": {
+    "platform": "Windows-11-10.0.26220-SP0",
+    "python": "3.13.15 (main, Sep  1 2026, 14:16:48) [MSC v.1944 64 bit (AMD64)]",
+    "machine": "AMD64"
+  },
+  "repository": {
+    "commit": "0c9390c3438bf7dd40603ae9421600bbe2c0dd01",
+    "branch": "main",
+    "worktree_dirty": true
+  },
+  "requirements": [
+    {
+      "id": "agi-programmer",
+      "category": "broad",
+      "text": "帮我画一个 AGI 实现以后程序员的工作场景"
+    }
+  ],
+  "runs": [
+    {
+      "requirement_id": "agi-programmer",
+      "route": "native",
+      "input": "帮我画一个 AGI 实现以后程序员的工作场景",
+      "rewrite": null,
+      "nodes": [
+        {
+          "node": "native_generate",
+          "call": {
+            "call_id": "273265b97b75",
+            "provider": "dashscope",
+            "model": "qwen-image-3.0",
+            "endpoint": "https://ws-08xu7txjsfbz296m.cn-beijing.maas.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation",
+            "started_at": "2026-09-16T06:02:20.240420+00:00",
+            "finished_at": "2026-09-16T06:03:19.489329+00:00",
+            "latency_ms": 59248.9,
+            "status": "ok",
+            "request": {
+              "input": {
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": [
+                      {
+                        "text": "帮我画一个 AGI 实现以后程序员的工作场景"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "parameters": {
+                "size": "1024*1024",
+                "n": 1,
+                "prompt_extend": true
+              }
+            },
+            "response_id": "b43da6de-74a2-9b55-ba6b-64466e555864",
+            "usage": {
+              "output_height": 1024,
+              "output_width": 1024,
+              "input_image_count": 0,
+              "input_image_type": "qima_input_1k",
+              "output_image_count": 1,
+              "output_image_type": "qima_output_1k"
+            },
+            "error": null,
+            "image_url": "https://dashscope-a717.oss-accelerate.aliyuncs.com/1d/ba/20260916/041d82ea/b43da6de-74a2-9b55-ba6b-64466e555864_qwen_image3_serving_output_0.png"
+          },
+          "output": {
+            "text": null
+          }
+        }
+      ],
+      "image": {
+        "path": "outputs\\20260916T060220Z\\images\\agi-programmer_native.png",
+        "sha256": "1f5e49eb22d417c7b7cd08a19c158ac17c9da630a3ffb60687f7444bbfe99a17",
+        "bytes": 1250028,
+        "mime": "image/png"
+      },
+      "error": null
+    }
+  ],
+  "notes": [
+    "原生路线 A（native）：qwen-image-3.0，通过 DashScope 同步多模态接口直接出图；支持中文提示词及百炼内置提示词增强。",
+    "原生路线 B（native_gptimage）：gpt-image-2（GPT-Image 2），OpenAI images.generations 接口，全部 5 句需求均一次成功；该账户此前 GPT-5.x 的 credit_balance_exhausted 未影响图像接口。",
+    "工作流路线生图工具：首选 SiliconFlow 托管 FLUX/SD，实测 black-forest-labs/FLUX.1-schnell 与 stabilityai/stable-diffusion-3-5-large 返回 Model disabled，账户余额为 0；OpenRouter 仅提供视觉理解模型，不支持文本转图像生成；改用 DashScope 国际站通义万相 wan2.2-t2i-flash（经典扩散式文生图，接受 SD 风格提示词）。",
+    "改写节点 LLM：Mimo mimo-v2.5-pro（OpenAI 兼容接口）。"
+  ]
+}

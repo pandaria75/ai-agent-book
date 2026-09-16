@@ -94,9 +94,17 @@ Or create a `.env` file:
 
 ```env
 MOONSHOT_API_KEY=your-api-key-here
+LLM_PROVIDER=kimi
+MODEL_NAME=kimi-k3
+SEARCH_PROVIDER=moonshot
+# TAVILY_API_KEY=your-tavily-api-key
 ```
 
 **Note**: For backward compatibility, `KIMI_API_KEY` is also accepted.
+
+To use Tavily with any tool-calling LLM, set `SEARCH_PROVIDER=tavily` and
+`TAVILY_API_KEY` in `.env`, or pass `--search-provider tavily` and
+`--tavily-api-key` on the command line.
 
 **Universal OpenRouter fallback**: if neither `MOONSHOT_API_KEY` nor
 `KIMI_API_KEY` is set but `OPENROUTER_API_KEY` is, requests go through
@@ -116,8 +124,10 @@ python main.py --help
 | Flag | Description | Default |
 |------|-------------|---------|
 | `query` | Question (positional); omit for interactive mode | none |
-| `--provider` | Backend: `kimi` (Moonshot Formula `web_search`, needs API key) / `offline-demo` (offline sample trace) | `kimi` |
+| `--provider` | LLM provider (for example `kimi`, `openrouter`, `deepseek`) / `offline-demo` | from `LLM_PROVIDER` |
 | `--model` | Model name | `kimi-k3` |
+| `--search-provider` | Search backend: `moonshot` or `tavily` | `moonshot` |
+| `--tavily-api-key` | Tavily API key (else from `TAVILY_API_KEY`) | env |
 | `--max-steps` | Max ReAct iterations | `5` |
 | `--base-url` | API base URL | `https://api.moonshot.cn/v1` |
 | `--api-key` | Kimi API key (else from env) | env |
@@ -435,6 +445,8 @@ python examples.py
 
 > 运行时会实时打印 **ReAct 轨迹**：💭 思考 → 🔧 行动（调用 `$web_search`）→ 👀 观察（搜索结果）→ ✅ 最终答案，对应本章讲的“想→做→看”循环。`agent.get_trace()` 可获取结构化轨迹，`--output` 可将其存为 JSON。
 
+![[Pasted image 20260916000441.png]]
+
 ### 使用示例
 
 #### 基础使用
@@ -465,6 +477,8 @@ python examples.py
 - **比较搜索**：搜索并比较多个项目
 - **事实核查**：验证陈述的真实性
 - **研究助手**：深度研究某个主题
+
+![[Pasted image 20260916003748.png]]
 
 ### 核心组件
 
@@ -580,5 +594,8 @@ python examples.py
 - Author / 作者: AI Agent 实战训练营；version / 版本: 1.0.0.  
 - Prefer `--provider offline-demo` first if you only want to see the ReAct shape without spending API quota.  
   若只想先看 ReAct 形态、不消耗配额，优先运行 `--provider offline-demo`。  
-- Live search requires a Moonshot key; OpenRouter fallback has no `$web_search`.  
-  真正联网搜索必须使用 Moonshot Key；OpenRouter 兜底没有 `$web_search`。  
+- Live search uses Moonshot Formula by default, or Tavily when
+  `SEARCH_PROVIDER=tavily`; Tavily works independently of the LLM provider.
+  OpenRouter fallback alone does not provide live search.  
+  默认使用 Moonshot Formula，也可通过 `SEARCH_PROVIDER=tavily` 切换到 Tavily；
+  Tavily 与 LLM 提供商相互独立。仅使用 OpenRouter 兜底不会自动联网搜索。  

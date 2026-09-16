@@ -1,0 +1,40 @@
+{
+  "call_id": "273265b97b75",
+  "provider": "dashscope",
+  "model": "qwen-image-3.0",
+  "endpoint": "https://ws-08xu7txjsfbz296m.cn-beijing.maas.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation",
+  "started_at": "2026-09-16T06:02:20.240420+00:00",
+  "finished_at": "2026-09-16T06:03:19.489329+00:00",
+  "latency_ms": 59248.9,
+  "status": "ok",
+  "request": {
+    "input": {
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "text": "帮我画一个 AGI 实现以后程序员的工作场景"
+            }
+          ]
+        }
+      ]
+    },
+    "parameters": {
+      "size": "1024*1024",
+      "n": 1,
+      "prompt_extend": true
+    }
+  },
+  "response_id": "b43da6de-74a2-9b55-ba6b-64466e555864",
+  "usage": {
+    "output_height": 1024,
+    "output_width": 1024,
+    "input_image_count": 0,
+    "input_image_type": "qima_input_1k",
+    "output_image_count": 1,
+    "output_image_type": "qima_output_1k"
+  },
+  "error": null,
+  "image_url": "https://dashscope-a717.oss-accelerate.aliyuncs.com/1d/ba/20260916/041d82ea/b43da6de-74a2-9b55-ba6b-64466e555864_qwen_image3_serving_output_0.png"
+}

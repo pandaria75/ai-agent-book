@@ -15,7 +15,7 @@ def _env_names(text: str):
 
 def test_env_example_lists_required_keys():
     names = _env_names((PROJECT_DIR / "env.example").read_text(encoding="utf-8"))
-    for key in ("KIMI_API_KEY", "DASHSCOPE_API_KEY", "GEMINI_API_KEY", "SILICONFLOW_API_KEY"):
+    for key in ("MIMO_API_KEY", "DASHSCOPE_API_KEY", "QWEN_IMAGE_API_KEY", "SILICONFLOW_API_KEY"):
         assert key in names, f"env.example 缺少 {key}"
 
 
@@ -33,6 +33,12 @@ def test_env_example_has_no_real_secret():
 def test_config_required_env_matches_validate():
     from config import Config
 
-    assert set(Config.required_env()) == {
-        "KIMI_API_KEY", "DASHSCOPE_API_KEY", "GEMINI_API_KEY", "OPENAI_API_KEY"
+    assert set(Config.required_env(["workflow", "native", "native_gptimage"])) == {
+        "MIMO_API_KEY", "DASHSCOPE_API_KEY", "QWEN_IMAGE_API_KEY", "OPENAI_API_KEY"
     }
+
+
+def test_config_required_env_is_route_specific():
+    from config import Config
+
+    assert Config.required_env(["native"]) == ["QWEN_IMAGE_API_KEY"]

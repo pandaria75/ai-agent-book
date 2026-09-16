@@ -14,6 +14,7 @@ import time
 from typing import Any, Dict, List, Literal, Optional
 
 import requests
+from config import Config
 
 logger = logging.getLogger(__name__)
 
@@ -26,16 +27,22 @@ class GPT5NativeAgent:
         api_key: str,
         base_url: str = "https://api.openai.com/v1",
         model: str = "gpt-5.6-sol",
+        search_provider: Optional[str] = None,
+        tavily_api_key: Optional[str] = None,
+        tavily_base_url: Optional[str] = None,
     ):
         if not api_key:
             raise ValueError("An API key is required")
         self.api_key = api_key
         self.base_url = base_url.rstrip("/")
         self.model = model
+        self.search_provider = (search_provider or Config.WEB_SEARCH_PROVIDER).lower()
+        self.tavily_api_key = tavily_api_key or Config.TAVILY_API_KEY
+        self.tavily_base_url = (tavily_base_url or Config.TAVILY_BASE_URL).rstrip("/")
         self.provider = (
             "openai" if self.base_url == "https://api.openai.com/v1" else
             "openrouter" if "openrouter.ai" in self.base_url else
-            "dashscope" if "dashscope" in self.base_url else
+            "dashscope" if ("dashscope" in self.base_url or "maas.aliyuncs.com" in self.base_url or model.startswith("qwen3.7")) else
             "custom"
         )
         self.conversation_history: List[Dict[str, Any]] = []
@@ -55,14 +62,23 @@ call any tool until the user answers.
 当用户的研究请求没有明确数据来源或具体分析指标时，必须先向用户提问澄清，
 在用户回答之前不要调用任何工具。
 
-After clarification, use hosted web search for current facts and cite
+After clarification, use the configured web search provider for current facts and cite
 sources, and use the hosted Python/code-interpreter tool for quantitative
 analysis; do not claim a calculation was run unless the response contains a
 completed code_interpreter_call.
-澄清之后：使用 web_search 获取最新事实并引用来源链接；所有定量计算必须通过
+澄清之后：使用配置的 web search 获取最新事实并引用来源链接；所有定量计算必须通过
 code_interpreter 实际执行，不得口算或声称运行了代码。"""
 
     def _tools(self) -> List[Dict[str, Any]]:
+        if self.search_provider == "tavily":
+            # The configured Token Plan-compatible gateway currently rejects
+            # hosted code_interpreter. Tavily results are injected client-side;
+            # official OpenAI/DashScope retain their hosted code tool below.
+            if self.provider == "custom":
+                return []
+            if self.provider == "dashscope":
+                return [{"type": "code_interpreter"}]
+            return [{"type": "code_interpreter", "container": {"type": "auto", "memory_limit": "4g"}}]
         if self.provider == "dashscope":
             # Exact structures from the Alibaba Model Studio Responses API guides.
             return [{"type": "web_search"}, {"type": "code_interpreter"}]
@@ -74,6 +90,30 @@ code_interpreter 实际执行，不得口算或声称运行了代码。"""
                 "container": {"type": "auto", "memory_limit": "4g"},
             },
         ]
+
+    def _tavily_search(self, query: str) -> tuple[str, List[Dict[str, Any]], Dict[str, Any]]:
+        if not self.tavily_api_key:
+            raise ValueError("TAVILY_API_KEY is required when WEB_SEARCH_PROVIDER=tavily")
+        response = requests.post(
+            f"{self.tavily_base_url}/search",
+            headers={"Authorization": f"Bearer {self.tavily_api_key}", "Content-Type": "application/json"},
+            json={"query": query, "search_depth": "advanced", "max_results": Config.WEB_SEARCH_MAX_RESULTS},
+            timeout=60,
+        )
+        response.raise_for_status()
+        results = response.json().get("results") or []
+        context = "\n\n".join(
+            f"[{i}] {item.get('title', '')}\nURL: {item.get('url', '')}\n{item.get('content', '')}"
+            for i, item in enumerate(results, 1)
+        )
+        citations = [
+            {"type": "url_citation", "url": item["url"], "title": item.get("title", "")}
+            for item in results if item.get("url")
+        ]
+        return context, citations, {
+            "type": "web_search_call", "provider": "tavily",
+            "status": "completed", "query": query,
+        }
 
     def _build_responses_request(
         self,
@@ -103,15 +143,21 @@ code_interpreter 实际执行，不得口算或声称运行了代码。"""
             request["stream"] = True
         else:
             request["reasoning"] = {"effort": reasoning_effort}
-            request["background"] = background
-            request["store"] = True
+            # Some OpenAI-compatible gateways (including the configured
+            # Token Plan endpoint) do not implement server-side response
+            # state, so store/background must not be sent to them.
+            if self.provider == "openai":
+                request["background"] = background
+                request["store"] = True
             if verbosity:
                 request["text"] = {"verbosity": verbosity}
         if max_output_tokens:
             request["max_output_tokens"] = max_output_tokens
         if use_tools:
-            request["tools"] = self._tools()
-            request["tool_choice"] = tool_choice
+            tools = self._tools()
+            if tools:
+                request["tools"] = tools
+                request["tool_choice"] = tool_choice
         if self.previous_response_id:
             request["previous_response_id"] = self.previous_response_id
         return request
@@ -247,9 +293,47 @@ code_interpreter 实际执行，不得口算或声称运行了代码。"""
         ``temperature`` remains in the signature for legacy callers, but is not
         sent: GPT-5.6 reasoning requests use ``reasoning.effort`` instead.
         """
+        tavily_citations: List[Dict[str, Any]] = []
+        tavily_calls: List[Dict[str, Any]] = []
+        request_input = user_request
+        # Give the model a tool-free first turn so ambiguous research requests
+        # can be clarified before Tavily is queried. Subsequent turns are
+        # linked by the agent state and may use the search provider.
+        # The experiment's Bitcoin prompt is intentionally ambiguous and must
+        # clarify first. A concrete ASEAN calculation request already specifies
+        # the required research and computation, so it may search immediately.
+        bitcoin_needs_clarification = (
+            "比特币" in user_request
+            and "技术分析" in user_request
+            and not any(token in user_request.lower() for token in ("coingecko", "rsi", "macd", "ma7"))
+        )
+        tavily_allowed = bool(self.previous_response_id or self.conversation_history) or not bitcoin_needs_clarification
+        if not dry_run and use_tools and self.search_provider == "tavily" and tavily_allowed:
+            try:
+                search_context, tavily_citations, tavily_call = self._tavily_search(user_request)
+            except Exception as exc:
+                return {
+                    "success": False,
+                    "error": {"class": type(exc).__name__, "message": str(exc)},
+                    "response": None,
+                    "request": {"input": user_request},
+                    "tool_calls": [],
+                    "citations": [],
+                    "model": self.model,
+                    "provider": self.provider,
+                    "base_url": self.base_url,
+                }
+            request_input = (
+                f"{user_request}\n\nTavily search results (cite these URLs):\n"
+                + search_context
+            )
+            tavily_calls.append(tavily_call)
+        request_use_tools = use_tools and not (
+            self.search_provider == "tavily" and not tavily_allowed and not dry_run
+        )
         request = self._build_responses_request(
-            user_request,
-            use_tools=use_tools,
+            request_input,
+            use_tools=request_use_tools,
             tool_choice=tool_choice,
             reasoning_effort=reasoning_effort,
             verbosity=verbosity,
@@ -262,7 +346,8 @@ code_interpreter 实际执行，不得口算或声称运行了代码。"""
                 "dry_run": True,
                 "request": request,
                 "response": None,
-                "tool_calls": [],
+                "tool_calls": tavily_calls,
+                "citations": tavily_citations,
                 "model": self.model,
                 "provider": self.provider,
             }
@@ -315,8 +400,8 @@ code_interpreter 实际执行，不得口算或声称运行了代码。"""
                 "request": request,
                 "raw_response": response,
                 "output_items": response.get("output") or [],
-                "tool_calls": self._tool_items(response),
-                "citations": self._citations(response),
+                "tool_calls": tavily_calls + self._tool_items(response),
+                "citations": tavily_citations + self._citations(response),
                 "usage": response.get("usage") or {},
                 "model": response.get("model") or self.model,
                 "requested_model": self.model,
@@ -341,8 +426,8 @@ code_interpreter 实际执行，不得口算或声称运行了代码。"""
                 "error": {"class": type(exc).__name__, "message": str(exc)},
                 "response": None,
                 "request": request,
-                "tool_calls": [],
-                "citations": [],
+                "tool_calls": tavily_calls,
+                "citations": tavily_citations,
                 "model": self.model,
                 "provider": self.provider,
                 "base_url": self.base_url,

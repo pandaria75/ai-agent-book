@@ -27,6 +27,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+except ImportError:
+    pass
+
 from agent import GPT5NativeAgent
 from config import Config
 
@@ -104,9 +110,14 @@ def output_types(result: Dict[str, Any]) -> List[str]:
 
 
 def completed_calls(result: Dict[str, Any], kind: str) -> List[Dict[str, Any]]:
+    items = list(result.get("output_items") or [])
+    # Tavily is an external search provider invoked by the client, so it is
+    # recorded in tool_calls rather than the model's native output_items.
+    if kind == "web_search_call":
+        items.extend(result.get("tool_calls") or [])
     return [
         item
-        for item in result.get("output_items") or []
+        for item in items
         if item.get("type") == kind and item.get("status") == "completed"
     ]
 
@@ -210,8 +221,10 @@ def total_usage(results: Iterable[Dict[str, Any] | None]) -> Dict[str, Any]:
     return totals
 
 
-def run_backend(backend: str, reasoning: str) -> Dict[str, Any]:
-    key, base_url, model = Config.resolve(backend)
+def run_backend(backend: str, reasoning: str, model: Optional[str] = None,
+                api_key: Optional[str] = None) -> Dict[str, Any]:
+    key, base_url, model = Config.resolve(backend, model)
+    key = api_key or key
     if not key:
         return {"backend": backend, "started": False, "error": "credential_missing"}
 
@@ -348,15 +361,19 @@ def main() -> int:
         "--backends",
         nargs="+",
         choices=["openai", "openrouter", "dashscope"],
-        default=["openai", "dashscope"],
+        default=[Config.BACKEND],
     )
     parser.add_argument(
         "--reasoning", choices=["low", "medium", "high", "xhigh", "max"], default="high"
     )
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--model", help="覆盖 .env 中的模型名称")
+    parser.add_argument("--api-key", help="覆盖 .env 中对应 backend 的 API Key")
     args = parser.parse_args()
 
-    runs = [run_backend(backend, args.reasoning) for backend in args.backends]
+    if not Config.validate_search():
+        return 1
+    runs = [run_backend(backend, args.reasoning, args.model, args.api_key) for backend in args.backends]
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     output_dir = args.output_dir or Path("validation") / "runs" / f"real_{stamp}"
     evidence = {

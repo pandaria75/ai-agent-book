@@ -134,9 +134,10 @@ def build_manifest(
         "created_at": datetime.now(timezone.utc).isoformat(),
         "canonical_source": CANONICAL_SOURCE,
         "credential_source_env": [
-            "KIMI_API_KEY",
+            "MIMO_API_KEY",
             "DASHSCOPE_API_KEY",
-            "GEMINI_API_KEY",
+            "QWEN_IMAGE_API_KEY",
+            "OPENAI_API_KEY",
         ],
         "credential_value_recorded": False,
         "host": host_info(),

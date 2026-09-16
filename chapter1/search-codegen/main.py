@@ -7,9 +7,17 @@ import sys
 import json
 import logging
 from typing import Optional
+import argparse
+from pathlib import Path
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+except ImportError:
+    pass
+
 from agent import GPT5NativeAgent, GPT5AgentChain
 from config import Config
-import argparse
 
 # Set up logging
 logging.basicConfig(
@@ -22,13 +30,15 @@ logger = logging.getLogger(__name__)
 class InteractiveCLI:
     """Interactive command-line interface for GPT-5 Agent"""
     
-    def __init__(self, backend: str = None, model: str = None):
+    def __init__(self, backend: str = None, model: str = None, api_key: str = None):
         """Initialize the CLI"""
-        if not Config.validate(backend):
+        if not api_key and not Config.validate(backend):
             raise ValueError("Invalid configuration. Please check your .env file")
-        api_key, base_url, resolved_model = Config.resolve(backend, model)
+        if not Config.validate_search():
+            raise ValueError("Invalid web-search configuration. Check your .env file")
+        resolved_key, base_url, resolved_model = Config.resolve(backend, model)
         self.agent = GPT5NativeAgent(
-            api_key=api_key,
+            api_key=api_key or resolved_key,
             base_url=base_url,
             model=resolved_model,
         )
@@ -160,6 +170,7 @@ Examples:
         print(f"  Tools Enabled: {self.use_tools}")
         print(f"  Tool Choice: {self.tool_choice}")
         print(f"  Reasoning Effort: {self.reasoning_effort}")
+        print(f"  Web Search Provider: {Config.WEB_SEARCH_PROVIDER}")
     
     def set_reasoning_effort(self):
         """Set the reasoning effort level"""
@@ -274,7 +285,7 @@ def _run_single(args):
     """执行单次请求（single / dry-run 模式），打印可读轨迹并按需保存结果。"""
     # dry-run 只组装请求体、不联网，因此无需真实 API Key
     api_key, base_url, model = Config.resolve(args.backend, args.model)
-    api_key = api_key or ("DRYRUN-PLACEHOLDER" if args.dry_run else "")
+    api_key = getattr(args, "api_key", None) or api_key or ("DRYRUN-PLACEHOLDER" if args.dry_run else "")
 
     agent = GPT5NativeAgent(
         api_key=api_key,
@@ -368,6 +379,7 @@ def main():
         default=None,
         help=f"覆盖模型名称（默认取配置 {Config.MODEL_NAME}）",
     )
+    parser.add_argument("--api-key", type=str, default=None, help="覆盖 .env 中对应 backend 的 API Key")
     parser.add_argument(
         "--reasoning",
         choices=["none", "low", "medium", "high", "xhigh", "max"],
@@ -413,15 +425,17 @@ def main():
         return
 
     # 其余模式需要有效配置
-    if not Config.validate(args.backend):
+    if not args.api_key and not Config.validate(args.backend):
         print("❌ 配置错误！")
         print("请配置所选 backend 对应的 OPENAI_API_KEY / OPENROUTER_API_KEY / DASHSCOPE_API_KEY")
         print("\n示例 .env：")
         print("DASHSCOPE_API_KEY=your-dashscope-api-key")
         sys.exit(1)
+    if not Config.validate_search():
+        sys.exit(1)
 
     if args.mode == "interactive":
-        cli = InteractiveCLI(args.backend, args.model)
+        cli = InteractiveCLI(args.backend, args.model, args.api_key)
         cli.run()
 
     elif args.mode == "single":

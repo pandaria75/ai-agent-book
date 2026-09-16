@@ -7,7 +7,6 @@ import sys
 import argparse
 import logging
 from agent import ContextAwareAgent, ContextMode
-from config import PROVIDERS, SUPPORTED_PROVIDERS, canonical_provider, resolve_backend
 from grounding import assess_groundedness, observation_quantities
 import json
 from pathlib import Path
@@ -15,6 +14,17 @@ import subprocess
 import time
 from typing import Dict, Any, List
 from tabulate import tabulate
+
+# Load the configuration next to this script, regardless of the directory from
+# which the script is launched. Command-line options still override these
+# values below.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+except ImportError:
+    pass
+
+from config import Config, PROVIDERS, SUPPORTED_PROVIDERS, canonical_provider, resolve_backend
 try:
     import matplotlib.pyplot as plt
     import numpy as np
@@ -56,16 +66,6 @@ def _outcome(result: Dict[str, Any]) -> str:
     if result.get("grounding_verdict") == "ungrounded":
         return "unsupported_numbers"
     return "completed"
-
-
-# Load .env so API keys configured there are available via os.getenv.
-# (config.py calls load_dotenv() too, but main.py only imports agent, which
-#  does not import config, so we must trigger it here.)
-try:
-    from dotenv import load_dotenv
-    load_dotenv()
-except ImportError:
-    pass
 
 
 # How the groundedness verdict reads in a table cell.
@@ -1209,7 +1209,7 @@ def main():
     parser.add_argument(
         "--provider",
         choices=SUPPORTED_PROVIDERS,
-        default="doubao",
+        default=None,
         help="LLM 提供商（默认：doubao；openrouter 或缺失主 key 时经 OpenRouter 兜底；ollama 为本地免费）"
     )
     parser.add_argument(
@@ -1229,12 +1229,17 @@ def main():
     )
 
     args = parser.parse_args()
+
+    # CLI values take precedence; otherwise use the provider/model configured
+    # in the .env file loaded above.
+    provider = args.provider or Config.LLM_PROVIDER or "doubao"
+    model = args.model or Config.MODEL_NAME or None
     
     # The registry knows each provider's key variables, the OpenRouter fallback
     # and which providers need no key at all, so resolve through it rather than
     # maintaining a per-provider chain here. An explicit --api-key still wins.
     try:
-        backend = resolve_backend(args.provider, model=args.model, api_key=args.api_key)
+        backend = resolve_backend(provider, model=model, api_key=args.api_key)
     except ValueError as exc:
         logger.error(str(exc))
         sys.exit(1)
@@ -1242,7 +1247,7 @@ def main():
     api_key = args.api_key or ""
     if backend.using_openrouter and not args.api_key:
         logger.info(
-            f"{args.provider} API key not set; falling back to OpenRouter "
+            f"{provider} API key not set; falling back to OpenRouter "
             "(OPENROUTER_API_KEY). Set the provider key to use it directly."
         )
     elif not args.api_key:
@@ -1251,7 +1256,7 @@ def main():
         api_key = backend.api_key
     
     # Log provider info
-    logger.info(f"Using provider: {args.provider}, model: {args.model or 'default'}")
+    logger.info(f"Using provider: {provider}, model: {model or 'default'}")
     
     # Execute based on mode
     if args.mode == "single":
@@ -1289,7 +1294,7 @@ def main():
                     confirm = input("\nRun this task? (y/n): ").strip().lower()
                     if confirm == 'y':
                         run_single_task(api_key, selected_task['task'], args.context_mode,
-                                      provider=args.provider, model=args.model, output=args.output)
+                                       provider=provider, model=model, output=args.output)
                     else:
                         print("Task cancelled.")
                 else:
@@ -1300,15 +1305,15 @@ def main():
                 sys.exit(0)
         else:
             run_single_task(api_key, args.task, args.context_mode,
-                          provider=args.provider, model=args.model, output=args.output)
+                          provider=provider, model=model, output=args.output)
 
     elif args.mode == "ablation":
-        run_ablation_study(api_key, provider=args.provider, model=args.model,
+        run_ablation_study(api_key, provider=provider, model=model,
                           context_modes=args.ablation_modes, num_cases=args.cases,
                           output=args.output)
     
     else:  # interactive
-        interactive_mode(api_key, provider=args.provider, model=args.model)
+        interactive_mode(api_key, provider=provider, model=model)
 
 
 if __name__ == "__main__":

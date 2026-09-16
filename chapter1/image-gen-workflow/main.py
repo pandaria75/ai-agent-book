@@ -60,17 +60,15 @@ REQUIREMENTS: List[Dict[str, str]] = [
 
 # 模型选型实录（正式运行写入 manifest.notes，与 README 一致）
 SELECTION_NOTES = [
-    "原生路线 A（native）：gemini-3-pro-image（书稿所称 Nano Banana 2），"
-    "使用官方 google-genai SDK 直接出图（response_modalities=[IMAGE]）；"
-    "ListModels 实测可用，偶发内容过滤（content=None），重跑即恢复。",
+    "原生路线 A（native）：qwen-image-3.0，通过 DashScope 同步多模态接口直接出图；"
+    "支持中文提示词及百炼内置提示词增强。",
     "原生路线 B（native_gptimage）：gpt-image-2（GPT-Image 2），OpenAI images.generations 接口，"
     "全部 5 句需求均一次成功；该账户此前 GPT-5.x 的 credit_balance_exhausted 未影响图像接口。",
     "工作流路线生图工具：首选 SiliconFlow 托管 FLUX/SD，实测 black-forest-labs/FLUX.1-schnell 与 "
     "stabilityai/stable-diffusion-3-5-large 返回 Model disabled，账户余额为 0；OpenRouter 仅提供"
     "视觉理解模型，不支持文本转图像生成；改用 DashScope 国际站通义万相 wan2.2-t2i-flash"
     "（经典扩散式文生图，接受 SD 风格提示词）。",
-    "改写节点 LLM：Moonshot kimi-k3（OpenAI 兼容接口）；kimi-k3 只允许 temperature=1，"
-    "显式传其他值被 400 拒绝（见第 1 轮失败记录）。",
+    "改写节点 LLM：Mimo mimo-v2.5-pro（OpenAI 兼容接口）。",
 ]
 
 MIME_EXT = {"image/png": ".png", "image/jpeg": ".jpg", "image/webp": ".webp"}
@@ -146,12 +144,12 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    if not Config.validate():
+    routes = ALL_ROUTES if args.route == "all" else [args.route]
+    if not Config.validate(routes):
         return 1
 
     run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     run_dir = PROJECT_DIR / "outputs" / run_id
-    routes = ALL_ROUTES if args.route == "all" else [args.route]
     requirements = [
         r for r in REQUIREMENTS if not args.requirement or r["id"] in args.requirement
     ]

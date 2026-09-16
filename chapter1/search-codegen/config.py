@@ -1,11 +1,12 @@
 """Configuration for the exact GPT-5.6 Responses API companion."""
 
 import os
+from pathlib import Path
 from typing import Optional, Tuple
 
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().with_name(".env"))
 
 
 def _optional_int_env(name: str) -> Optional[int]:
@@ -47,6 +48,9 @@ class Config:
     RETRY_DELAY = float(os.getenv("RETRY_DELAY", "1.0"))
     WEB_SEARCH_MAX_RESULTS = int(os.getenv("WEB_SEARCH_MAX_RESULTS", "5"))
     CODE_INTERPRETER_TIMEOUT = int(os.getenv("CODE_INTERPRETER_TIMEOUT", "30"))
+    WEB_SEARCH_PROVIDER = os.getenv("WEB_SEARCH_PROVIDER", "native").lower()
+    TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
+    TAVILY_BASE_URL = os.getenv("TAVILY_BASE_URL", "https://api.tavily.com")
 
     @classmethod
     def resolve(
@@ -69,6 +73,16 @@ class Config:
         key, _, _ = cls.resolve(backend)
         if not key:
             print(f"Error: no API key for {backend or cls.BACKEND}")
+            return False
+        return True
+
+    @classmethod
+    def validate_search(cls) -> bool:
+        if cls.WEB_SEARCH_PROVIDER not in {"native", "tavily"}:
+            print("Error: WEB_SEARCH_PROVIDER must be native or tavily")
+            return False
+        if cls.WEB_SEARCH_PROVIDER == "tavily" and not cls.TAVILY_API_KEY:
+            print("Error: no TAVILY_API_KEY configured for Tavily search")
             return False
         return True
 

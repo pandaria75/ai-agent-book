@@ -77,3 +77,8 @@ ablation_study_results.png
 /chapter7/user-memory-system-evaluation/results/checkpoints/*
 !/chapter7/user-memory-system-evaluation/results/checkpoints/7_11/
 !/chapter7/user-memory-system-evaluation/results/checkpoints/7_11/**
+# Keep generated outputs local by default. The image workflow outputs are
+# experiment evidence and are intentionally versioned.
+**/outputs/*
+!/chapter1/image-gen-workflow/outputs/
+!/chapter1/image-gen-workflow/outputs/**

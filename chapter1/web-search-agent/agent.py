@@ -113,7 +113,8 @@ class WebSearchAgent:
     """
     
     def __init__(self, api_key: str = None, base_url: str = "https://api.moonshot.cn/v1",
-                 model: str = "kimi-k3", verbose: bool = False):
+                 model: str = "kimi-k3", verbose: bool = False, provider: str = "kimi",
+                 search_provider: str = None, tavily_api_key: str = None):
         """
         初始化 Agent
 
@@ -122,13 +123,30 @@ class WebSearchAgent:
             base_url: API 基础 URL
             model: 使用的模型名称（默认 kimi-k3）
             verbose: 是否实时打印 ReAct 轨迹（思考/行动/观察）
+            provider: LLM provider name
+            search_provider: ``moonshot`` or ``tavily``
+            tavily_api_key: Tavily key, otherwise read from the environment
         """
         # 优先使用传入的 api_key，否则从环境变量获取
         # Moonshot 为主，OpenRouter 为通用兜底（当 MOONSHOT_API_KEY 缺失时启用）
-        from config import resolve_llm_backend, Config
-        primary_key = api_key or os.environ.get("MOONSHOT_API_KEY") or os.environ.get("KIMI_API_KEY")
-        resolved_key, resolved_base_url, model, self.using_openrouter = \
-            resolve_llm_backend(primary_key, base_url, model)
+        from config import Config, resolve_backend
+        self.provider = provider or Config.LLM_PROVIDER
+        self.search_provider = (search_provider or Config.SEARCH_PROVIDER).lower()
+        if self.search_provider not in {"moonshot", "tavily"}:
+            raise ValueError("Unsupported search provider: %s" % self.search_provider)
+        self.tavily_api_key = tavily_api_key or Config.TAVILY_API_KEY
+        backend = resolve_backend(self.provider, model=model, api_key=api_key)
+        resolved_key = backend.api_key
+        # The legacy CLI passes the Kimi default URL. Do not let that override
+        # the registry endpoint when another LLM provider is selected.
+        resolved_base_url = (
+            backend.base_url
+            if not base_url or (base_url == "https://api.moonshot.cn/v1" and self.provider != "kimi")
+            else base_url
+        )
+        self.tavily_base_url = Config.TAVILY_BASE_URL
+        model = backend.model
+        self.using_openrouter = backend.using_openrouter
         if self.using_openrouter:
             logger.info(
                 f"MOONSHOT_API_KEY 未设置，改用 OpenRouter 兜底（模型: {model}）。"
@@ -167,7 +185,23 @@ class WebSearchAgent:
             print(format_trace_step(step))
         
     def _get_tools(self) -> List[Dict[str, Any]]:
-        """Fetch and cache Kimi's authoritative Formula declaration."""
+        """Return the configured search tool declaration."""
+        if getattr(self, "search_provider", "moonshot") == "tavily":
+            return [{
+                "type": "function",
+                "function": {
+                    "name": "web_search",
+                    "description": "Search the web for current information.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {"type": "string", "description": "Search query"},
+                            "max_results": {"type": "integer", "minimum": 1, "maximum": 10},
+                        },
+                        "required": ["query"],
+                    },
+                },
+            }]
         if getattr(self, "using_openrouter", False):
             return []
         if self._formula_tools is not None:
@@ -294,6 +328,40 @@ class WebSearchAgent:
         })
         if isinstance(result, str):
             return result
+        return json.dumps(result, ensure_ascii=False)
+
+    def _execute_tavily(self, raw_arguments: str) -> str:
+        """Execute a Tavily search and return its JSON result to the model."""
+        if not self.tavily_api_key:
+            raise RuntimeError("TAVILY_API_KEY is required when SEARCH_PROVIDER=tavily")
+        try:
+            arguments = json.loads(raw_arguments or "{}")
+        except json.JSONDecodeError as exc:
+            raise RuntimeError("Tavily search arguments are not valid JSON") from exc
+        query = str(arguments.get("query", "")).strip()
+        if not query:
+            raise RuntimeError("Tavily search requires a query")
+        payload = {
+            "api_key": self.tavily_api_key,
+            "query": query,
+            "search_depth": arguments.get("search_depth", "basic"),
+            "max_results": min(max(int(arguments.get("max_results", 5)), 1), 10),
+            "include_answer": True,
+        }
+        response = requests.post(
+            f"{self.tavily_base_url.rstrip('/')}/search",
+            json=payload,
+            timeout=self._request_timeout,
+        )
+        response.raise_for_status()
+        result = response.json()
+        # Avoid putting the Tavily credential in the recorded request evidence.
+        self.api_turns.append({
+            "kind": "tavily_search",
+            "request": {"method": "POST", "url": f"{self.tavily_base_url.rstrip('/')}/search",
+                         "body": {k: v for k, v in payload.items() if k != "api_key"}},
+            "response": result,
+        })
         return json.dumps(result, ensure_ascii=False)
     
     def _get_system_prompt(self) -> str:
@@ -450,7 +518,11 @@ class WebSearchAgent:
                         self._emit({"iteration": iteration, "type": "action",
                                     "tool": tool_call_name, "args": tool_call_arguments})
 
-                        if tool_call_name == "web_search":
+                        if tool_call_name == "web_search" and getattr(self, "search_provider", "moonshot") == "tavily":
+                            tool_result = self._execute_tavily(
+                                tool_call.function.arguments or "{}"
+                            )
+                        elif tool_call_name == "web_search":
                             # Formula requires the original serialized
                             # arguments, even though the parsed copy above is
                             # retained for a readable ReAct trace.

@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "1-4",
+  "evidence_mode": "real_api",
+  "created_at": "2026-09-16T06:51:30.930538+00:00",
+  "canonical_source": "book/chapter1.md#实验-1-4-文生图工作流与原生图像生成的对照",
+  "credential_source_env": [
+    "MIMO_API_KEY",
+    "DASHSCOPE_API_KEY",
+    "QWEN_IMAGE_API_KEY",
+    "OPENAI_API_KEY"
+  ],
+  "credential_value_recorded": false,
+  "host": {
+    "platform": "Windows-11-10.0.26220-SP0",
+    "python": "3.13.15 (main, Sep  1 2026, 14:16:48) [MSC v.1944 64 bit (AMD64)]",
+    "machine": "AMD64"
+  },
+  "repository": {
+    "commit": "0c9390c3438bf7dd40603ae9421600bbe2c0dd01",
+    "branch": "main",
+    "worktree_dirty": true
+  },
+  "requirements": [
+    {
+      "id": "agi-programmer",
+      "category": "broad",
+      "text": "帮我画一个 AGI 实现以后程序员的工作场景"
+    }
+  ],
+  "runs": [
+    {
+      "requirement_id": "agi-programmer",
+      "route": "workflow",
+      "input": "帮我画一个 AGI 实现以后程序员的工作场景",
+      "rewrite": null,
+      "nodes": [],
+      "image": null,
+      "error": "TimeoutError: 轮询超时（180.0s），最后状态 None"
+    }
+  ],
+  "notes": [
+    "原生路线 A（native）：qwen-image-3.0，通过 DashScope 同步多模态接口直接出图；支持中文提示词及百炼内置提示词增强。",
+    "原生路线 B（native_gptimage）：gpt-image-2（GPT-Image 2），OpenAI images.generations 接口，全部 5 句需求均一次成功；该账户此前 GPT-5.x 的 credit_balance_exhausted 未影响图像接口。",
+    "工作流路线生图工具：首选 SiliconFlow 托管 FLUX/SD，实测 black-forest-labs/FLUX.1-schnell 与 stabilityai/stable-diffusion-3-5-large 返回 Model disabled，账户余额为 0；OpenRouter 仅提供视觉理解模型，不支持文本转图像生成；改用 DashScope 国际站通义万相 wan2.2-t2i-flash（经典扩散式文生图，接受 SD 风格提示词）。",
+    "改写节点 LLM：Mimo mimo-v2.5-pro（OpenAI 兼容接口）。"
+  ]
+}

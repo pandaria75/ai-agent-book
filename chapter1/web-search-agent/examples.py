@@ -4,13 +4,33 @@
 
 import asyncio
 import json
+from pathlib import Path
 from typing import List, Dict, Any
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+except ImportError:
+    pass
+
 from agent import WebSearchAgent, is_failure_answer
 from config import Config
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+def create_configured_agent() -> WebSearchAgent:
+    """Create an agent using the same .env settings as the CLI."""
+    return WebSearchAgent(
+        api_key=Config.get_api_key(Config.LLM_PROVIDER),
+        model=Config.get_default_model(Config.LLM_PROVIDER),
+        provider=Config.LLM_PROVIDER,
+        search_provider=Config.SEARCH_PROVIDER,
+        tavily_api_key=Config.TAVILY_API_KEY,
+        verbose=True,
+    )
 
 
 class AdvancedWebSearchAgent(WebSearchAgent):
@@ -127,13 +147,25 @@ class AdvancedWebSearchAgent(WebSearchAgent):
         }
 
 
+def create_configured_advanced_agent() -> AdvancedWebSearchAgent:
+    """Create the advanced wrapper with the shared .env configuration."""
+    return AdvancedWebSearchAgent(
+        api_key=Config.get_api_key(Config.LLM_PROVIDER),
+        model=Config.get_default_model(Config.LLM_PROVIDER),
+        provider=Config.LLM_PROVIDER,
+        search_provider=Config.SEARCH_PROVIDER,
+        tavily_api_key=Config.TAVILY_API_KEY,
+        verbose=True,
+    )
+
+
 def example_basic_search():
     """基础搜索示例"""
     print("\n" + "="*60)
     print("📌 示例 1: 基础搜索")
     print("="*60)
     
-    agent = WebSearchAgent(Config.get_api_key())
+    agent = create_configured_agent()
     
     questions = [
         "OpenAI 最新发布的 GPT 模型有什么特点？",
@@ -153,7 +185,7 @@ def example_batch_search():
     print("📌 示例 2: 批量搜索")
     print("="*60)
     
-    agent = AdvancedWebSearchAgent(Config.get_api_key())
+    agent = create_configured_advanced_agent()
     
     questions = [
         "React 和 Vue 的主要区别是什么？",
@@ -175,7 +207,7 @@ def example_contextual_search():
     print("📌 示例 3: 带上下文的搜索")
     print("="*60)
     
-    agent = AdvancedWebSearchAgent(Config.get_api_key())
+    agent = create_configured_advanced_agent()
     
     context = "我是一个刚开始学习编程的大学生，主要对 Web 开发感兴趣"
     question = "我应该先学习哪种编程语言？"
@@ -194,7 +226,7 @@ def example_comparative_search():
     print("📌 示例 4: 比较搜索")
     print("="*60)
     
-    agent = AdvancedWebSearchAgent(Config.get_api_key())
+    agent = create_configured_advanced_agent()
     
     # 比较不同的技术框架
     items = ["TensorFlow", "PyTorch", "JAX"]
@@ -214,7 +246,7 @@ def example_fact_check():
     print("📌 示例 5: 事实核查")
     print("="*60)
     
-    agent = AdvancedWebSearchAgent(Config.get_api_key())
+    agent = create_configured_advanced_agent()
     
     statements = [
         "Python 是世界上最流行的编程语言",
@@ -235,7 +267,7 @@ def example_research_assistant():
     print("📌 示例 6: 研究助手 - 深度研究")
     print("="*60)
     
-    agent = AdvancedWebSearchAgent(Config.get_api_key())
+    agent = create_configured_advanced_agent()
     
     topic = "大语言模型的发展历程"
     
@@ -272,8 +304,11 @@ def example_research_assistant():
 def main():
     """运行所有示例"""
     
-    if not Config.validate():
-        print("请先设置 KIMI_API_KEY 环境变量")
+    if not Config.validate(Config.LLM_PROVIDER):
+        print("请先在 .env 中设置当前 LLM provider 的 API Key")
+        return
+    if Config.SEARCH_PROVIDER == "tavily" and not Config.TAVILY_API_KEY:
+        print("请先在 .env 中设置 TAVILY_API_KEY")
         return
     
     examples = [

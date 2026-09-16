@@ -1,0 +1,395 @@
+{
+  "schema_version": "1.1",
+  "experiment_id": "1-1",
+  "evidence_mode": "real_api",
+  "created_at": "2026-09-15T14:33:19.744746+00:00",
+  "canonical_source": "book/chapter1.md#实验-1-1-上下文的关键作用",
+  "task": "根据公司的季度收入数据：\n- Q1：250 万美元（USD）\n- Q2：210 万欧元（EUR）\n- Q3：180 万英镑（GBP）\n- Q4：3.8 亿日元（JPY）\n\n请使用可用的货币转换工具和计算工具，将所有非美元季度收入转换为美元，\n然后计算年度总收入和季度平均收入。请将两个结果四舍五入到小数点后两位。\n不要自行估算汇率，必须使用工具返回的观测结果。请用中文回答。",
+  "task_variant": "guarded",
+  "hidden_result_style": "empty",
+  "canonical_run": true,
+  "expected_numbers": [
+    "9602895.73",
+    "2400723.93"
+  ],
+  "command": [
+    "E:\\ai_work\\ai-agent-book\\.venv\\Scripts\\python.exe",
+    "run_experiment_1_1.py",
+    "--provider",
+    "kimi",
+    "--model",
+    "kimi-k3",
+    "--task",
+    "guarded",
+    "--hidden-result",
+    "empty",
+    "--modes",
+    "full",
+    "no_history",
+    "no_reasoning",
+    "no_tool_calls",
+    "no_tool_results",
+    "--max-iterations",
+    "5",
+    "--output-dir",
+    "validation\\real_20260915T143318Z"
+  ],
+  "credential_source_env": "MOONSHOT_API_KEY",
+  "credential_value_recorded": false,
+  "host": {
+    "platform": "Windows-11-10.0.26220-SP0",
+    "python": "3.13.15 (main, Sep  1 2026, 14:16:48) [MSC v.1944 64 bit (AMD64)]",
+    "machine": "AMD64"
+  },
+  "dependencies": {
+    "openai": "2.48.0",
+    "requests": "2.33.1"
+  },
+  "repository": {
+    "commit": "0c9390c3438bf7dd40603ae9421600bbe2c0dd01",
+    "branch": "main",
+    "worktree_dirty": true
+  },
+  "arms": [
+    {
+      "mode": "full",
+      "provider": "kimi",
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.cn/v1",
+      "using_openrouter": false,
+      "started_at": "2026-09-15T14:33:18.251859+00:00",
+      "elapsed_seconds": 0.583091,
+      "success": false,
+      "completed": false,
+      "task_success": false,
+      "iterations": 1,
+      "error": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}",
+      "final_answer": null,
+      "tool_calls": [],
+      "tool_call_signatures": [],
+      "repeated_tool_calls": 0,
+      "reasoning_steps": [],
+      "api_turns": [
+        {
+          "iteration": 1,
+          "provider": "kimi",
+          "resolved_model": "kimi-k3",
+          "base_url": "https://api.moonshot.cn/v1",
+          "using_openrouter": false,
+          "error": {
+            "class": "AuthenticationError",
+            "message": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}"
+          }
+        }
+      ],
+      "context_contract": {
+        "has_provider_response_ids": false,
+        "turn_count": 1,
+        "request_roles": [
+          []
+        ],
+        "tools_present_every_turn": true,
+        "history_present_after_first_turn": false,
+        "reasoning_retained_after_first_turn": false,
+        "required_checks": [
+          "has_provider_response_ids",
+          "tools_present_every_turn",
+          "history_present_after_first_turn",
+          "reasoning_retained_after_first_turn"
+        ],
+        "passed": false
+      },
+      "groundedness": {
+        "observation_count": 0,
+        "answer_quantities": [],
+        "unsupported_quantities": [],
+        "verdict": "no_answer"
+      },
+      "outcome": "no_terminal_response",
+      "behavior": {
+        "tool_action_count": 0,
+        "has_repeated_tool_action": false,
+        "hit_iteration_ceiling": false,
+        "canonical_answer_correct": false,
+        "stated_unsupported_numbers": false
+      }
+    },
+    {
+      "mode": "no_history",
+      "provider": "kimi",
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.cn/v1",
+      "using_openrouter": false,
+      "started_at": "2026-09-15T14:33:18.867422+00:00",
+      "elapsed_seconds": 0.204781,
+      "success": false,
+      "completed": false,
+      "task_success": false,
+      "iterations": 1,
+      "error": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}",
+      "final_answer": null,
+      "tool_calls": [],
+      "tool_call_signatures": [],
+      "repeated_tool_calls": 0,
+      "reasoning_steps": [],
+      "api_turns": [
+        {
+          "iteration": 1,
+          "provider": "kimi",
+          "resolved_model": "kimi-k3",
+          "base_url": "https://api.moonshot.cn/v1",
+          "using_openrouter": false,
+          "error": {
+            "class": "AuthenticationError",
+            "message": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}"
+          }
+        }
+      ],
+      "context_contract": {
+        "has_provider_response_ids": false,
+        "turn_count": 1,
+        "request_roles": [
+          []
+        ],
+        "only_static_prefix_and_user_every_turn": false,
+        "tools_still_present": true,
+        "required_checks": [
+          "has_provider_response_ids",
+          "only_static_prefix_and_user_every_turn",
+          "tools_still_present"
+        ],
+        "passed": false
+      },
+      "groundedness": {
+        "observation_count": 0,
+        "answer_quantities": [],
+        "unsupported_quantities": [],
+        "verdict": "no_answer"
+      },
+      "outcome": "no_terminal_response",
+      "behavior": {
+        "tool_action_count": 0,
+        "has_repeated_tool_action": false,
+        "hit_iteration_ceiling": false,
+        "canonical_answer_correct": false,
+        "stated_unsupported_numbers": false
+      }
+    },
+    {
+      "mode": "no_reasoning",
+      "provider": "kimi",
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.cn/v1",
+      "using_openrouter": false,
+      "started_at": "2026-09-15T14:33:19.081212+00:00",
+      "elapsed_seconds": 0.192627,
+      "success": false,
+      "completed": false,
+      "task_success": false,
+      "iterations": 1,
+      "error": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}",
+      "final_answer": null,
+      "tool_calls": [],
+      "tool_call_signatures": [],
+      "repeated_tool_calls": 0,
+      "reasoning_steps": [],
+      "api_turns": [
+        {
+          "iteration": 1,
+          "provider": "kimi",
+          "resolved_model": "kimi-k3",
+          "base_url": "https://api.moonshot.cn/v1",
+          "using_openrouter": false,
+          "error": {
+            "class": "AuthenticationError",
+            "message": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}"
+          }
+        }
+      ],
+      "context_contract": {
+        "has_provider_response_ids": false,
+        "turn_count": 1,
+        "request_roles": [
+          []
+        ],
+        "provider_generated_reasoning": false,
+        "reasoning_removed_from_history": false,
+        "tool_and_result_history_retained": false,
+        "required_checks": [
+          "has_provider_response_ids",
+          "provider_generated_reasoning",
+          "reasoning_removed_from_history",
+          "tool_and_result_history_retained"
+        ],
+        "passed": false
+      },
+      "groundedness": {
+        "observation_count": 0,
+        "answer_quantities": [],
+        "unsupported_quantities": [],
+        "verdict": "no_answer"
+      },
+      "outcome": "no_terminal_response",
+      "behavior": {
+        "tool_action_count": 0,
+        "has_repeated_tool_action": false,
+        "hit_iteration_ceiling": false,
+        "canonical_answer_correct": false,
+        "stated_unsupported_numbers": false
+      }
+    },
+    {
+      "mode": "no_tool_calls",
+      "provider": "kimi",
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.cn/v1",
+      "using_openrouter": false,
+      "started_at": "2026-09-15T14:33:19.281398+00:00",
+      "elapsed_seconds": 0.232525,
+      "success": false,
+      "completed": false,
+      "task_success": false,
+      "iterations": 1,
+      "error": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}",
+      "final_answer": null,
+      "tool_calls": [],
+      "tool_call_signatures": [],
+      "repeated_tool_calls": 0,
+      "reasoning_steps": [],
+      "api_turns": [
+        {
+          "iteration": 1,
+          "provider": "kimi",
+          "resolved_model": "kimi-k3",
+          "base_url": "https://api.moonshot.cn/v1",
+          "using_openrouter": false,
+          "error": {
+            "class": "AuthenticationError",
+            "message": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}"
+          }
+        }
+      ],
+      "context_contract": {
+        "has_provider_response_ids": false,
+        "turn_count": 1,
+        "request_roles": [
+          []
+        ],
+        "tools_absent_every_turn": true,
+        "required_checks": [
+          "has_provider_response_ids",
+          "tools_absent_every_turn"
+        ],
+        "passed": false
+      },
+      "groundedness": {
+        "observation_count": 0,
+        "answer_quantities": [],
+        "unsupported_quantities": [],
+        "verdict": "no_answer"
+      },
+      "outcome": "no_terminal_response",
+      "behavior": {
+        "tool_action_count": 0,
+        "has_repeated_tool_action": false,
+        "hit_iteration_ceiling": false,
+        "canonical_answer_correct": false,
+        "stated_unsupported_numbers": false
+      }
+    },
+    {
+      "mode": "no_tool_results",
+      "provider": "kimi",
+      "model": "kimi-k3",
+      "base_url": "https://api.moonshot.cn/v1",
+      "using_openrouter": false,
+      "started_at": "2026-09-15T14:33:19.521733+00:00",
+      "elapsed_seconds": 0.215646,
+      "success": false,
+      "completed": false,
+      "task_success": false,
+      "iterations": 1,
+      "error": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}",
+      "final_answer": null,
+      "tool_calls": [],
+      "tool_call_signatures": [],
+      "repeated_tool_calls": 0,
+      "reasoning_steps": [],
+      "api_turns": [
+        {
+          "iteration": 1,
+          "provider": "kimi",
+          "resolved_model": "kimi-k3",
+          "base_url": "https://api.moonshot.cn/v1",
+          "using_openrouter": false,
+          "error": {
+            "class": "AuthenticationError",
+            "message": "Error code: 401 - {'error': {'message': 'Invalid Authentication', 'type': 'invalid_authentication_error'}}"
+          }
+        }
+      ],
+      "context_contract": {
+        "has_provider_response_ids": false,
+        "turn_count": 1,
+        "request_roles": [
+          []
+        ],
+        "tool_calls_retained": false,
+        "tool_results_hidden": false,
+        "required_checks": [
+          "has_provider_response_ids",
+          "tool_calls_retained",
+          "tool_results_hidden"
+        ],
+        "passed": false
+      },
+      "groundedness": {
+        "observation_count": 0,
+        "answer_quantities": [],
+        "unsupported_quantities": [],
+        "verdict": "no_answer"
+      },
+      "outcome": "no_terminal_response",
+      "behavior": {
+        "tool_action_count": 0,
+        "has_repeated_tool_action": false,
+        "hit_iteration_ceiling": false,
+        "canonical_answer_correct": false,
+        "stated_unsupported_numbers": false
+      }
+    }
+  ],
+  "analysis": {
+    "exact_five_arms_present": true,
+    "all_context_contracts_passed": false,
+    "direct_real_api_evidence": false,
+    "experiment_execution_accepted": false,
+    "manuscript_behavior_claims": {
+      "full_baseline_correct": null,
+      "without_tool_definitions_no_tool_action": null,
+      "without_tool_results_repeated_action": null,
+      "without_history_repeated_action": null,
+      "without_reasoning_degraded": null,
+      "all_manuscript_behavior_claims_observed": false
+    },
+    "claim_qualifications": {
+      "without_tool_definitions_no_tool_action": "Vacuous by construction: the request carries no tool definitions, so the provider cannot emit a tool call. What varies between models is what they do instead -- see arm_outcomes.no_tool_calls, which separates claiming no figure the model was not given from an answer built on exchange rates it supplied itself.",
+      "without_reasoning_degraded": "Inferred from loss of canonical correctness, and note what this arm removes: retained reasoning is stripped from the history, while the model still reasons afresh on every turn. It therefore tests whether carrying prior reasoning forward matters, which it need not when each step is already determined by the previous observation. A stronger claim -- that the ablation produces contradictory decisions -- is not something the harness can force, and has not been observed."
+    },
+    "arm_outcomes": {
+      "full": "no_terminal_response",
+      "no_history": "no_terminal_response",
+      "no_reasoning": "no_terminal_response",
+      "no_tool_calls": "no_terminal_response",
+      "no_tool_results": "no_terminal_response"
+    },
+    "arms_stating_unsupported_numbers": [],
+    "usage": {
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "total_tokens": 0,
+      "cached_prompt_tokens": 0,
+      "reasoning_tokens": 0
+    }
+  }
+}

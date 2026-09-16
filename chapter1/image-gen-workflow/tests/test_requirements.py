@@ -15,9 +15,9 @@ def test_both_categories_present():
 
 
 def test_all_routes_include_native_models():
-    """三条路线中应包含两条原生路线（Nano Banana 2 和 GPT-Image 2）及一条工作流路线。"""
+    """三条路线中应包含两条原生路线（Qwen Image 3.0 和 GPT-Image 2）及一条工作流路线。"""
     assert "workflow" in ALL_ROUTES
-    assert "native" in ALL_ROUTES       # Nano Banana 2 = gemini-3-pro-image
+    assert "native" in ALL_ROUTES       # Qwen Image 3.0
     assert "native_gptimage" in ALL_ROUTES   # GPT-Image 2 = gpt-image-2
 
 

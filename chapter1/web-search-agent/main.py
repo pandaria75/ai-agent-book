@@ -10,9 +10,19 @@ import sys
 import json
 import argparse
 import logging
+from pathlib import Path
 from typing import Optional
+
+# Load the project-local .env before importing Config. CLI arguments below still
+# take precedence over these values.
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().with_name(".env"))
+except ImportError:
+    pass
+
 from agent import WebSearchAgent, run_offline_demo
-from config import Config
+from config import Config, SUPPORTED_PROVIDERS
 
 # 设置日志
 logging.basicConfig(
@@ -149,17 +159,22 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("query", nargs="*",
                         help="要提问的问题；省略则进入交互模式")
-    parser.add_argument("--provider", choices=["kimi", "offline-demo"], default="kimi",
-                        help="搜索后端：kimi=调用 Kimi Formula web_search（需 API Key）；"
-                             "offline-demo=离线回放示例轨迹（默认 kimi）")
-    parser.add_argument("--model", default=Config.DEFAULT_MODEL,
-                        help=f"使用的模型名称（默认 {Config.DEFAULT_MODEL}）")
+    parser.add_argument("--provider", choices=list(SUPPORTED_PROVIDERS) + ["offline-demo"],
+                        default=Config.LLM_PROVIDER,
+                        help=f"LLM 提供商（默认 {Config.LLM_PROVIDER}）")
+    parser.add_argument("--model", default=Config.get_default_model(),
+                        help=f"使用的模型名称（默认 {Config.get_default_model()}）")
     parser.add_argument("--max-steps", type=int, default=Config.MAX_SEARCH_ITERATIONS,
                         help=f"最大 ReAct 迭代次数（默认 {Config.MAX_SEARCH_ITERATIONS}）")
     parser.add_argument("--base-url", default=Config.KIMI_BASE_URL,
                         help=f"API 基础 URL（默认 {Config.KIMI_BASE_URL}）")
     parser.add_argument("--api-key", default=None,
-                        help="Kimi API Key（默认从 MOONSHOT_API_KEY / KIMI_API_KEY 环境变量读取）")
+                        help="LLM API Key（默认按 provider 从 .env 读取）")
+    parser.add_argument("--search-provider", choices=["moonshot", "tavily"],
+                        default=Config.SEARCH_PROVIDER,
+                        help=f"搜索服务（默认 {Config.SEARCH_PROVIDER}）")
+    parser.add_argument("--tavily-api-key", default=None,
+                        help="Tavily API Key（默认从 TAVILY_API_KEY 读取）")
     parser.add_argument("--output", "-o", default=None,
                         help="将问题、ReAct 轨迹和答案保存到指定 JSON 文件")
     parser.add_argument("--quiet", action="store_true",
@@ -191,12 +206,9 @@ def main(argv: Optional[list] = None):
             _save_output(args.output, result)
         return
 
-    # 在线模式：需要 API Key
-    api_key = Config.get_api_key(args.api_key)
-    if not api_key and not os.getenv("OPENROUTER_API_KEY"):
-        Config.validate()
-        print("提示：也可设置 OPENROUTER_API_KEY 作为通用兜底。")
-        sys.exit(1)
+    # Resolve credentials in WebSearchAgent so every registered provider follows
+    # the same .env/fallback rules (including keyless local providers).
+    api_key = Config.get_api_key(args.provider, args.api_key)
 
     # 创建 Agent
     try:
@@ -204,6 +216,9 @@ def main(argv: Optional[list] = None):
             api_key=api_key,
             base_url=args.base_url,
             model=args.model,
+            provider=args.provider,
+            search_provider=args.search_provider,
+            tavily_api_key=args.tavily_api_key,
             verbose=not args.quiet,
         )
         logger.info("Agent 初始化成功")
