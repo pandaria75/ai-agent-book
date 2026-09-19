@@ -39,6 +39,8 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, List, Optional
 
+from config import OLLAMA_HOST
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
@@ -48,7 +50,7 @@ logger = logging.getLogger("benchmark")
 # 各后端的默认 OpenAI 兼容地址
 BACKEND_DEFAULTS = {
     "vllm": {"base_url": "http://localhost:8000/v1", "model": "Qwen3-0.6B"},
-    "ollama": {"base_url": "http://localhost:11434/v1", "model": "qwen3:0.6b"},
+    "ollama": {"base_url": f"{OLLAMA_HOST.rstrip('/')}/v1", "model": "qwen3:0.6b"},
 }
 
 # 一段确定性的填充文本，用于把共享前缀撑长，让 KV Cache 的效果更明显
@@ -362,7 +364,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--base-url",
         type=str,
         default=None,
-        help="OpenAI 兼容接口地址，覆盖后端默认值（如 http://localhost:8000/v1）",
+        help="OpenAI 兼容接口地址，覆盖后端默认值；Ollama 默认读取 .env 的 OLLAMA_HOST",
     )
     parser.add_argument(
         "--model",

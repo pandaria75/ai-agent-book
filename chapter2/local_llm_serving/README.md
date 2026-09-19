@@ -459,6 +459,8 @@ python main.py --backend ollama --mode interactive
 python main.py --backend ollama --info
 ```
 
+![[Pasted image 20260919113147.png]]
+
 #### 在代码中使用
 
 ```python
@@ -496,6 +498,7 @@ registry.register_tool(
     }
 )
 ```
+![[Pasted image 20260919120434.png]]
 
 ### 项目结构
 
@@ -553,7 +556,7 @@ for chunk in agent.chat("What's the weather in Tokyo?", stream=True):
 python demo_streaming.py
 python test_streaming.py --mode compare
 ```
-
+![[Pasted image 20260919124140.png]]
 #### 思考内容到底在哪里：`thinking` 字段与 `content` 里的 `<think>`
 
 跑这个实验时常见的困惑：书里说支持思维链的模型会先在 `<think>` 标签内思考，但实际跑起来 `content` 里根本看不到 `<think>`，思考内容出现在一个单独的 `thinking` 字段里。两种说法都没错——`<think>` 是模型**原始 token 流**里的标签，Ollama 在把响应交给客户端之前就已经把它解析掉了。
@@ -657,6 +660,7 @@ python benchmark.py --help
 
 > 说明：`kv-cache` 依赖服务端前缀缓存（vLLM automatic prefix caching 默认开启）。命中组保持系统提示词逐字节不变；未命中组每次只在系统提示词**开头**插入唯一计数串，前缀被改写导致缓存全部失效——这正是书中「系统提示词一旦定下来就不要改」的实测演示。
 
+![[Pasted image 20260919123902.png]]
 ### 配置
 
 复制 `env.example` 为 `.env`：

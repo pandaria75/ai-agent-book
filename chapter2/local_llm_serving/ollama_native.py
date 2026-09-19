@@ -17,12 +17,13 @@ logger = logging.getLogger(__name__)
 class OllamaNativeAgent:
     """Agent using Ollama's native tool calling support"""
     
-    def __init__(self, model: str = "qwen3:0.6b"):
+    def __init__(self, model: str = "qwen3:0.6b",
+                 host: str = "http://localhost:11434"):
         """
         Initialize with a model that supports tool calling
         """
         self.model = model
-        self.client = ollama.Client()
+        self.client = ollama.Client(host=host)
         self.tool_registry = ToolRegistry()
         self.conversation_history = []
         self._think_disabled: set[str] = set()

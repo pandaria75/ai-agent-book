@@ -6,6 +6,7 @@ import math
 import random
 import io
 import contextlib
+import uuid
 from typing import Dict, Any, List
 from datetime import datetime
 import requests
@@ -97,6 +98,17 @@ class ToolRegistry:
                     }
                 },
                 "required": ["code"]
+            }
+        )
+
+        self.register_tool(
+            name="generate_uuid",
+            function=self.generate_uuid,
+            description="Generate a standard UUID for a new identifier, request ID, or database record.",
+            parameters={
+                "type": "object",
+                "properties": {},
+                "required": []
             }
         )
     
@@ -492,6 +504,14 @@ class ToolRegistry:
                 "traceback": error_trace,
                 "success": False
             }
+
+    @staticmethod
+    def generate_uuid() -> Dict:
+        """Generate a random UUID version 4."""
+        return {
+            "uuid": str(uuid.uuid4()),
+            "version": 4
+        }
     
 def format_tool_response(tool_name: str, tool_result: str) -> Dict:
     """Format tool response for the chat model"""

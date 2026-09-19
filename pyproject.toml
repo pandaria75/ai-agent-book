@@ -19,6 +19,7 @@ license = { text = "Apache-2.0" }
 # The core that nearly every experiment needs.
 # openai: 131 declarations across the repo; python-dotenv: 114; requests: 50.
 dependencies = [
+    "ollama>=0.6.2",
     # chapter 8 (self-evolution-eval, self-modifying-agent, trajectory-verifier,
     # gaia-experience) calls client.responses.create, added in 1.68. A lower
     # floor is satisfiable by an already-installed older SDK that then fails at
@@ -27,6 +28,8 @@ dependencies = [
     "pydantic>=2.9.0",
     "python-dotenv>=1.0",
     "requests>=2.31",
+    "torch>=2.11.0",
+    "transformers>=5.5.0",
 ]
 
 # ---------------------------------------------------------------------------
@@ -60,7 +63,9 @@ dependencies = [
 viz = [
     "colorama>=0.4.6",
     "matplotlib>=3.8.0",
-    "numpy>=1.26.4",
+    # NumPy 1.26 has no official CPython 3.13 Windows wheel and falls back to
+    # an experimental MinGW build. NumPy 2 provides supported CPython 3.13 wheels.
+    "numpy>=2.0.0",
     "pandas>=2.2.0",
     "rich>=13.7",
     "seaborn>=0.13.0",

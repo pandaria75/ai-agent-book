@@ -6,20 +6,23 @@ for both vLLM and Ollama backends
 
 import sys
 import platform
+from config import OLLAMA_HOST
 from main import ToolCallingAgent
 
 
-def test_streaming():
+def test_streaming(backend: str):
     """Test streaming functionality with various queries"""
     print("="*60)
     print("🚀 STREAMING TEST DEMO")
     print("="*60)
     print(f"Platform: {platform.system()}")
+    if backend == "ollama":
+        print(f"Ollama host: {OLLAMA_HOST}")
     print("="*60)
     
     # Initialize agent
     print("\n⚙️  Initializing agent...")
-    agent = ToolCallingAgent()
+    agent = ToolCallingAgent(backend=backend)
     print(f"✅ Using {agent.backend_type} backend")
     
     # Test queries that will demonstrate streaming features
@@ -107,14 +110,16 @@ def test_streaming():
     print("="*60)
 
 
-def compare_streaming_vs_regular():
+def compare_streaming_vs_regular(backend: str):
     """Compare streaming vs regular responses"""
     print("="*60)
     print("📊 STREAMING VS REGULAR COMPARISON")
     print("="*60)
     
     # Initialize agent
-    agent = ToolCallingAgent()
+    if backend == "ollama":
+        print(f"Ollama host: {OLLAMA_HOST}")
+    agent = ToolCallingAgent(backend=backend)
     
     test_query = "What's the weather in Paris and convert 20°C to Fahrenheit?"
     
@@ -164,10 +169,18 @@ if __name__ == "__main__":
         default="demo",
         help="Test mode: demo (full demo) or compare (streaming vs regular)"
     )
+    parser.add_argument(
+        "--backend",
+        choices=["vllm", "ollama", "auto"],
+        default="ollama",
+        help="Backend to test (default: ollama; Ollama host comes from .env)"
+    )
     
     args = parser.parse_args()
     
+    backend = None if args.backend == "auto" else args.backend
+
     if args.mode == "demo":
-        test_streaming()
+        test_streaming(backend)
     else:
-        compare_streaming_vs_regular()
+        compare_streaming_vs_regular(backend)

@@ -14,6 +14,10 @@ MODEL_PATH = os.getenv("MODEL_PATH", None)  # Optional: local model path
 VLLM_PORT = int(os.getenv("VLLM_PORT", 8000))
 VLLM_HOST = os.getenv("VLLM_HOST", "localhost")
 
+# Ollama client configuration. Include the scheme and port when using a
+# remote server, for example: http://192.168.50.214:11434
+OLLAMA_HOST = os.getenv("OLLAMA_HOST", "http://localhost:11434")
+
 # vLLM Server Configuration
 VLLM_SERVER_CONFIG = {
     "model": MODEL_NAME,

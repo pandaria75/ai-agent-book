@@ -113,10 +113,11 @@ class ToolCallingAgent:
         """Initialize Ollama backend"""
         try:
             import ollama
+            from config import OLLAMA_HOST
             from ollama_native import OllamaNativeAgent
             
             # Check if Ollama is running
-            client = ollama.Client()
+            client = ollama.Client(host=OLLAMA_HOST)
             try:
                 models_response = client.list()
                 available_models = []
@@ -140,7 +141,7 @@ class ToolCallingAgent:
                     logger.info(f"Using fallback model: {model}")
                 
                 logger.info(f"Using Ollama model: {model}")
-                self.agent = OllamaNativeAgent(model=model)
+                self.agent = OllamaNativeAgent(model=model, host=OLLAMA_HOST)
                 
             except Exception as e:
                 logger.error(f"Ollama is not running: {e}")

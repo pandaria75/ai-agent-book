@@ -1,0 +1,105 @@
+{
+  "backend": "ollama",
+  "base_url": "http://192.168.50.214:11434/v1",
+  "model": "qwen3:0.6b",
+  "results": [
+    {
+      "scenario": "throughput",
+      "repeats": 5,
+      "ttft_mean_s": 0.3373384999998962,
+      "decode_tps_mean": 57.503398667914574,
+      "output_tokens_mean": 256.0,
+      "runs": [
+        {
+          "ttft": 1.501328000000285,
+          "total": 5.977607299999363,
+          "output_tokens": 256.0,
+          "decode_tps": 57.190354498221936
+        },
+        {
+          "ttft": 0.04604959999960556,
+          "total": 4.487296100000094,
+          "output_tokens": 256.0,
+          "decode_tps": 57.64147520295751
+        },
+        {
+          "ttft": 0.04858739999872341,
+          "total": 4.495304599999145,
+          "output_tokens": 256.0,
+          "decode_tps": 57.570560142654394
+        },
+        {
+          "ttft": 0.045487499999580905,
+          "total": 4.498063400000319,
+          "output_tokens": 256.0,
+          "decode_tps": 57.494808791458794
+        },
+        {
+          "ttft": 0.04524000000128581,
+          "total": 4.488157600000704,
+          "output_tokens": 256.0,
+          "decode_tps": 57.619794704280245
+        }
+      ]
+    },
+    {
+      "scenario": "kv-cache",
+      "prefix_tokens_approx": 1024,
+      "repeats": 5,
+      "ttft_hit_mean_s": 1.6183689200006484,
+      "ttft_miss_mean_s": 2.070492060000106,
+      "speedup": 1.2793696384130242,
+      "ttft_hit_s": [
+        0.05389420000028622,
+        2.0737575000002835,
+        1.9948875000009139,
+        1.9544244000007893,
+        2.014881000000969
+      ],
+      "ttft_miss_s": [
+        2.1547477999993134,
+        2.096635800000513,
+        2.023146199999246,
+        2.000760300001275,
+        2.0771702000001824
+      ]
+    },
+    {
+      "scenario": "batching",
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_s": 4.307075999999142,
+          "total_output_tokens": 256.0,
+          "aggregate_tps": 59.43707517583878,
+          "per_request_tps": 59.43707517583878,
+          "ttft_mean_s": 0.09586749999834865
+        },
+        {
+          "concurrency": 2,
+          "wall_s": 5.252554499998951,
+          "total_output_tokens": 512.0,
+          "aggregate_tps": 97.47638030221339,
+          "per_request_tps": 48.73819015110669,
+          "ttft_mean_s": 0.08956914999998844
+        },
+        {
+          "concurrency": 4,
+          "wall_s": 10.284926400001495,
+          "total_output_tokens": 1015.0,
+          "aggregate_tps": 98.6881150651552,
+          "per_request_tps": 24.6720287662888,
+          "ttft_mean_s": 2.656972074999885
+        },
+        {
+          "concurrency": 8,
+          "wall_s": 20.775304500000857,
+          "total_output_tokens": 2048.0,
+          "aggregate_tps": 98.57857919723466,
+          "per_request_tps": 12.322322399654333,
+          "ttft_mean_s": 7.845991075000029
+        }
+      ]
+    }
+  ]
+}
