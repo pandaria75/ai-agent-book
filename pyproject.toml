@@ -19,12 +19,14 @@ license = { text = "Apache-2.0" }
 # The core that nearly every experiment needs.
 # openai: 131 declarations across the repo; python-dotenv: 114; requests: 50.
 dependencies = [
+    "mcp>=1.28.1",
     "ollama>=0.6.2",
     # chapter 8 (self-evolution-eval, self-modifying-agent, trajectory-verifier,
     # gaia-experience) calls client.responses.create, added in 1.68. A lower
     # floor is satisfiable by an already-installed older SDK that then fails at
     # runtime rather than at install time.
     "openai>=1.68",
+    "psutil>=7.2.2",
     "pydantic>=2.9.0",
     "python-dotenv>=1.0",
     "requests>=2.31",
@@ -393,3 +395,8 @@ extend-exclude = [
 # so excluding them there would also end `ruff check` coverage for the
 # directory. The trailing /* matters: a bare directory name is not matched here.
 exclude = ["chapter1/web-search-agent/tests/*"]
+
+[dependency-groups]
+mcp = [
+    "mcp==2.2.0",
+]
