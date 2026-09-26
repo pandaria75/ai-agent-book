@@ -153,13 +153,17 @@ class LanguageExecutor:
         try:
             logger.debug(f'Running command: {command[:100]}...')
             
+            # Force bash on POSIX (the default /bin/sh may lack features the
+            # build commands assume). Windows has no /bin/bash: passing it
+            # makes CreateProcess fail with FileNotFoundError [WinError 3],
+            # so fall back to the platform default shell there.
             process = await asyncio.create_subprocess_shell(
                 command,
                 stdin=asyncio.subprocess.PIPE if stdin else None,
                 stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE,
                 cwd=cwd,
-                executable='/bin/bash'
+                **({"executable": "/bin/bash"} if os.name != "nt" else {}),
             )
             
             # Write stdin if provided
@@ -281,7 +285,12 @@ class LanguageExecutor:
             # available: no network, read-only rootfs, bounded memory/CPU/PIDs,
             # and only the one ephemeral work directory mounted writable.
             if shutil.which("docker"):
-                mount = shlex.quote(f"{tmp_dir}:/workspace:rw")
+                # Forward-slash paths stay unquoted by shlex on POSIX and are
+                # accepted by Docker Desktop on Windows, where shlex.quote's
+                # single quotes would pass through cmd.exe verbatim and yield
+                # "invalid spec: too many colons".
+                mount_source = f"{str(tmp_dir).replace(os.sep, '/')}:/workspace:rw"
+                mount = f'"{mount_source}"' if os.name == "nt" else shlex.quote(mount_source)
                 command = (
                     "docker run --rm --network none --memory 256m --cpus 1 "
                     "--pids-limit 64 --read-only "

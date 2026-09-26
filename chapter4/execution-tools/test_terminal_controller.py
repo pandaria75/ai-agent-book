@@ -4,6 +4,7 @@ Tests command execution with directory navigation and file operations.
 """
 import asyncio
 import json
+import os
 import pytest
 
 from config import Config
@@ -45,7 +46,8 @@ class TestTerminalBasics:
     @pytest.mark.asyncio
     async def test_execute_command_ls(self, tc):
         """Test listing directory."""
-        result = await tc.execute_command("ls")
+        # `ls` only exists in POSIX shells; `dir` is cmd.exe's equivalent.
+        result = await tc.execute_command("dir" if os.name == "nt" else "ls")
         
         assert result["success"] is True
         print(f"✅ Directory listing completed")

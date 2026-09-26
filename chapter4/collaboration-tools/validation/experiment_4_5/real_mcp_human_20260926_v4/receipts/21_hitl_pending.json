@@ -1,0 +1,29 @@
+{
+  "case": "hitl_pending",
+  "tool": "mcp_list_pending_requests",
+  "arguments": {},
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "count": 1,
+    "requests": [
+      {
+        "request_id": "5342ed29-d31f-4e31-aea1-c585c4a2262e",
+        "message": "Approve publishing the Experiment 4-5 result?",
+        "context": {
+          "risk": "low",
+          "artifact": "validation-only",
+          "consequence": "An approval authorizes publishing this run in a GitHub pull request; a rejection keeps it local."
+        },
+        "timestamp": "2026-09-26T18:53:26.011108",
+        "urgent": false,
+        "status": "pending",
+        "response": null,
+        "admin_notes": null
+      }
+    ],
+    "message": "Found 1 pending requests"
+  },
+  "latency_seconds": 0.002
+}

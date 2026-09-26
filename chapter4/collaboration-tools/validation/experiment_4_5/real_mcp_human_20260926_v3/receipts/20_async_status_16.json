@@ -1,0 +1,21 @@
+{
+  "case": "async_status_16",
+  "tool": "mcp_get_subagent_status",
+  "arguments": {
+    "subagent_id": "7157e83e-d94b-42d2-99c9-30bd0a937f99"
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "subagent_id": "7157e83e-d94b-42d2-99c9-30bd0a937f99",
+    "status": "completed",
+    "mode": "async",
+    "context_strategy": "minimal",
+    "context_tokens": 24,
+    "prep_tokens": 0,
+    "result": "{\"status\": \"done\", \"result\": \"17 is an integer (natural number). It is positive, odd, and greater than 1. It is a prime number: its only positive divisors are 1 and 17. It is not divisible by any integer from 2 up to floor(sqrt(17)) = 4 (i.e., 2, 3, 4). Additional properties: 17 is the 7th prime number, a Fermat prime (17 = 2^(2^2) + 1), and can be written as the sum of two squares (17 = 4^2 + 1^2).\", \"missing\": \"\"}",
+    "created_at": "2026-09-26T10:15:11.909054+00:00"
+  },
+  "latency_seconds": 0.002
+}

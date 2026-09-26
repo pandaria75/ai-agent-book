@@ -1,6 +1,13 @@
 """Quick start guide for the execution tools MCP server."""
 
 import asyncio
+import sys
+
+# Windows consoles default to the locale encoding (e.g. GBK/cp936), which
+# cannot represent the status glyphs printed below and crashes the script;
+# force UTF-8 output on every platform.
+sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+
 from llm_helper import LLMHelper
 from file_tools import FileTools
 from execution_tools import ExecutionTools
@@ -68,8 +75,11 @@ for i in range(10):
     print("-" * 50)
     
     print("\nExecuting shell command...")
+    # `pwd` only exists in POSIX shells; `cd` without arguments prints the
+    # current directory in cmd.exe, which shell=True resolves to on Windows.
+    cwd_probe = "pwd" if __import__("os").name != "nt" else "cd"
     result = await execution_tools.virtual_terminal(
-        command="python --version && echo 'Current directory:' && pwd"
+        command=f"python --version && echo 'Current directory:' && {cwd_probe}"
     )
     print(f"Status: {'✓ Success' if result['success'] else '✗ Failed'}")
     if result['success']:

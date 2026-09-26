@@ -1,0 +1,51 @@
+{
+  "case": "video_analyze",
+  "tool": "video_analyze",
+  "arguments": {
+    "video_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\visual-marker.mp4",
+    "num_frames": 1,
+    "prompt": "Read the text shown in this frame."
+  },
+  "arguments_sha256": "47b4bc80a17441e9fdefbe0d4cbd9e6d5a075212d961abf2ff46fb05b3a0940f",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "opencv-and-configured-vision-api",
+    "origin": "live-api"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "visual-marker.mp4",
+      "frames_analyzed": 1,
+      "analyses": [
+        {
+          "frame_number": 0,
+          "timestamp": 0.0,
+          "analysis": "Based on the image provided, the text is:\n\nEXPERIMENT 4-1\nPERCEPTION TOOLS VERIFIED",
+          "provider_receipt": {
+            "provider": "auto",
+            "response_id": "49447297-385b-4d80-8ed4-6adc567d1d91_e02ec2977c18410caaa2d7ebf5676a5b",
+            "response_model": "mimo-v2.6-pro",
+            "finish_reason": "stop",
+            "usage": {
+              "prompt_tokens": 442,
+              "completion_tokens": 153,
+              "total_tokens": 595
+            },
+            "latency_seconds": 5.69
+          }
+        }
+      ],
+      "combined_analysis": "Frame 1 (t=0.0s): Based on the image provided, the text is:\n\nEXPERIMENT 4-1\nPERCEPTION TOOLS VERIFIED"
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\visual-marker.mp4"
+    }
+  },
+  "elapsed_seconds": 5.733
+}

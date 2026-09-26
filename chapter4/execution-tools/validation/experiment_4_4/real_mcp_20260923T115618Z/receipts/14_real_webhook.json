@@ -1,0 +1,45 @@
+{
+  "case": "real_webhook",
+  "tool": "webhook_post",
+  "arguments": {
+    "url": "https://postman-echo.com/post",
+    "payload": {
+      "experiment": "4-4",
+      "marker": "REAL-WEBHOOK-RECEIPT"
+    }
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "status": 200,
+    "url": "https://postman-echo.com/post",
+    "response": {
+      "args": {},
+      "data": {
+        "experiment": "4-4",
+        "marker": "REAL-WEBHOOK-RECEIPT"
+      },
+      "files": {},
+      "form": {},
+      "headers": {
+        "host": "postman-echo.com",
+        "x-forwarded-proto": "https",
+        "accept": "*/*",
+        "content-type": "application/json",
+        "user-agent": "python-httpx/0.28.1",
+        "content-length": "52",
+        "accept-encoding": "gzip, br"
+      },
+      "json": {
+        "experiment": "4-4",
+        "marker": "REAL-WEBHOOK-RECEIPT"
+      },
+      "url": "https://postman-echo.com/post"
+    },
+    "response_sha256": "014795a5a2b1736ae111f7608ca7f1cfaec48c7b92d27bb28542896bcfd03928",
+    "response_bytes": 391,
+    "latency_seconds": 0.944
+  },
+  "latency_seconds": 0.945
+}

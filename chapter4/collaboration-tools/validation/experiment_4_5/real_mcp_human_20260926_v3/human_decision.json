@@ -1,0 +1,18 @@
+{
+  "request_id": "dbb3f103-1871-42a1-8490-4d6c25eb7ced",
+  "decision": "approved",
+  "approved": true,
+  "admin_notes": "No additional notes supplied by the live human operator.",
+  "presented_at": "2026-09-26T10:15:16.414097+00:00",
+  "responded_at": "2026-09-26T10:48:45.319258+00:00",
+  "timeout_seconds": 14400,
+  "operator_channel": "live-user-chat-forwarded-verbatim-to-runner-stdin",
+  "attestation": "The active repository user supplied this decision during the run; the runner did not synthesize or default it.",
+  "mcp_result": {
+    "success": true,
+    "approved": true,
+    "request_id": "dbb3f103-1871-42a1-8490-4d6c25eb7ced",
+    "admin_notes": "No additional notes supplied by the live human operator.",
+    "message": "Request approved by administrator"
+  }
+}

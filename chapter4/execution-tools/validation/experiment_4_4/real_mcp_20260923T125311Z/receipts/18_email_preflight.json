@@ -1,0 +1,17 @@
+{
+  "case": "email_preflight",
+  "tool": "send_email",
+  "arguments": {
+    "to": "experiment-4-4@example.com",
+    "subject": "Experiment 4-4 execution tools",
+    "body": "Experiment 4-4 evidence: real email mutation receipt."
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": false,
+    "credential_status": "missing_credentials",
+    "error": "Email provider credentials not configured: SMTP_HOST, SMTP_USER, SMTP_PASSWORD"
+  },
+  "latency_seconds": 0.001
+}

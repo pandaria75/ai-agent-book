@@ -1,8 +1,8 @@
 {
   "experiment": "4-4",
-  "campaign_id": "real_mcp_gui_20260802T093657Z",
+  "campaign_id": "real_mcp_20260923T125311Z",
   "status": "blocked",
   "official_complete": false,
-  "manifest": "validation/experiment_4_4/real_mcp_gui_20260802T093657Z/manifest.json",
-  "manifest_sha256": "fde8976b91b149a61b7d468f4c825c1bdfdc9da3062cbfa66aaa1fd0f3d1966f"
+  "manifest": "validation\\experiment_4_4\\real_mcp_20260923T125311Z\\manifest.json",
+  "manifest_sha256": "f3fc7481d0d44a5dc94ea07f878d92925915c94703a76be9f3a0f78754c75f0f"
 }

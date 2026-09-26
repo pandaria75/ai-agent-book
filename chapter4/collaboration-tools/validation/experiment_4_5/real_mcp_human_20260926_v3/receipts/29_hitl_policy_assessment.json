@@ -1,0 +1,27 @@
+{
+  "case": "hitl_policy_assessment",
+  "tool": "mcp_assess_hitl_requirement",
+  "arguments": {
+    "scenarios": [
+      {
+        "id": "irreversible_publish",
+        "description": "Publish the Experiment 4-5 validation run to a public GitHub pull request."
+      },
+      {
+        "id": "missing_recipient",
+        "description": "Send the customer a refund notification, but the contact channel is unknown."
+      },
+      {
+        "id": "readonly_lookup",
+        "description": "Look up the refund threshold in the local policy table."
+      }
+    ]
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": false,
+    "error": "ValueError: model output contains no JSON decision array"
+  },
+  "latency_seconds": 23.4
+}

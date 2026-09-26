@@ -28,7 +28,9 @@ async def test_code_interpreter():
     
     assert not result["success"], "Should fail with division by zero"
     assert "error_analysis" in result
-    print(f"✓ Error handling works: {result['error'][:100]}...")
+    # Runtime failures carry their traceback in stderr; `error` stays None.
+    error_detail = result.get('error') or result.get('stderr') or ''
+    print(f"✓ Error handling works: {error_detail[:100]}...")
 
 
 async def test_virtual_terminal():

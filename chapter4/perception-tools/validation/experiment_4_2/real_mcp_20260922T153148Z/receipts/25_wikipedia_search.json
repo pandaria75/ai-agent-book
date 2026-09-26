@@ -1,0 +1,28 @@
+{
+  "case": "wikipedia_search",
+  "tool": "wikipedia_search",
+  "arguments": {
+    "query": "Model Context Protocol",
+    "language": "en",
+    "sentences": 3
+  },
+  "arguments_sha256": "697f2deabfb52773a614f77f31c5e61400afcc7b42b4ba0a282fc2d5b488d9df",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": false,
+  "substantive_observation": false,
+  "backend_provenance": {
+    "backend": "mediawiki",
+    "origin": "live-api"
+  },
+  "simulation_markers": [],
+  "error_type": "wikipedia_error",
+  "payload": {
+    "success": false,
+    "message": "Wikipedia search failed: Expecting value: line 1 column 1 (char 0)",
+    "metadata": {
+      "error_type": "wikipedia_error"
+    }
+  },
+  "elapsed_seconds": 2.177
+}

@@ -23,6 +23,7 @@ REQUIRED_TRUE_GATES = {
     "raw_model_usage_latency_receipts",
     "sync_async_message_cancel_status_lifecycle",
     "hitl_pending_response_and_conservative_timeout",
+    "hitl_policy_system_prompt_recognition",
     "real_human_decision",
 }
 CREDENTIAL = re.compile(
@@ -43,6 +44,17 @@ def load(path: Path):
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("run_dir", type=Path)
+    parser.add_argument(
+        "--expected-model",
+        default="kimi-k3",
+        help="model id every pinned model receipt must record (default: kimi-k3)",
+    )
+    parser.add_argument(
+        "--expected-receipts",
+        type=int,
+        default=6,
+        help="exact number of unique raw model receipts to pin (default: 6)",
+    )
     args = parser.parse_args()
     run_dir = args.run_dir.resolve()
 
@@ -94,11 +106,12 @@ def main() -> int:
         "conservative_timeout_retained": by_case["hitl_timeout"]["payload"].get("timeout")
         is True
         and by_case["hitl_timeout"]["payload"].get("approved") is False,
-        "six_real_kimi_receipts": len(model_receipts) == 6
-        and len({row.get("response", {}).get("id") for row in model_receipts}) == 6
+        "pinned_real_model_receipts": len(model_receipts) == args.expected_receipts
+        and len({row.get("response", {}).get("id") for row in model_receipts})
+        == args.expected_receipts
         and all(
             row.get("response", {}).get("id")
-            and row.get("response", {}).get("model") == "kimi-k3"
+            and row.get("response", {}).get("model") == args.expected_model
             and row.get("usage", {}).get("total_tokens", 0) > 0
             and row.get("latency_seconds", 0) > 0
             for row in model_receipts
@@ -133,6 +146,8 @@ def main() -> int:
             "manifest_files": len(manifest_files),
             "human_response_seconds": round(elapsed, 3),
         },
+        "pins": {"expected_model": args.expected_model,
+                 "expected_receipts": args.expected_receipts},
         "remaining_blockers": summary.get("blockers"),
     }
     print(json.dumps(result, indent=2))

@@ -16,10 +16,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from dotenv import load_dotenv
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 HERE = Path(__file__).resolve().parent
+load_dotenv(HERE / ".env")
 PROTOCOL = HERE / "experiment_protocol.json"
 SERVER = HERE / "server.py"
 VALIDATION = HERE / "validation" / "experiment_4_4"
@@ -68,7 +70,10 @@ async def run(
     write_json(run_dir / "protocol.json", json.loads(PROTOCOL.read_text(encoding="utf-8")))
 
     env = os.environ.copy()
-    if env.get("KIMI_API_KEY") or env.get("MOONSHOT_API_KEY"):
+    if env.get("REVIEW_PROVIDER") and env.get("REVIEW_MODEL"):
+        review_provider = env["REVIEW_PROVIDER"]
+        review_model = env["REVIEW_MODEL"]
+    elif env.get("KIMI_API_KEY") or env.get("MOONSHOT_API_KEY"):
         review_provider = "kimi"
         review_model = "kimi-k3"
     else:
@@ -93,8 +98,8 @@ async def run(
             listed = await session.list_tools()
             schemas = [tool.model_dump(by_alias=True, exclude_none=True, mode="json") for tool in listed.tools]
             write_json(run_dir / "catalog.json", {
-                "transport": "mcp-stdio", "server_name": initialized.serverInfo.name,
-                "server_version": initialized.serverInfo.version, "schemas": schemas,
+                "transport": "mcp-stdio", "server_name": initialized.server_info.name,
+                "server_version": initialized.server_info.version, "schemas": schemas,
                 "schema_sha256": hashlib.sha256(json.dumps(schemas, sort_keys=True).encode()).hexdigest(),
             })
 
@@ -128,8 +133,13 @@ async def run(
                 "path": "valid.py", "search": "a + b", "replace": "a - b"})
             await call("path_escape_rejected", "file_write", {
                 "path": "../../escape.py", "content": "print('escape')\n", "overwrite": True})
-            await call("terminal_safe", "virtual_terminal", {"command": "pwd && printf SAFE", "timeout": 10})
-            await call("terminal_timeout", "virtual_terminal", {"command": "sleep 2", "timeout": 1})
+            # The safe/timeout probe pair is POSIX-shorthand; cmd.exe has
+            # neither printf nor sleep, so use deterministic equivalents with
+            # identical gate semantics on Windows.
+            safe_probe = "pwd && printf SAFE" if os.name != "nt" else "cd && echo SAFE"
+            sleep_probe = "sleep 2" if os.name != "nt" else "ping -n 3 127.0.0.1 > nul"
+            await call("terminal_safe", "virtual_terminal", {"command": safe_probe, "timeout": 10})
+            await call("terminal_timeout", "virtual_terminal", {"command": sleep_probe, "timeout": 1})
             await call("terminal_danger_rejected", "virtual_terminal", {
                 "command": "rm -rf ./should-never-execute", "timeout": 10})
             await call("python_docker_sandbox", "code_interpreter", {
@@ -158,6 +168,10 @@ async def run(
                 "title": "feat(ch4): build Experiment 4-4 GUI environments",
                 "body": "Experiment 4-4 evidence: real Android and X11 Computer Use execution.",
                 "head_branch": github_head_branch, "base_branch": github_base_branch})
+            await call("email_preflight", "send_email", {
+                "to": os.getenv("EMAIL_TO", "experiment-4-4@example.com"),
+                "subject": "Experiment 4-4 execution tools",
+                "body": "Experiment 4-4 evidence: real email mutation receipt."})
             await call("real_virtual_desktop", "virtual_desktop_execute", {
                 "url": "https://example.com", "screenshot_path": "computer-use-example.png",
                 "expected_title": "Example Domain"})
@@ -185,7 +199,7 @@ async def run(
         long_evidence = None
     caps = by_case.get("desktop_mobile_capabilities", {})
     gates = {
-        "real_mcp_catalog_and_calls": len(schemas) >= 12 and len(receipts) == 20,
+        "real_mcp_catalog_and_calls": len(schemas) >= 13 and len(receipts) == 21,
         "python_and_javascript_linter": (
             by_case["python_valid_write"].get("verification") == "passed"
             and by_case["javascript_valid_write"].get("verification") == "passed"
@@ -214,7 +228,7 @@ async def run(
         "real_browser": by_case["real_browser"].get("success") is True,
         "real_calendar_mutation": by_case["calendar_preflight"].get("success") is True,
         "real_github_pr_mutation": by_case["github_pr_preflight"].get("success") is True,
-        "real_email_mutation": False,
+        "real_email_mutation": by_case["email_preflight"].get("success") is True,
         "real_virtual_desktop_session": bool(
             by_case["real_virtual_desktop"].get("success") is True
             and by_case["real_virtual_desktop"].get("expected_title_matched") is True

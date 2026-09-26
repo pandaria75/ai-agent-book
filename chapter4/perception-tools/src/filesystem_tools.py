@@ -64,7 +64,10 @@ def _relative_parts(value: str) -> tuple[str, ...]:
     if not isinstance(value, str) or not value.strip():
         raise ValueError("Path must be a non-empty relative path")
     path = Path(value)
-    if path.is_absolute():
+    # On Windows Path("/tmp/x").is_absolute() is False (no drive), but the
+    # path is still anchored and would escape the workspace once joined, so
+    # reject any anchored path, not only drive-qualified absolute ones.
+    if path.is_absolute() or path.anchor:
         raise PermissionError("Absolute paths are not allowed for filesystem mutations")
     if ".." in path.parts:
         raise PermissionError("Parent traversal is not allowed for filesystem mutations")

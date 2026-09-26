@@ -1,0 +1,36 @@
+{
+  "experiment": "4-5",
+  "campaign_id": "real_mcp_20260926T101024Z",
+  "generated_at": "2026-09-26T10:11:04.253049+00:00",
+  "status": "blocked",
+  "official_complete": false,
+  "gates": {
+    "real_mcp_catalog_has_required_primitives": true,
+    "two_real_context_strategies_compared": true,
+    "raw_model_usage_latency_receipts": true,
+    "sync_async_message_cancel_status_lifecycle": true,
+    "hitl_pending_response_and_conservative_timeout": true,
+    "hitl_policy_system_prompt_recognition": true,
+    "real_human_decision": false,
+    "real_email_notification": false,
+    "real_im_notification": false,
+    "real_slack_notification": false
+  },
+  "blockers": [
+    "real_human_decision",
+    "real_email_notification",
+    "real_im_notification",
+    "real_slack_notification"
+  ],
+  "tool_call_count": 32,
+  "model_call_count": 7,
+  "interactive_human": false,
+  "human_timeout_seconds": null,
+  "publication_authorized": false,
+  "real_notifications_enabled": false,
+  "notification_readiness": {
+    "email": false,
+    "telegram": false,
+    "slack": false
+  }
+}

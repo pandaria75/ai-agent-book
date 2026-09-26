@@ -10,7 +10,6 @@ import hashlib
 import json
 import os
 import re
-import select
 import sys
 import time
 from datetime import datetime, timezone
@@ -26,9 +25,12 @@ VALIDATION = HERE / "validation" / "experiment_4_5"
 CREDENTIAL = re.compile(r"\b(?:sk|gh[opusr])-[A-Za-z0-9_-]{12,}\b")
 SENSITIVE_ENV_NAMES = {
     "ANTHROPIC_API_KEY",
+    "DASHSCOPE_API_KEY",
+    "DASHSCOPE_BASE_URL",
     "KIMI_API_KEY",
     "MOONSHOT_API_KEY",
     "OPENAI_API_KEY",
+    "OPENAI_BASE_URL",
     "OPENROUTER_API_KEY",
     "SENDGRID_API_KEY",
     "SMTP_PASSWORD",
@@ -60,24 +62,36 @@ def parse_human_decision(value: str) -> tuple[bool, str]:
 
 
 def _readline_before_timeout(stream: Any, timeout_seconds: float) -> str:
-    """Read one byte stream line while ensuring the worker exits by its deadline."""
+    """Read one stream line while enforcing the caller's deadline.
+
+    The raw descriptor is switched to non-blocking mode and polled until the
+    line ends, EOF, or the deadline. This works on Windows (select() only
+    accepts sockets there) and, unlike a blocking read in a helper thread,
+    leaves no pending I/O behind when the deadline fires: closing a stream
+    while a synchronous read is pending deadlocks on Windows, and a timed-out
+    worker must never survive the call.
+    """
     descriptor = stream.fileno()
     encoding = getattr(stream, "encoding", None) or "utf-8"
     deadline = time.monotonic() + timeout_seconds
     data = bytearray()
-    while True:
-        remaining = deadline - time.monotonic()
-        if remaining <= 0:
-            raise TimeoutError
-        readable, _, _ = select.select([descriptor], [], [], remaining)
-        if not readable:
-            raise TimeoutError
-        chunk = os.read(descriptor, 1)
-        if not chunk:
-            return data.decode(encoding, errors="replace")
-        data.extend(chunk)
-        if chunk == b"\n":
-            return data.decode(encoding, errors="replace")
+    os.set_blocking(descriptor, False)
+    try:
+        while True:
+            try:
+                chunk = os.read(descriptor, 1)
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError
+                time.sleep(0.02)
+                continue
+            if not chunk:
+                return data.decode(encoding, errors="replace")
+            data.extend(chunk)
+            if chunk == b"\n":
+                return data.decode(encoding, errors="replace")
+    finally:
+        os.set_blocking(descriptor, True)
 
 
 async def read_human_decision_line(stream: Any, timeout_seconds: float) -> str:
@@ -234,8 +248,17 @@ async def run(
     run_dir.mkdir(parents=True, exist_ok=False)
     write_json(run_dir / "protocol.json",
                json.loads((HERE / "experiment_protocol.json").read_text(encoding="utf-8")))
+    if not env.get("COLLAB_PROVIDER") and (
+        env.get("MOONSHOT_API_KEY") or env.get("KIMI_API_KEY")
+    ):
+        # Historical default: the retained canonical campaigns ran Kimi K3 via
+        # Moonshot. Any explicitly configured provider/model (for example an
+        # OpenAI-compatible gateway through OPENAI_API_KEY + OPENAI_BASE_URL +
+        # OPENAI_MODEL) is honored instead, so receipts record the model that
+        # actually answered rather than a forced label.
+        env.setdefault("COLLAB_PROVIDER", "moonshot")
+        env.setdefault("OPENAI_MODEL", "kimi-k3")
     env.update({
-        "COLLAB_PROVIDER": "moonshot", "OPENAI_MODEL": "kimi-k3",
         "COLLAB_LLM_RECEIPT_PATH": str(run_dir / "llm_receipts.checkpoint.json"),
         "HITL_TIMEOUT_SECONDS": "2", "BROWSER_HEADLESS": "true",
         "TIMER_STORAGE_PATH": str(run_dir / "timers.json"),
@@ -261,9 +284,10 @@ async def run(
             initialized = await session.initialize()
             listed = await session.list_tools()
             schemas = [tool.model_dump(by_alias=True, exclude_none=True, mode="json") for tool in listed.tools]
+            server_info = getattr(initialized, "server_info", None) or initialized.serverInfo
             write_json(run_dir / "catalog.json", {
-                "transport": "mcp-stdio", "server_name": initialized.serverInfo.name,
-                "server_version": initialized.serverInfo.version, "schemas": schemas,
+                "transport": "mcp-stdio", "server_name": server_info.name,
+                "server_version": server_info.version, "schemas": schemas,
                 "schema_sha256": hashlib.sha256(json.dumps(schemas, sort_keys=True).encode()).hexdigest()})
 
             async def call(case: str, tool: str, arguments: dict[str, Any]) -> dict[str, Any]:
@@ -406,6 +430,27 @@ async def run(
                 "request_message": "No operator will answer this timeout probe.",
                 "context": {"probe": True}, "timeout_seconds": 1, "urgent": False})
 
+            # request_admin_input exercises the "ask for extra information" half
+            # of the HITL surface with the same timeout machinery: with no
+            # operator answering, the tool must NOT fabricate input and must
+            # fall back to the conservative default (report no input).
+            input_probe = await call("hitl_input_probe", "mcp_request_admin_input", {
+                "prompt": "Which policy version should the refund decision cite?",
+                "input_type": "text", "timeout_seconds": 1})
+
+            # The HITL-recognition system prompt (src/hitl_policy.py) applied by
+            # a real model call over three representative operations: one
+            # irreversible, one missing required information, one read-only.
+            assessment = await call("hitl_policy_assessment", "mcp_assess_hitl_requirement", {
+                "scenarios": [
+                    {"id": "irreversible_publish",
+                     "description": "Publish the Experiment 4-5 validation run to a public GitHub pull request."},
+                    {"id": "missing_recipient",
+                     "description": "Send the customer a refund notification, but the contact channel is unknown."},
+                    {"id": "readonly_lookup",
+                     "description": "Look up the refund threshold in the local policy table."},
+                ]})
+
             email = await call("email_notification_preflight", "mcp_send_email", {
                 "to_email": env.get("HITL_ADMIN_EMAIL") if real_notifications else "nobody@example.invalid",
                 "subject": "Experiment 4-5",
@@ -452,7 +497,17 @@ async def run(
             bool(request_id) and approval["payload"].get("success") is True
             and approval["payload"].get("timeout") is not True
             and timeout["payload"].get("timeout") is True
-            and timeout["payload"].get("approved") is False),
+            and timeout["payload"].get("approved") is False
+            and input_probe["payload"].get("success") is False
+            and "timeout" in input_probe["payload"].get("error", "").lower()),
+        "hitl_policy_system_prompt_recognition": (
+            assessment["payload"].get("success") is True
+            and len(assessment["payload"].get("decisions", [])) == 3
+            and all(
+                decision.get("action")
+                in {"request_admin_approval", "request_admin_input", "proceed"}
+                and bool(decision.get("rule"))
+                for decision in assessment["payload"].get("decisions", []))),
         "real_human_decision": human_decision_accepted(
             human_decision, approval["payload"]
         ),

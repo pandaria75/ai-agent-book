@@ -267,8 +267,17 @@ def cmd_demo(args: argparse.Namespace) -> int:
 
         # 5. virtual_terminal：用 shell 校验数据文件
         section("5. virtual_terminal：用 shell 校验数据文件")
+        # wc is POSIX-only; PowerShell's Measure-Object is the platform-native
+        # word count that shell=True resolves to on Windows (cmd.exe).
+        if os.name == "nt":
+            word_check = (
+                f"powershell -NoProfile -Command \"(Get-Content '{workspace}\\data.txt' | "
+                f"Measure-Object -Word).Words\" && echo --- word count done ---"
+            )
+        else:
+            word_check = f"wc -w {workspace}/data.txt && echo '--- 词数统计完成 ---'"
         r = await exec_tools.virtual_terminal(
-            command=f"wc -w {workspace}/data.txt && echo '--- 词数统计完成 ---'"
+            command=word_check
         )
         print(f"结果：success={r['success']}, returncode={r.get('returncode')}")
         print("stdout:")

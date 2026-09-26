@@ -1,7 +1,10 @@
-"""External system integration tools: Google Calendar and GitHub."""
+"""External system integration tools: Google Calendar, GitHub, and email."""
 
 import os
 import json
+import smtplib
+import time
+from email.message import EmailMessage
 from typing import Dict, Any, Optional
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -303,6 +306,90 @@ class ExternalTools:
                 "error": f"Failed to create pull request: {str(e)}"
             }
     
+    async def send_email(
+        self,
+        to: str,
+        subject: str,
+        body: str
+    ) -> Dict[str, Any]:
+        """
+        Send an email through a configured SMTP provider.
+
+        Sending mail is irreversible, so this follows the two-phase
+        "pre-check then confirm" pattern: a reviewer model approves the
+        dispatch before smtplib is allowed to touch the network.
+
+        Args:
+            to: Recipient address
+            subject: Email subject
+            body: Plain-text email body
+
+        Returns:
+            Result dictionary with delivery details
+        """
+        missing = [name for name, value in {
+            "SMTP_HOST": Config.SMTP_HOST,
+            "SMTP_USER": Config.SMTP_USER,
+            "SMTP_PASSWORD": Config.SMTP_PASSWORD,
+        }.items() if not value]
+        if missing:
+            return {
+                "success": False,
+                "credential_status": "missing_credentials",
+                "error": f"Email provider credentials not configured: {', '.join(missing)}"
+            }
+
+        # Phase 1 (pre-check): LLM review before any irreversible dispatch.
+        if Config.REQUIRE_APPROVAL_FOR_DANGEROUS_OPS:
+            approved, reason = self.llm_helper.request_approval(
+                "send_email",
+                {
+                    "to": to,
+                    "subject": subject,
+                    "body_preview": body[:200],
+                    "smtp_host": Config.SMTP_HOST
+                }
+            )
+
+            if not approved:
+                return {
+                    "success": False,
+                    "error": f"Email send not approved: {reason}"
+                }
+
+        # Phase 2 (confirm): real SMTP delivery.
+        message = EmailMessage()
+        message["From"] = Config.EMAIL_FROM or Config.SMTP_USER
+        message["To"] = to
+        message["Subject"] = subject
+        message.set_content(body)
+        started = time.perf_counter()
+        try:
+            use_ssl = Config.SMTP_PORT == 465
+            smtp_class = smtplib.SMTP_SSL if use_ssl else smtplib.SMTP
+            with smtp_class(Config.SMTP_HOST, Config.SMTP_PORT, timeout=30) as smtp:
+                if not use_ssl:
+                    smtp.starttls()
+                smtp.login(Config.SMTP_USER, Config.SMTP_PASSWORD)
+                refused = smtp.send_message(message)
+            return {
+                "success": True,
+                "from": message["From"],
+                "to": to,
+                "subject": subject,
+                "smtp_host": Config.SMTP_HOST,
+                "smtp_port": Config.SMTP_PORT,
+                "refused_recipients": {str(key): str(value)
+                                       for key, value in (refused or {}).items()},
+                "latency_seconds": round(time.perf_counter() - started, 3),
+            }
+        except Exception as e:
+            return {
+                "success": False,
+                "error": f"SMTP send failed: {type(e).__name__}: {str(e)}",
+                "latency_seconds": round(time.perf_counter() - started, 3),
+            }
+
     def _parse_datetime(self, time_str: str) -> datetime:
         """Parse datetime string in various formats."""
         # Try ISO 8601 format first

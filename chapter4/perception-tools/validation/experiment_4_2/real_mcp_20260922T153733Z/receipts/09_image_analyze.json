@@ -1,0 +1,44 @@
+{
+  "case": "image_analyze",
+  "tool": "image_analyze",
+  "arguments": {
+    "image_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153733Z\\fixtures\\media\\ocr-source.png",
+    "prompt": "Read the prominent text and describe the simple image."
+  },
+  "arguments_sha256": "7cef419877a112ff0365301e846d8dc24249ba39f408c35e139936d1d133902d",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "configured-vision-api",
+    "origin": "live-api"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "ocr-source.png",
+      "prompt": "Read the prominent text and describe the simple image.",
+      "analysis": "The prominent text in the image reads:\n**EXPERIMENT 4-1**\n**PERCEPTION TOOLS VERIFIED**\n\nThe image is a simple graphic consisting of black, uppercase, sans-serif text arranged in two lines on a plain white background.",
+      "model": "mimo-v2.6-pro",
+      "provider_receipt": {
+        "provider": "auto",
+        "response_id": "cfe592b7-c9d3-43c0-9ff8-536f7ae4b3b2_c5000752561545b29dec23a50306b81e",
+        "response_model": "mimo-v2.6-pro",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 437,
+          "completion_tokens": 212,
+          "total_tokens": 649
+        },
+        "latency_seconds": 7.558
+      }
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153733Z\\fixtures\\media\\ocr-source.png"
+    }
+  },
+  "elapsed_seconds": 8.158
+}

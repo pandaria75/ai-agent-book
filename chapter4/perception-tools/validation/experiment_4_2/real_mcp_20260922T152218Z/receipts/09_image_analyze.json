@@ -1,0 +1,44 @@
+{
+  "case": "image_analyze",
+  "tool": "image_analyze",
+  "arguments": {
+    "image_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T152218Z\\fixtures\\media\\ocr-source.png",
+    "prompt": "Read the prominent text and describe the simple image."
+  },
+  "arguments_sha256": "8f01c8d29561d55eb8d79e421bc1cb6f07e79910b6a6e860cfea3e9820b6a109",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "configured-vision-api",
+    "origin": "live-api"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "ocr-source.png",
+      "prompt": "Read the prominent text and describe the simple image.",
+      "analysis": "### Prominent Text:\n1.  Top line, bold uppercase: **EXPERIMENT 4-1**\n2.  Bottom line, bold uppercase: **PERCEPTION TOOLS VERIFIED**\n\n### Simple Image Description:\nThis is a minimal, text-only graphic set against a plain, solid white background. The text uses a clean, black, bold sans-serif font, left-aligned, creating a stark, functional title-style visual, likely used to label a completed experiment focused on validating perception tools.",
+      "model": "mimo-v2.6-pro",
+      "provider_receipt": {
+        "provider": "auto",
+        "response_id": "ea105cef-2821-49ff-ac2d-90b6e842be61_0045cc4b2fce4910a5c6deec9846addb",
+        "response_model": "mimo-v2.6-pro",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 437,
+          "completion_tokens": 232,
+          "total_tokens": 669
+        },
+        "latency_seconds": 17.435
+      }
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T152218Z\\fixtures\\media\\ocr-source.png"
+    }
+  },
+  "elapsed_seconds": 17.796
+}

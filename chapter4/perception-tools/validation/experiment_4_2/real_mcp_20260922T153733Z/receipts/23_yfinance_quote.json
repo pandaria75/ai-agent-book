@@ -1,0 +1,48 @@
+{
+  "case": "yfinance_quote",
+  "tool": "yfinance_quote",
+  "arguments": {
+    "symbol": "AAPL"
+  },
+  "arguments_sha256": "81c8d84ddf020b1584fa351351da6f46b756261e048fe93502b5f5c3fdc1e526",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "yahoo-finance-yfinance",
+    "origin": "live-api"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "symbol": "AAPL",
+      "company_name": "Apple Inc.",
+      "current_price": 342.93,
+      "previous_close": 338.98,
+      "open": 340.33,
+      "day_high": 345.34,
+      "day_low": 338.75,
+      "volume": 16770452,
+      "average_volume": 53294352,
+      "market_cap": 5004781944832,
+      "fifty_two_week_high": 345.34,
+      "fifty_two_week_low": 243.42,
+      "currency": "USD",
+      "exchange": "NMS",
+      "change": 3.95,
+      "change_percent": 1.17
+    },
+    "metadata": {
+      "symbol": "AAPL",
+      "operation": "get_stock_quote",
+      "execution_time": 2.4745638370513916,
+      "data_points": 16,
+      "error_type": null,
+      "timestamp": "2026-09-22T23:38:04.654289"
+    }
+  },
+  "elapsed_seconds": 2.477
+}

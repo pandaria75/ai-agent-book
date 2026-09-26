@@ -58,6 +58,20 @@ class ExtendedTools:
 
         soffice = shutil.which("soffice") or shutil.which("libreoffice")
         if not soffice:
+            # Installers do not always put LibreOffice on PATH (and a freshly
+            # installed binary is invisible to stale session PATHs on Windows),
+            # so probe well-known locations before giving up.
+            for candidate in (
+                r"C:\Program Files\LibreOffice\program\soffice.exe",
+                r"C:\Program Files (x86)\LibreOffice\program\soffice.exe",
+                "/Applications/LibreOffice.app/Contents/MacOS/soffice",
+                "/usr/bin/libreoffice",
+                "/usr/bin/soffice",
+            ):
+                if Path(candidate).is_file():
+                    soffice = candidate
+                    break
+        if not soffice:
             return {"success": False, "error": "LibreOffice is required for formula rendering"}
         started = time.perf_counter()
         process = subprocess.run(

@@ -6,6 +6,7 @@ import json
 import logging
 import traceback
 import subprocess
+import shutil
 import base64
 import os
 import time
@@ -21,6 +22,22 @@ from base import ActionResponse, validate_file_path
 
 
 load_dotenv()
+
+
+def _vision_max_tokens() -> int:
+    """Completion budget for vision calls.
+
+    Reasoning models (e.g. mimo-v2.6-pro) spend most of the completion budget
+    on reasoning tokens before emitting content, so the historical fixed caps
+    (500/300) could return an empty analysis. Override via
+    PERCEPTION_VISION_MAX_TOKENS.
+    """
+    raw = os.getenv("PERCEPTION_VISION_MAX_TOKENS", "").strip()
+    try:
+        value = int(raw) if raw else 4000
+    except ValueError:
+        value = 4000
+    return max(1, value)
 
 
 def _map_model_for_openrouter(model: str) -> str:
@@ -313,7 +330,23 @@ async def extract_text_ocr(
         
         try:
             import pytesseract
-            
+
+            if not shutil.which(pytesseract.pytesseract.tesseract_cmd):
+                # Installers may refresh the user PATH without notifying
+                # already-running processes; fall back to known install dirs.
+                for candidate in (
+                    Path(r"C:\Program Files\Tesseract-OCR\tesseract.exe"),
+                    Path(r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe"),
+                    Path(os.environ.get("LOCALAPPDATA", ""))
+                    / "Programs" / "Tesseract-OCR" / "tesseract.exe",
+                    Path("/usr/bin/tesseract"),
+                    Path("/usr/local/bin/tesseract"),
+                    Path("/opt/homebrew/bin/tesseract"),
+                ):
+                    if candidate.is_file():
+                        pytesseract.pytesseract.tesseract_cmd = str(candidate)
+                        break
+
             img = Image.open(path)
             text = pytesseract.image_to_string(img, lang=language)
             
@@ -403,7 +436,7 @@ async def analyze_image_ai(
                     ]
                 }
             ],
-            max_tokens=500
+            max_tokens=_vision_max_tokens()
         )
         latency_seconds = round(time.perf_counter() - started, 3)
 
@@ -609,7 +642,7 @@ async def analyze_video_ai(
                             ]
                         }
                     ],
-                    max_tokens=300
+                    max_tokens=_vision_max_tokens()
                 )
                 latency_seconds = round(time.perf_counter() - started, 3)
                 

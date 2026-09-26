@@ -185,6 +185,8 @@ def prepare_fixtures(campaign_dir: Path) -> dict[str, Any]:
     font_candidates = [
         Path("/System/Library/Fonts/Supplemental/Arial.ttf"),
         Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
+        Path("C:/Windows/Fonts/arial.ttf"),
+        Path("C:/Windows/Fonts/segoeui.ttf"),
     ]
     font_path = next((path for path in font_candidates if path.is_file()), None)
     font = ImageFont.truetype(str(font_path), 54) if font_path else ImageFont.load_default()
@@ -192,13 +194,30 @@ def prepare_fixtures(campaign_dir: Path) -> dict[str, Any]:
     draw.text((45, 170), "PERCEPTION TOOLS VERIFIED", fill="black", font=font)
     canvas_image.save(image)
 
-    audio_aiff = media / "spoken-marker.aiff"
-    if not shutil.which("say"):
-        raise RuntimeError("macOS say executable is required for the speech fixture")
-    say_receipt = command_receipt([
-        "say", "-v", "Samantha", "-r", "150", "-o", str(audio_aiff),
-        "Experiment four one. Perception tools verified.",
-    ])
+    speech_text = "Experiment four one. Perception tools verified."
+    if shutil.which("say"):
+        audio_path = media / "spoken-marker.aiff"
+        say_receipt = command_receipt([
+            "say", "-v", "Samantha", "-r", "150", "-o", str(audio_path),
+            speech_text,
+        ])
+    elif os.name == "nt" and shutil.which("powershell"):
+        # Windows: synthesize the speech fixture with the built-in SAPI voice.
+        audio_path = media / "spoken-marker.wav"
+        script = (
+            "Add-Type -AssemblyName System.Speech; "
+            "$s = New-Object System.Speech.Synthesis.SpeechSynthesizer; "
+            f"$s.SetOutputToWaveFile('{audio_path}'); "
+            f"$s.Speak('{speech_text}'); "
+            "$s.Dispose()"
+        )
+        say_receipt = command_receipt([
+            "powershell", "-NoProfile", "-NonInteractive", "-Command", script,
+        ])
+        if not audio_path.is_file() or audio_path.stat().st_size == 0:
+            raise RuntimeError("Windows speech synthesis produced no audio fixture")
+    else:
+        raise RuntimeError("say (macOS) or PowerShell System.Speech (Windows) is required for the speech fixture")
 
     video = media / "visual-marker.mp4"
     if not shutil.which("ffmpeg"):
@@ -216,7 +235,7 @@ def prepare_fixtures(campaign_dir: Path) -> dict[str, Any]:
         "docx": docx,
         "pptx": pptx,
         "image": image,
-        "audio": audio_aiff,
+        "audio": audio_path,
         "video": video,
         "downloads": downloads,
         "mutation": mutation,
@@ -227,7 +246,7 @@ def prepare_fixtures(campaign_dir: Path) -> dict[str, Any]:
         "paths": {name: str(path) for name, path in paths.items()},
         "files": [
             file_receipt(path)
-            for path in (note, pdf, docx, pptx, image, audio_aiff, video, outside_witness)
+            for path in (note, pdf, docx, pptx, image, audio_path, video, outside_witness)
         ],
         "generators": {"say": say_receipt, "ffmpeg": ffmpeg_receipt},
     }
@@ -577,7 +596,40 @@ def build_manifest(campaign_dir: Path, summary: dict[str, Any]) -> dict[str, Any
     }
 
 
+def _ensure_local_tool_paths() -> None:
+    """Prepend well-known tool install dirs to PATH when they are missing.
+
+    Windows installers can update the user PATH without broadcasting
+    WM_SETTINGCHANGE, so long-lived shells (and children they spawn) keep a
+    stale PATH even after a new terminal tab is opened. The MCP server
+    spawned below inherits this process environment, so repair it here.
+    """
+    if os.name != "nt":
+        return
+    candidates = [
+        Path(r"C:\Program Files\Tesseract-OCR"),
+        Path(r"C:\Program Files (x86)\Tesseract-OCR"),
+        Path(os.environ.get("LOCALAPPDATA", "")) / "Programs" / "Tesseract-OCR",
+        Path(os.environ.get("LOCALAPPDATA", "")) / "Microsoft" / "WinGet" / "Links",
+    ]
+    current = os.environ.get("PATH", "")
+    known = {part.rstrip("\\/").lower() for part in current.split(os.pathsep) if part}
+    missing = [str(c) for c in candidates if c.is_dir() and str(c).lower() not in known]
+    if missing:
+        os.environ["PATH"] = os.pathsep.join(missing) + os.pathsep + current
+
+
 async def run(campaign_id: str | None = None) -> Path:
+    # Load project .env first so vision credentials reach the spawned MCP
+    # server and credential_preflight reports the real environment. Without
+    # this, the PERCEPTION_VISION_MODEL default below would shadow .env
+    # (load_dotenv never overrides existing variables).
+    from dotenv import load_dotenv
+    load_dotenv(HERE / ".env")
+    # Repair stale-PATH installs before preflight records them and before the
+    # MCP server inherits this environment.
+    _ensure_local_tool_paths()
+
     protocol = json.loads(PROTOCOL_PATH.read_text(encoding="utf-8"))
     campaign_id = campaign_id or "real_mcp_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     campaign_dir = VALIDATION_ROOT / campaign_id

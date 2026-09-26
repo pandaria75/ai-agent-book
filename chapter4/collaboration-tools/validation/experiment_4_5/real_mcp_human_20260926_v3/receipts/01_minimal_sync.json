@@ -1,0 +1,40 @@
+{
+  "case": "minimal_sync",
+  "tool": "mcp_spawn_subagent",
+  "arguments": {
+    "task": "Decide whether the refund meets the supplied policy and explain.",
+    "context_strategy": "minimal",
+    "mode": "sync",
+    "parent_context": {
+      "customer": "Ada",
+      "request": "Refund an item bought 3 days ago for SGD 80",
+      "policy": "Refunds within 7 days and below SGD 100 may be approved",
+      "irrelevant_history": [
+        "weather chat",
+        "shipping FAQ",
+        "newsletter"
+      ],
+      "private_note": "PRIVATE-MARKER-MUST-BE-FILTERED"
+    },
+    "role": "refund policy specialist",
+    "minimal_slice": [
+      "policy"
+    ]
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "subagent_id": "de157897-943a-4e5e-9dd6-0271e7576336",
+    "mode": "sync",
+    "status": "completed",
+    "context_strategy": "minimal",
+    "context_tokens": 56,
+    "prep_tokens": 0,
+    "prompt_tokens": 248,
+    "prepared_context": "[FROM_MAIN_AGENT] 子任务：Decide whether the refund meets the supplied policy and explain.\n[FROM_MAIN_AGENT] 手动挑选的必要信息：{\"policy\": \"Refunds within 7 days and below SGD 100 may be approved\"}",
+    "context_notes": "只传任务参数与手动挑选的最小切片，不转发主 Agent 完整轨迹",
+    "result": "{\"status\": \"need_info\", \"result\": \"The supplied policy states: 'Refunds within 7 days and below SGD 100 may be approved.' To decide whether a specific refund qualifies, I need the following case facts: (1) the purchase/transaction date, (2) the refund request date (to verify the 7-day window), (3) the refund amount in SGD (to verify it is below SGD 100), and (4) any other policy-relevant facts the main agent may have (e.g., product category exclusions, prior partial refunds, or eligibility conditions). With only the policy text provided and no case details, no approval or rejection decision can be made without fabricating facts.\", \"missing\": \"Case details: purchase date, refund request date, refund amount in SGD, and any additional eligibility conditions or exclusions applicable to this transaction.\"}"
+  },
+  "latency_seconds": 12.324
+}

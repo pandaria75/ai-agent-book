@@ -66,6 +66,14 @@ class Config:
         "credentials.json"
     )
     GITHUB_TOKEN: Optional[str] = os.getenv("GITHUB_TOKEN")
+
+    # SMTP (optional, powers the send_email tool)
+    SMTP_HOST: Optional[str] = os.getenv("SMTP_HOST")
+    SMTP_PORT: int = _env_int("SMTP_PORT", 587)
+    SMTP_USER: Optional[str] = os.getenv("SMTP_USER")
+    SMTP_PASSWORD: Optional[str] = os.getenv("SMTP_PASSWORD")
+    EMAIL_FROM: Optional[str] = os.getenv("EMAIL_FROM")
+    EMAIL_TO: Optional[str] = os.getenv("EMAIL_TO")
     
     # Safety Settings
     REQUIRE_APPROVAL_FOR_DANGEROUS_OPS: bool = (

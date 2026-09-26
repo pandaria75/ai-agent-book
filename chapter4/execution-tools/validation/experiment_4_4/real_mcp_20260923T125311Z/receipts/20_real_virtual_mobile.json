@@ -1,0 +1,16 @@
+{
+  "case": "real_virtual_mobile",
+  "tool": "virtual_mobile_execute",
+  "arguments": {
+    "container_name": "exp4-4-android",
+    "screenshot_path": "android-wifi-settings.png"
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": false,
+    "error": "AndroidWorld container is not running",
+    "container": "exp4-4-android"
+  },
+  "latency_seconds": 0.065
+}

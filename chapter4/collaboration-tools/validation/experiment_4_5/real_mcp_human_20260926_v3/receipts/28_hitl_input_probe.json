@@ -1,0 +1,17 @@
+{
+  "case": "hitl_input_probe",
+  "tool": "mcp_request_admin_input",
+  "arguments": {
+    "prompt": "Which policy version should the refund decision cite?",
+    "input_type": "text",
+    "timeout_seconds": 1
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": false,
+    "error": "Admin response timeout after 1 seconds",
+    "message": "Admin did not provide input"
+  },
+  "latency_seconds": 2.006
+}

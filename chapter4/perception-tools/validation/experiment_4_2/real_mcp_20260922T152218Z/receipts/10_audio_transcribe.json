@@ -1,0 +1,35 @@
+{
+  "case": "audio_transcribe",
+  "tool": "audio_transcribe",
+  "arguments": {
+    "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T152218Z\\fixtures\\media\\spoken-marker.wav",
+    "model_size": "tiny",
+    "language": "en"
+  },
+  "arguments_sha256": "f752ce2810330f944df1eacbe5525afed374eaa1a74f3c05f103d468fa8e17ca",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "local-whisper-or-openai",
+    "origin": "local-process"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "spoken-marker.wav",
+      "file_type": ".wav",
+      "model": "tiny",
+      "language": "en",
+      "transcription": " Experiment 4-1 Perception Tools Verified",
+      "word_count": 5
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T152218Z\\fixtures\\media\\spoken-marker.wav"
+    }
+  },
+  "elapsed_seconds": 2.34
+}

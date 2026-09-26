@@ -56,11 +56,14 @@ async def read_excel_data(
             sheets = [sheet_name]
         else:
             excel_file = pd.ExcelFile(path)
-            data = {}
-            sheets = excel_file.sheet_names
-            for sheet in sheets:
-                df = pd.read_excel(path, sheet_name=sheet, nrows=max_rows)
-                data[sheet] = df.to_dict(orient="records")
+            try:
+                data = {}
+                sheets = excel_file.sheet_names
+                for sheet in sheets:
+                    df = pd.read_excel(path, sheet_name=sheet, nrows=max_rows)
+                    data[sheet] = df.to_dict(orient="records")
+            finally:
+                excel_file.close()
         
         return {
             "success": True,
@@ -167,13 +170,15 @@ async def create_excel_worksheet(
             return {"success": False, "error": "File not found"}
         
         wb = load_workbook(path)
-        
-        if sheet_name in wb.sheetnames:
-            return {"success": False, "error": f"Sheet '{sheet_name}' already exists"}
-        
-        wb.create_sheet(sheet_name)
-        wb.save(path)
-        
+        try:
+            if sheet_name in wb.sheetnames:
+                return {"success": False, "error": f"Sheet '{sheet_name}' already exists"}
+
+            wb.create_sheet(sheet_name)
+            wb.save(path)
+        finally:
+            wb.close()
+
         return {
             "success": True,
             "file_path": str(path),
@@ -210,14 +215,16 @@ async def apply_excel_formula(
             return {"success": False, "error": "File not found"}
         
         wb = load_workbook(path)
-        
-        if sheet_name not in wb.sheetnames:
-            return {"success": False, "error": f"Sheet '{sheet_name}' not found"}
-        
-        ws = wb[sheet_name]
-        ws[cell] = formula
-        wb.save(path)
-        
+        try:
+            if sheet_name not in wb.sheetnames:
+                return {"success": False, "error": f"Sheet '{sheet_name}' not found"}
+
+            ws = wb[sheet_name]
+            ws[cell] = formula
+            wb.save(path)
+        finally:
+            wb.close()
+
         return {
             "success": True,
             "file_path": str(path),
@@ -249,22 +256,24 @@ async def get_excel_metadata(
             return {"success": False, "error": "File not found"}
         
         wb = load_workbook(path, data_only=True)
-        
-        sheets_info = []
-        for sheet_name in wb.sheetnames:
-            ws = wb[sheet_name]
-            sheets_info.append({
-                "name": sheet_name,
-                "max_row": ws.max_row,
-                "max_column": ws.max_column
-            })
-        
+        try:
+            sheets_info = []
+            for sheet_name in wb.sheetnames:
+                ws = wb[sheet_name]
+                sheets_info.append({
+                    "name": sheet_name,
+                    "max_row": ws.max_row,
+                    "max_column": ws.max_column
+                })
+        finally:
+            wb.close()
+
         return {
             "success": True,
             "file_path": str(path),
             "file_size": path.stat().st_size,
             "sheets": sheets_info,
-            "sheet_count": len(wb.sheetnames)
+            "sheet_count": len(sheets_info)
         }
         
     except Exception as e:

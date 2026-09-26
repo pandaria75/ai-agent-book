@@ -1,5 +1,6 @@
 """Focused tests for the Experiment 4-5 campaign controls."""
 
+import asyncio
 import json
 import os
 import sys
@@ -270,6 +271,44 @@ class SubagentTimestampTests(unittest.IsolatedAsyncioTestCase):
         )
         self.assertIsNotNone(created_at.utcoffset())
         self.assertEqual(created_at.utcoffset().total_seconds(), 0)
+
+
+class HitlInputToolTests(unittest.IsolatedAsyncioTestCase):
+    """request_admin_input: real input returned, timeout falls back conservatively."""
+
+    async def asyncSetUp(self) -> None:
+        hitl_tools._pending_requests.clear()
+
+    async def asyncTearDown(self) -> None:
+        hitl_tools._pending_requests.clear()
+
+    async def test_unanswered_input_request_reports_no_input(self) -> None:
+        result = await hitl_tools.request_admin_input(
+            "Which policy version should the refund decision cite?",
+            input_type="text",
+            timeout_seconds=1,
+        )
+        self.assertFalse(result["success"])
+        self.assertEqual(result["message"], "Admin did not provide input")
+        self.assertIn("timeout", result["error"].lower())
+
+    async def test_operator_input_is_returned_verbatim(self) -> None:
+        task = asyncio.create_task(
+            hitl_tools.request_admin_input(
+                "Which policy version should the refund decision cite?",
+                timeout_seconds=5,
+            )
+        )
+        await asyncio.sleep(0.2)
+        pending = await hitl_tools.list_pending_requests()
+        self.assertEqual(pending["count"], 1)
+        request_id = pending["requests"][0]["request_id"]
+        await hitl_tools.respond_to_request(
+            request_id, approved=True, admin_notes="policy v3"
+        )
+        result = await task
+        self.assertTrue(result["success"])
+        self.assertEqual(result["input"], "policy v3")
 
 
 if __name__ == "__main__":

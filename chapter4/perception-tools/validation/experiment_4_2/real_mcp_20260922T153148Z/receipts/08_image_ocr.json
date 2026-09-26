@@ -1,0 +1,38 @@
+{
+  "case": "image_ocr",
+  "tool": "image_ocr",
+  "arguments": {
+    "image_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png",
+    "language": "eng"
+  },
+  "arguments_sha256": "46c78582b0df7e42a1a8a629e9df0e17eded89d906c9bda02af6e29f4a7f3ecf",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "local-tesseract-ocr",
+    "origin": "local-process"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "ocr-source.png",
+      "image_size": [
+        1200,
+        360
+      ],
+      "extracted_text": "EXPERIMENT 4-1\nPERCEPTION TOOLS VERIFIED\n",
+      "text_length": 41,
+      "word_count": 5,
+      "language": "eng",
+      "method": "pytesseract"
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png"
+    }
+  },
+  "elapsed_seconds": 0.148
+}

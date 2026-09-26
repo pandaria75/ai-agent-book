@@ -1,0 +1,44 @@
+{
+  "case": "image_analyze",
+  "tool": "image_analyze",
+  "arguments": {
+    "image_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png",
+    "prompt": "Read the prominent text and describe the simple image."
+  },
+  "arguments_sha256": "69c0404ad4654f71cf785d4a2005b7090e9e9f5daa7271a9d5afba2c0f8226e2",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "configured-vision-api",
+    "origin": "live-api"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "ocr-source.png",
+      "prompt": "Read the prominent text and describe the simple image.",
+      "analysis": "**Prominent Text:**\n\nEXPERIMENT 4-1\nPERCEPTION TOOLS VERIFIED\n\n**Image Description:**\n\nThe image is a minimalist digital graphic featuring a stark white background. It contains two lines of black, sans-serif text aligned to the left. The text is written in all capital letters. The first line reads \"EXPERIMENT 4-1,\" and the second line directly beneath it reads \"PERCEPTION TOOLS VERIFIED.\" The rest of the image is empty white space.",
+      "model": "mimo-v2.6-pro",
+      "provider_receipt": {
+        "provider": "auto",
+        "response_id": "da228566-be11-494d-add5-5d6315e0b344_bccfc508889149818c2fc4d6db3e735d",
+        "response_model": "mimo-v2.6-pro",
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 437,
+          "completion_tokens": 756,
+          "total_tokens": 1193
+        },
+        "latency_seconds": 28.676
+      }
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png"
+    }
+  },
+  "elapsed_seconds": 29.324
+}

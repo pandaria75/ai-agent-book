@@ -1,10 +1,15 @@
 """Regression: all-sheets read must honor max_rows (not a hard 100-row cap)."""
 import asyncio
+import os
+import sys
 from pathlib import Path
 
 import pandas as pd
 import pytest
 from openpyxl import Workbook
+
+# Make the flat sibling modules importable (src/ uses bare imports).
+sys.path.insert(0, os.path.dirname(__file__))
 
 from excel_tools import read_excel_data
 

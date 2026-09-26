@@ -1,0 +1,18 @@
+{
+  "case": "desktop_mobile_capabilities",
+  "tool": "environment_capabilities",
+  "arguments": {},
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "computer_use_container_image_present": false,
+    "computer_use_host_stack_present": false,
+    "computer_use_active_session": false,
+    "android_world_container": "exp4-4-android",
+    "android_world_adb_present": false,
+    "android_active_devices": [],
+    "note": "Availability probe only; execution gates are established by the dedicated desktop and mobile action receipts."
+  },
+  "latency_seconds": 0.168
+}

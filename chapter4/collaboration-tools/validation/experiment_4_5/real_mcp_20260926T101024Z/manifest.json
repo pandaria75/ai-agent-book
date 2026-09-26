@@ -1,0 +1,193 @@
+{
+  "experiment": "4-5",
+  "campaign_id": "real_mcp_20260926T101024Z",
+  "status": "blocked",
+  "official_complete": false,
+  "files": [
+    {
+      "path": "catalog.json",
+      "bytes": 46233,
+      "sha256": "cbf888279469c2965289cd1f3f68fe838ffe3757996c96ba83045a4a8ff641a9"
+    },
+    {
+      "path": "llm_receipts.checkpoint.json",
+      "bytes": 18145,
+      "sha256": "6be42f26b292b128c14a4710bb332832c1e29b2727c784050348446f2a11b8d1"
+    },
+    {
+      "path": "llm_receipts.json",
+      "bytes": 18147,
+      "sha256": "7c051d15a1371784e3e71a48a10bf8f07042d0f7cfc2f3b418cf024213819f85"
+    },
+    {
+      "path": "protocol.json",
+      "bytes": 761,
+      "sha256": "0994c94584a027213ae62f895baf7eca79214bec6b73b527a153b08714202941"
+    },
+    {
+      "path": "receipts\\01_minimal_sync.json",
+      "bytes": 1958,
+      "sha256": "e6caebe1b0b8e8d3fa955882c8dd5f052f7d323e05792f7f6de04746b3b13fdb"
+    },
+    {
+      "path": "receipts\\02_llm_generated_sync.json",
+      "bytes": 2285,
+      "sha256": "8429c09afaa3483002ffdff0104b13419196e0a9f4321f7a632cd44f6346ab57"
+    },
+    {
+      "path": "receipts\\03_multi_turn_message.json",
+      "bytes": 1169,
+      "sha256": "63f025efdde28d8036470534011f207e4c37b0cc1ae1b692d0b03c6b9f47a36d"
+    },
+    {
+      "path": "receipts\\04_async_spawn.json",
+      "bytes": 970,
+      "sha256": "3b5cbf0518c351b20c0a5a0d11f8309138cdaec1d337ffb4d095246f22f9ecd1"
+    },
+    {
+      "path": "receipts\\05_async_status_1.json",
+      "bytes": 559,
+      "sha256": "90e7527aee5a8036015e252fc6fd451960827c7d47edff0b9c5dfa922baf664b"
+    },
+    {
+      "path": "receipts\\06_async_status_2.json",
+      "bytes": 559,
+      "sha256": "848824a75daf7cb20e4b4857243398b60227b1b2540fbcfec3f696a654c5636d"
+    },
+    {
+      "path": "receipts\\07_async_status_3.json",
+      "bytes": 559,
+      "sha256": "ec117da0a31b78f4c11e5e1840bfe0d174a88d9190c04e16ad45b7d29a5124c4"
+    },
+    {
+      "path": "receipts\\08_async_status_4.json",
+      "bytes": 559,
+      "sha256": "7045cb61129dfe78096b90d0d836576e1ec59932ac2bcc84dcea3a3ccb611d92"
+    },
+    {
+      "path": "receipts\\09_async_status_5.json",
+      "bytes": 559,
+      "sha256": "db9ab117a56db75d62791feb9f6c75de053b20ac4ab7f7a5bc32cf6415165fba"
+    },
+    {
+      "path": "receipts\\10_async_status_6.json",
+      "bytes": 559,
+      "sha256": "d7f92f0be9e29577ea265b70a061a3c15b9af385c17427956e9fd0b991d1e0f0"
+    },
+    {
+      "path": "receipts\\11_async_status_7.json",
+      "bytes": 559,
+      "sha256": "f5021da4a87f83421579b8f1f1266504bf107c7ebbf91a1abf64c41556f57f7e"
+    },
+    {
+      "path": "receipts\\12_async_status_8.json",
+      "bytes": 559,
+      "sha256": "e5b827255fba2b33278d20a4b04ca6d0aecee108eb4d82ef42c9ade0e7714c13"
+    },
+    {
+      "path": "receipts\\13_async_status_9.json",
+      "bytes": 559,
+      "sha256": "523d0222574d83bb12b3dc09be8173ac77093cd6c313b290a82933be1cd7101f"
+    },
+    {
+      "path": "receipts\\14_async_status_10.json",
+      "bytes": 560,
+      "sha256": "ee980e1aa9afc3d09998217684ebfcc1e32ca891118cb01d6b639d42fc29591d"
+    },
+    {
+      "path": "receipts\\15_async_status_11.json",
+      "bytes": 560,
+      "sha256": "3eed3f4dd1a1db487b3aa71e15553ce479fbb0e77a04d137a7598afb5f6ed286"
+    },
+    {
+      "path": "receipts\\16_async_status_12.json",
+      "bytes": 560,
+      "sha256": "a7b863fb336468434e0ecc3d885037532a75d7f706198017eef16b03642787b7"
+    },
+    {
+      "path": "receipts\\17_async_status_13.json",
+      "bytes": 560,
+      "sha256": "9c50b8e264ca7112a84591ca822c05de0e45e28fb111f8df6e4d7c9ab6e385d6"
+    },
+    {
+      "path": "receipts\\18_async_status_14.json",
+      "bytes": 560,
+      "sha256": "7273d8014c1c222cd5a83d5850f3399beb219d2e24060d39dd7d99238f407ab9"
+    },
+    {
+      "path": "receipts\\19_async_status_15.json",
+      "bytes": 560,
+      "sha256": "9607a85b80c8bf92b964b01ce7717f33cd98d190f9dcafa61c7220e1733bdd25"
+    },
+    {
+      "path": "receipts\\20_async_status_16.json",
+      "bytes": 892,
+      "sha256": "1c4fea62371cc5dcc307c801f26083ad2efbd5d98069e14484732fecda33d72d"
+    },
+    {
+      "path": "receipts\\21_cancel_spawn.json",
+      "bytes": 953,
+      "sha256": "cf6dba8f362b7e7ae26fd1d110462c015f0384fb1bd7c86522ddeeeaa8986eb5"
+    },
+    {
+      "path": "receipts\\22_cancel_subagent.json",
+      "bytes": 409,
+      "sha256": "7a789333375b7f2fb1641ab5368a38785be0f9597f9cde3019391b87b229860f"
+    },
+    {
+      "path": "receipts\\23_cancelled_status.json",
+      "bytes": 563,
+      "sha256": "be00aed9e48bb8ee73225b76c05edc0f7c0aa9fd4a19498e5fe7f514c9dcef99"
+    },
+    {
+      "path": "receipts\\24_hitl_pending.json",
+      "bytes": 855,
+      "sha256": "22aef8c89c725a183ee039eccc5ba26d575e3de70c459491c6426fc3993a5290"
+    },
+    {
+      "path": "receipts\\25_hitl_operator_response.json",
+      "bytes": 549,
+      "sha256": "293aa8a51310d62c897572fb9a31022f72ead306944e64f6eeabe81c7c78d654"
+    },
+    {
+      "path": "receipts\\26_hitl_approval.json",
+      "bytes": 795,
+      "sha256": "c419f64f89ead4f3b925436918a10a9458b49d79fb70c478536d7923792e0294"
+    },
+    {
+      "path": "receipts\\27_hitl_timeout.json",
+      "bytes": 560,
+      "sha256": "cd083dd5e1cbb5cfbd6edba1e8ad0ac1fe215a125688e301062b6fe95297e16f"
+    },
+    {
+      "path": "receipts\\28_hitl_input_probe.json",
+      "bytes": 461,
+      "sha256": "39085b146ab5ce7ff991c1e9ea5d2b4a270dce6523fd0cc5589421aba9c7530a"
+    },
+    {
+      "path": "receipts\\29_hitl_policy_assessment.json",
+      "bytes": 1502,
+      "sha256": "15ad0d51128de254689937cc7a1f374744686124c95214df25e089beb370caee"
+    },
+    {
+      "path": "receipts\\30_email_notification_preflight.json",
+      "bytes": 472,
+      "sha256": "a59b9f9f372a60481f35e609aa88e015833e54d01b8c1d5f5dbfd33198b1fd28"
+    },
+    {
+      "path": "receipts\\31_im_notification_preflight.json",
+      "bytes": 461,
+      "sha256": "6f405a2462743a3b247475104cd9a28b530f06c60317ae82b8a10d17667564c3"
+    },
+    {
+      "path": "receipts\\32_slack_notification_preflight.json",
+      "bytes": 419,
+      "sha256": "d2259a3a4a348794cfe381c6e01ef6f3714baa9ec1be780d63897f380d88c5c1"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 1115,
+      "sha256": "ae419c095a0ff78b960afc0da4e3d1e4fd4d23fc0e4e26e7dc8756ab6c5c7f29"
+    }
+  ]
+}

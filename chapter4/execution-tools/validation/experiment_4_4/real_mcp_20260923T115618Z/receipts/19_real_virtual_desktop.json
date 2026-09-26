@@ -1,0 +1,16 @@
+{
+  "case": "real_virtual_desktop",
+  "tool": "virtual_desktop_execute",
+  "arguments": {
+    "url": "https://example.com",
+    "screenshot_path": "computer-use-example.png",
+    "expected_title": "Example Domain"
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": false,
+    "error": "Missing desktop executables: ['Xvfb', 'xdotool', 'chromium']"
+  },
+  "latency_seconds": 0.033
+}

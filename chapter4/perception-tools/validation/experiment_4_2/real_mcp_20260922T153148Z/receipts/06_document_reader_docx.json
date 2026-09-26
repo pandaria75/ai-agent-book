@@ -1,0 +1,33 @@
+{
+  "case": "document_reader_docx",
+  "tool": "document_reader",
+  "arguments": {
+    "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.docx"
+  },
+  "arguments_sha256": "2c8132801f54aa353509b8b83443262c15a793dddbcc9aa81af0155370bc5fa3",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "format-aware-local-parser",
+    "origin": "local-process"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "file_name": "sample.docx",
+      "file_type": "docx",
+      "paragraph_count": 2,
+      "text": "Experiment 4-2 DOCX\nPERCEPTION-EXPERIMENT-4-1-VERIFIED",
+      "text_length": 54
+    },
+    "metadata": {
+      "file_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.docx",
+      "file_type": ".docx"
+    }
+  },
+  "elapsed_seconds": 0.014
+}

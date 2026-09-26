@@ -654,6 +654,8 @@ python cli.py demo --offline  # 离线演示（只跑文件系统 / 本地知识
   `waybackpy`）时仍可正常工作，只有真正调用相关工具时才导入对应模块。
 - 需要联网的工具在 `list` 中标注「联网」，需要授权/API Key 的工具标注了对应说明。
 
+![[clii_demo.png]]
+
 #### 与 MCP 客户端联用
 
 在 MCP 客户端（如 Claude Desktop）中配置：

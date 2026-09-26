@@ -3,8 +3,7 @@
 import asyncio
 import json
 from typing import Any
-from mcp.server import Server, NotificationOptions
-from mcp.server.models import InitializationOptions
+from mcp.server import Server
 import mcp.server.stdio
 import mcp.types as types
 
@@ -16,9 +15,6 @@ from external_tools import ExternalTools
 from extended_tools import ExtendedTools
 
 
-# Initialize server
-server = Server("execution-tools")
-
 # Initialize tools
 llm_helper = LLMHelper()
 file_tools = FileTools(llm_helper)
@@ -27,10 +23,9 @@ external_tools = ExternalTools(llm_helper)
 extended_tools = ExtendedTools()
 
 
-@server.list_tools()
-async def handle_list_tools() -> list[types.Tool]:
+async def handle_list_tools(ctx, params) -> types.ListToolsResult:
     """List available tools."""
-    return [
+    return types.ListToolsResult(tools=[
         types.Tool(
             name="file_write",
             description="Write content to a file with automatic syntax verification",
@@ -190,6 +185,19 @@ async def handle_list_tools() -> list[types.Tool]:
             }
         ),
         types.Tool(
+            name="send_email",
+            description="Send an email through a configured SMTP provider (requires credentials; dispatch is LLM-approved before sending)",
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "to": {"type": "string", "description": "Recipient address"},
+                    "subject": {"type": "string", "description": "Email subject"},
+                    "body": {"type": "string", "description": "Plain-text email body"}
+                },
+                "required": ["to", "subject", "body"]
+            }
+        ),
+        types.Tool(
             name="excel_create_with_formula_and_screenshot",
             description="Create an XLSX workbook, apply formulas, and render a real screenshot with LibreOffice",
             inputSchema={
@@ -248,15 +256,13 @@ async def handle_list_tools() -> list[types.Tool]:
             description="Inspect real Computer Use container and Android device availability",
             inputSchema={"type": "object", "properties": {}}
         )
-    ]
+    ])
 
 
-@server.call_tool()
-async def handle_call_tool(
-    name: str,
-    arguments: dict[str, Any] | None
-) -> list[types.TextContent]:
+async def handle_call_tool(ctx, params) -> types.CallToolResult:
     """Handle tool calls."""
+    name = params.name
+    arguments = params.arguments
     if arguments is None:
         arguments = {}
     
@@ -303,6 +309,12 @@ async def handle_call_tool(
                 head_branch=arguments["head_branch"],
                 base_branch=arguments.get("base_branch", "main")
             )
+        elif name == "send_email":
+            result = await external_tools.send_email(
+                to=arguments["to"],
+                subject=arguments["subject"],
+                body=arguments["body"]
+            )
         elif name == "excel_create_with_formula_and_screenshot":
             result = await extended_tools.excel_create_with_formula_and_screenshot(
                 arguments["output_path"], arguments["rows"])
@@ -323,15 +335,15 @@ async def handle_call_tool(
             raise ValueError(f"Unknown tool: {name}")
         
         # Format result
-        return [
+        return types.CallToolResult(content=[
             types.TextContent(
                 type="text",
                 text=json.dumps(result, indent=2)
             )
-        ]
+        ])
         
     except Exception as e:
-        return [
+        return types.CallToolResult(content=[
             types.TextContent(
                 type="text",
                 text=json.dumps({
@@ -339,24 +351,17 @@ async def handle_call_tool(
                     "error": f"Tool execution failed: {str(e)}"
                 }, indent=2)
             )
-        ]
+        ])
+
+
+server = Server("execution-tools", version="1.0.0",
+                on_list_tools=handle_list_tools, on_call_tool=handle_call_tool)
 
 
 async def main():
     """Run the MCP server."""
     async with mcp.server.stdio.stdio_server() as (read_stream, write_stream):
-        await server.run(
-            read_stream,
-            write_stream,
-            InitializationOptions(
-                server_name="execution-tools",
-                server_version="1.0.0",
-                capabilities=server.get_capabilities(
-                    notification_options=NotificationOptions(),
-                    experimental_capabilities={}
-                )
-            )
-        )
+        await server.run(read_stream, write_stream, server.create_initialization_options())
 
 
 if __name__ == "__main__":

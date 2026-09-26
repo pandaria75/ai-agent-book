@@ -1,0 +1,26 @@
+{
+  "case": "cancel_spawn",
+  "tool": "mcp_spawn_subagent",
+  "arguments": {
+    "task": "Write a detailed taxonomy with one thousand entries.",
+    "context_strategy": "minimal",
+    "mode": "async",
+    "role": "taxonomy specialist"
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "subagent_id": "0ac489ae-f877-4b8c-8dd1-600d3c764648",
+    "task_id": "3d279da3-835d-4559-a42b-e1987548834f",
+    "mode": "async",
+    "status": "running",
+    "context_strategy": "minimal",
+    "context_tokens": 18,
+    "prep_tokens": 0,
+    "prepared_context": "[FROM_MAIN_AGENT] 子任务：Write a detailed taxonomy with one thousand entries.",
+    "context_notes": "只传任务参数与手动挑选的最小切片，不转发主 Agent 完整轨迹",
+    "message": "子 Agent 已在后台启动，完成后可用 get_subagent_status 查询结果"
+  },
+  "latency_seconds": 0.001
+}

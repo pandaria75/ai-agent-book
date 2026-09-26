@@ -176,6 +176,14 @@ class ExecutionTools:
                 "returncode": result.get('returncode'),
                 "error": result.get('error'),
                 "compile_output": result.get('compile_output'),
+                # Close the execute-verify-feedback loop: failures carry a
+                # root-cause analysis the agent can act on next turn.
+                "error_analysis": (
+                    self.llm_helper.analyze_error(
+                        "code_interpreter", code,
+                        result.get('stderr') or result.get('error') or '')
+                    if not success else None
+                ),
                 "phase": result.get('phase'),
                 "execution_time": result.get('execution_time'),
                 "sandbox": result.get('sandbox'),
@@ -187,7 +195,9 @@ class ExecutionTools:
             return {
                 "success": False,
                 "error": error_output,
-                "language": language
+                "language": language,
+                "error_analysis": self.llm_helper.analyze_error(
+                    "code_interpreter", code, error_output),
             }
     
     async def virtual_terminal(
@@ -266,6 +276,11 @@ class ExecutionTools:
                 "stdout_file": stdout_file,
                 "stderr_file": stderr_file
             }
+            if result.returncode != 0:
+                # Close the execute-verify-feedback loop: failures carry a
+                # root-cause analysis the agent can act on next turn.
+                response["error_analysis"] = self.llm_helper.analyze_error(
+                    "virtual_terminal", command, stderr or stdout)
             return response
             
         except subprocess.TimeoutExpired:

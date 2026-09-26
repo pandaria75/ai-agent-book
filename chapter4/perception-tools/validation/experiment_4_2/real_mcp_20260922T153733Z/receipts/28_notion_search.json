@@ -1,0 +1,27 @@
+{
+  "case": "notion_search",
+  "tool": "notion_search",
+  "arguments": {
+    "query": "Experiment 4-2",
+    "page_size": 5
+  },
+  "arguments_sha256": "63ff09112d0311af4c93d2655ed583f910022f815abaa7ec710e6d29ab577d6b",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": false,
+  "substantive_observation": false,
+  "backend_provenance": {
+    "backend": "notion-api",
+    "origin": "private-live-api"
+  },
+  "simulation_markers": [],
+  "error_type": "missing_credentials",
+  "payload": {
+    "success": false,
+    "message": "Notion API key not configured. Set NOTION_API_KEY.",
+    "metadata": {
+      "error_type": "missing_credentials"
+    }
+  },
+  "elapsed_seconds": 0.009
+}

@@ -1,0 +1,18 @@
+{
+  "case": "hitl_human_response",
+  "tool": "mcp_respond_to_request",
+  "arguments": {
+    "request_id": "dbb3f103-1871-42a1-8490-4d6c25eb7ced",
+    "approved": true,
+    "admin_notes": "No additional notes supplied by the live human operator."
+  },
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "payload": {
+    "success": true,
+    "request_id": "dbb3f103-1871-42a1-8490-4d6c25eb7ced",
+    "approved": true,
+    "message": "Request approved successfully"
+  },
+  "latency_seconds": 0.003
+}

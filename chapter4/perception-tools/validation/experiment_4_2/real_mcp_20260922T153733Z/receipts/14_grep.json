@@ -1,0 +1,43 @@
+{
+  "case": "grep",
+  "tool": "grep",
+  "arguments": {
+    "pattern": "PERCEPTION-EXPERIMENT-4-1-VERIFIED",
+    "directory": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153733Z\\fixtures\\knowledge",
+    "file_pattern": "*.md",
+    "max_results": 10
+  },
+  "arguments_sha256": "0f8acb708568eae0612b9f860551c5efa14bfba7ef17450e7ef3f02dfa74609d",
+  "transport": "mcp-stdio",
+  "mcp_result_is_error": false,
+  "success": true,
+  "substantive_observation": true,
+  "backend_provenance": {
+    "backend": "local-regex-filesystem-search",
+    "origin": "local-filesystem"
+  },
+  "simulation_markers": [],
+  "error_type": null,
+  "payload": {
+    "success": true,
+    "message": {
+      "pattern": "PERCEPTION-EXPERIMENT-4-1-VERIFIED",
+      "results": [
+        {
+          "file": "mcp-notes.md",
+          "line_number": 3,
+          "line": "PERCEPTION-EXPERIMENT-4-1-VERIFIED",
+          "absolute_path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153733Z\\fixtures\\knowledge\\mcp-notes.md"
+        }
+      ],
+      "total_found": 1,
+      "truncated": false
+    },
+    "metadata": {
+      "directory": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153733Z\\fixtures\\knowledge",
+      "file_pattern": "*.md",
+      "recursive": true
+    }
+  },
+  "elapsed_seconds": 0.002
+}

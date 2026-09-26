@@ -11,7 +11,7 @@ import asyncio
 import logging
 from typing import Dict, Any, List, Optional
 
-from mcp.server.fastmcp import FastMCP
+from mcp.server.mcpserver import MCPServer
 from pydantic import Field
 from dotenv import load_dotenv
 
@@ -40,6 +40,7 @@ from hitl_tools import (
     respond_to_request,
     list_pending_requests
 )
+from hitl_policy import assess_hitl_requirement
 from timer_tools import (
     set_timer,
     set_recurring_timer,
@@ -89,7 +90,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize MCP server
-mcp = FastMCP("collaboration-tools")
+mcp = MCPServer("collaboration-tools")
 
 
 # ============================================================================
@@ -239,6 +240,17 @@ async def mcp_respond_to_request(
 async def mcp_list_pending_requests() -> str:
     """List all pending approval requests."""
     result = await list_pending_requests()
+    return str(result)
+
+
+@mcp.tool(description="Classify whether operations need human approval, human input, or can proceed")
+async def mcp_assess_hitl_requirement(
+    scenarios: List[Dict[str, Any]] = Field(
+        description="Operations to classify; each item is {id, description}"
+    )
+) -> str:
+    """Apply the HITL-recognition system prompt before acting."""
+    result = await assess_hitl_requirement(scenarios)
     return str(result)
 
 
@@ -544,7 +556,7 @@ async def _serve() -> None:
     which drops them from storage. Restored timers therefore never fired and
     were lost from memory *and* disk.
 
-    `FastMCP.run(transport="stdio")` is itself just `anyio.run(run_stdio_async)`,
+    `MCPServer.run(transport="stdio")` is itself just `anyio.run(run_stdio_async)`,
     so awaiting `run_stdio_async()` here is the same server entry point.
     """
     await _load_timers()

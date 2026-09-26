@@ -1,0 +1,97 @@
+{
+  "marker": "PERCEPTION-EXPERIMENT-4-1-VERIFIED",
+  "paths": {
+    "fixtures": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures",
+    "knowledge": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\knowledge",
+    "note": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\knowledge\\mcp-notes.md",
+    "pdf": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.pdf",
+    "docx": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.docx",
+    "pptx": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.pptx",
+    "image": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png",
+    "audio": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\spoken-marker.wav",
+    "video": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\visual-marker.mp4",
+    "downloads": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\downloads",
+    "mutation": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\mutation_workspace",
+    "outside_witness": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\outside-witness.txt"
+  },
+  "files": [
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\knowledge\\mcp-notes.md",
+      "bytes": 121,
+      "sha256": "3136a68bdf55eb97f76cc60a607597d5c46e8e8d874d5c90f265d97481ca1a81"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.pdf",
+      "bytes": 1400,
+      "sha256": "0a9c3bd9d4ab4059664da15897745c67beb8849d26605f07538317a4418c642d"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.docx",
+      "bytes": 36653,
+      "sha256": "1d01a8efadd04c61d9f8fdca41424e0fff68ff3e61c6a5e3e71f081d4328ff63"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\documents\\sample.pptx",
+      "bytes": 28277,
+      "sha256": "004c6a606a669b2a3ae6daa9fc26513487cc42be8117d37546a2e179154e0e00"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png",
+      "bytes": 15776,
+      "sha256": "a43fd60ab0c374ff3576a4aaf7cf46e619e561dd6a2f248cc55799535d54b124"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\spoken-marker.wav",
+      "bytes": 229952,
+      "sha256": "a2d39e34e941e9c58e127c855113b1505199e4a137aa2f32d104bfbd30596d5b"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\visual-marker.mp4",
+      "bytes": 10073,
+      "sha256": "115cfdf009ce2780c32b2eadf5241406a5478570c231ab511ba166c0740f9046"
+    },
+    {
+      "path": "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\outside-witness.txt",
+      "bytes": 29,
+      "sha256": "412af37054195d98c5d9b7f943e8a17b456831edc3f01105f200970a569bd99b"
+    }
+  ],
+  "generators": {
+    "say": {
+      "executable": "powershell",
+      "arguments": [
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        "Add-Type -AssemblyName System.Speech; $s = New-Object System.Speech.Synthesis.SpeechSynthesizer; $s.SetOutputToWaveFile('E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\spoken-marker.wav'); $s.Speak('Experiment four one. Perception tools verified.'); $s.Dispose()"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsed_seconds": 0.34
+    },
+    "ffmpeg": {
+      "executable": "ffmpeg",
+      "arguments": [
+        "-y",
+        "-loglevel",
+        "error",
+        "-loop",
+        "1",
+        "-i",
+        "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\ocr-source.png",
+        "-t",
+        "1.5",
+        "-r",
+        "3",
+        "-pix_fmt",
+        "yuv420p",
+        "E:\\ai_work\\ai-agent-book\\chapter4\\perception-tools\\validation\\experiment_4_2\\real_mcp_20260922T153148Z\\fixtures\\media\\visual-marker.mp4"
+      ],
+      "returncode": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "elapsed_seconds": 0.08
+    }
+  }
+}
