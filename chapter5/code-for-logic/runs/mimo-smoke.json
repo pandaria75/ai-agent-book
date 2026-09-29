@@ -1,0 +1,391 @@
+{
+  "schema_version": "2.0",
+  "experiment": "5-2",
+  "generated_at_utc": "2026-09-29T13:59:20.590451+00:00",
+  "provider": "openai",
+  "model": "mimo-v2.6-pro",
+  "mode": "both",
+  "tasks": 4,
+  "dataset_manifest": null,
+  "dataset_manifest_sha256": null,
+  "pure": [
+    {
+      "id": "kk01",
+      "num": 2,
+      "pred": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "gold": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [],
+      "text": "## 推理过程\n\n**设变量：** A、B 各为骑士（说真话）或无赖（说假话）。\n\n**陈述内容：**\n- A：「B 是无赖。」\n- B：「我们两人都不是骑士。」＝「A 和 B 都是无赖。」\n\n---\n\n**逐一枚举四种可能：**\n\n**情形 1：A 是骑士，B 是骑士**\n- A 说「B 是无赖」——但 B 是骑士，该陈述为假。骑士不能说假话。**矛盾。**\n\n**情形 2：A 是骑士，B 是无赖**\n- A 说「B 是无赖」——B 确实是无赖，陈述为真，骑士说真话 ✓\n- B 说「两人都不是无赖…」（即两人都不是骑士）——实际 A 是骑士，该陈述为假。无赖说假话 ✓\n- **一致。**\n\n**情形 3：A 是无赖，B 是骑士**\n- A 说「B 是无赖」——B 是骑士，陈述为假，无赖说假话 ✓\n- B 说「两人都不是骑士」——但 B 自己就是骑士，该陈述为假。骑士不能说假话。**矛盾。**\n\n**情形 4：A 是无赖，B 是无赖**\n- A 说「B 是无赖」——B 确实是无赖，陈述为真。但无赖不能说真话。**矛盾。**\n\n---\n\n**结论：** 唯一无矛盾的情形是情形 2：A 是骑士，B 是无赖。\n\n```json\n{\"A\": \"knight\", \"B\": \"knave\"}\n```",
+      "used_python_constraint": false,
+      "duration_s": 17.485,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "be40f2e0-b196-487f-afa3-9182be70d339_e2508e6ed822418895baca42ef41f281",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 176,
+            "completion_tokens": 589,
+            "total_tokens": 765,
+            "cached_prompt_tokens": 0
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    },
+    {
+      "id": "kk02",
+      "num": 2,
+      "pred": {
+        "A": "knave",
+        "B": "knight"
+      },
+      "gold": {
+        "A": "knave",
+        "B": "knight"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [],
+      "text": "## 推理过程\n\n**记号**：设命题 P = 「A 与 B 同类」，Q = 「A 与 B 异类」。显然 P 与 Q 互为否定，恰有一真一假。\n\n**第一步：观察两句话的逻辑关系**\n\n- A 说的是 P\n- B 说的是 Q = ¬P\n\n两人的陈述互相矛盾，因此**必然有一句真、一句假**。\n\n**第二步：真假归属**\n\n骑士说真话，无赖说假话。既然恰好一真一假，那么**恰好一人是骑士、一人是无赖**。\n\n**第三步：逐案检验**\n\n*情形 1：A 是骑士（P 为真）*\n- P 真 ⟹ A 与 B 同类 ⟹ B 也是骑士。\n- 但 B 是骑士时，B 的话 Q 必须为真，即 A 与 B 异类 —— 与「同类」矛盾。\n- ✗ 矛盾，排除。\n\n*情形 2：A 是无赖（P 为假）*\n- P 假 ⟹ A 与 B 异类 ⟹ B 是骑士。\n- B 是骑士，则 B 的话 Q 必须为真，即 A 与 B 异类 —— 与上面一致。\n- ✓ 自洽，成立。\n\n**第四步：结论**\n\nA 说假话（无赖），B 说真话（骑士），所有陈述恰好满足。\n\n验证：\n- A（无赖）说「我们同类」→ 实际异类 → 说谎 ✔\n- B（骑士）说「我们异类」→ 实际异类 → 说真话 ✔\n\n```json\n{\"A\": \"knave\", \"B\": \"knight\"}\n```",
+      "used_python_constraint": false,
+      "duration_s": 13.609,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "709724f3-e06a-4348-b88b-d6355e847494_37833f77c56340279d4b1fa3cc2dea7b",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 188,
+            "completion_tokens": 520,
+            "total_tokens": 708,
+            "cached_prompt_tokens": 128
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    },
+    {
+      "id": "kk03",
+      "num": 2,
+      "pred": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "gold": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [],
+      "text": "## 推理过程\n\n**设定**：骑士永远说真话，无赖永远说假话。\n\n**A 的陈述**：「我们当中至少有一个骑士。」\n**B 的陈述**：「A 是无赖。」\n\n### 假设情形一：A 是骑士\n\n- A 说真话 → 「A、B 中至少有一个骑士」必须为真。由于 A 本身就是骑士，这句话确实为真 ✓\n- B 说「A 是无赖」，而 A 是骑士，故 B 的话为假 → B 是无赖 ✓（无赖说假话，自洽）\n\n此情形完全自洽。\n\n### 假设情形二：A 是无赖\n\n- A 说假话 → 「A、B 中至少有一个骑士」为假 → A、B **都不是**骑士，即 B 也是无赖。\n- 但 B 是无赖，那么 B 的话「A 是无赖」必须为假 → A 应是骑士。\n- 这与「A 是无赖」的假设直接矛盾 ✗\n\n此情形不成立。\n\n### 结论\n\n只有情形一成立：**A 是骑士，B 是无赖**。\n\n{\"A\": \"knight\", \"B\": \"knave\"}",
+      "used_python_constraint": false,
+      "duration_s": 7.375,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "feeb363a-df17-4435-85bd-9f5fa32128d5_a4972fb2743f40b29fcb3b42c060e583",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 176,
+            "completion_tokens": 401,
+            "total_tokens": 577,
+            "cached_prompt_tokens": 128
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    },
+    {
+      "id": "kk04",
+      "num": 3,
+      "pred": {
+        "A": "knave",
+        "B": "knight",
+        "C": "knave"
+      },
+      "gold": {
+        "A": "knave",
+        "B": "knight",
+        "C": "knave"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [],
+      "text": "## 设定与符号\n\n用 `K(x)` 表示 x 是骑士（说话为真），`N(x)` 表示 x 是无赖（说话为假）。\n\n三句话的真值条件：\n\n1. A 的话「B 是无赖」：A 为真 ↔ N(B)\n2. B 的话「C 是无赖」：B 为真 ↔ N(C)\n3. C 的话「A 和 B 都是无赖」：C 为真 ↔ (N(A) ∧ N(B))\n\n## 分情况讨论\n\n**情形一：假设 A 是骑士。**\n\n- A 说真话 ⇒ B 是无赖。\n- B 是无赖 ⇒ B 的话为假 ⇒ 「C 是无赖」为假 ⇒ C 是骑士。\n- C 是骑士 ⇒ C 的话为真 ⇒ A 与 B 都是无赖。\n- 但 A 是骑士，与「A 是无赖」矛盾。\n\n⇒ 矛盾，故 **A 不是骑士，A 是无赖**。\n\n**情形二：A 是无赖。**\n\n- A 说假话 ⇒ 「B 是无赖」为假 ⇒ **B 是骑士**。\n- B 是骑士 ⇒ B 的话为真 ⇒ **C 是无赖**。\n- C 是无赖 ⇒ C 的话必须为假 ⇒ 「A 和 B 都是无赖」为假 ⇒ A、B 至少有一个是骑士。\n  检验：A 是无赖、B 是骑士，确实不满足「两人都无赖」，该陈述为假 ✓，与 C 是无赖一致。\n\n所有条件均满足，且情形一已被排除，因此解唯一。\n\n## 验证\n\n- A（无赖）说「B 是无赖」→ 假 ✓\n- B（骑士）说「C 是无赖」→ 真 ✓\n- C（无赖）说「A 和 B 都是无赖」→ 假 ✓\n\n{\"A\": \"knave\", \"B\": \"knight\", \"C\": \"knave\"}",
+      "used_python_constraint": false,
+      "duration_s": 11.375,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "3f42a0a4-9841-4303-b654-779c538e9758_1c05c95033b44a0297ae301479a18dd7",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 191,
+            "completion_tokens": 615,
+            "total_tokens": 806,
+            "cached_prompt_tokens": 0
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    }
+  ],
+  "pure_acc": 1.0,
+  "code": [
+    {
+      "id": "kk01",
+      "num": 2,
+      "pred": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "gold": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [
+        "\nfrom constraint import Problem\n\np = Problem()\nfor name in ['A', 'B']:\n    p.addVariable(name, [True, False])\n\n# A: \"B 是无赖\"  ->  A == (not B)\np.addConstraint(lambda a, b: a == (not b), ['A', 'B'])\n\n# B: \"我们两人都不是骑士\"  ->  B == ((not A) and (not B))\np.addConstraint(lambda a, b: b == ((not a) and (not b)), ['A', 'B'])\n\nsolutions = p.getSolutions()\nprint(\"解的个数:\", len(solutions))\nfor s in solutions:\n    print({k: ('knight' if v else 'knave') for k, v in s.items()})\n"
+      ],
+      "text": "## 求解过程\n\n**建模**（True = 骑士，False = 无赖）：\n\n| 变量 | 含义 |\n|------|------|\n| A | A 是否为骑士 |\n| B | B 是否为骑士 |\n\n**约束（每句话都写成双条件 `X == 话语真值`）：**\n\n1. **A 说「B 是无赖」** → `A == (not B)`\n2. **B 说「我们两人都不是骑士」** → `B == ((not A) and (not B))`\n\n**求解器输出**：唯一解 `{A: knight, B: knave}`\n\n**验证**：\n- A 是骑士 → A 说真话 → B 确实是无赖 ✓\n- B 是无赖 → B 说假话 → 「两人都不是骑士」为假 → 至少有一人是骑士（正是 A）✓\n\n---\n\n{\"A\": \"knight\", \"B\": \"knave\"}",
+      "used_python_constraint": true,
+      "duration_s": 15.359,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "7af80775-e432-4970-ba81-48e722fdd6cc_25c88dddd9af4e6ea914f19823082399",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "tool_calls",
+          "usage": {
+            "prompt_tokens": 782,
+            "completion_tokens": 224,
+            "total_tokens": 1006,
+            "cached_prompt_tokens": 0
+          },
+          "tool_calls": 1
+        },
+        {
+          "turn": 2,
+          "response_id": "62333e7b-e00e-4f0b-8560-47ff62241fa8_37e9d040c5d94a0abf1e343ee3bb2c07",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1035,
+            "completion_tokens": 274,
+            "total_tokens": 1309,
+            "cached_prompt_tokens": 0
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    },
+    {
+      "id": "kk02",
+      "num": 2,
+      "pred": {
+        "A": "knave",
+        "B": "knight"
+      },
+      "gold": {
+        "A": "knave",
+        "B": "knight"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [
+        "from constraint import Problem\n\np = Problem()\nfor name in ['A', 'B']:\n    p.addVariable(name, [True, False])\n\n# A: \"我和 B 是同一类人\"  ->  A == (A == B)\np.addConstraint(lambda a, b: a == (a == b), ['A', 'B'])\n\n# B: \"我和 A 是不同类人\"  ->  B == (B != A)\np.addConstraint(lambda a, b: b == (b != a), ['A', 'B'])\n\nsols = p.getSolutions()\nfor s in sols:\n    print({k: ('knight' if v else 'knave') for k, v in s.items()})\nprint(\"解的数量:\", len(sols))\n"
+      ],
+      "text": "## 建模与求解\n\n**变量**：A、B ∈ {True(骑士), False(无赖)}\n\n**双条件约束**（不是把陈述当事实！）：\n\n1. A 说「我和 B 是同一类人」：`A == (A == B)`\n   - A 是骑士 ⟺ A 与 B 同类；A 是无赖 ⟺ A 与 B 异类。\n\n2. B 说「我和 A 是不同类人」：`B == (B != A)`\n   - B 是骑士 ⟺ B 与 A 异类；B 是无赖 ⟺ B 与 A 同类。\n\n**求解器输出**（唯一解）：\n\n| 居民 | 类型 |\n|---|---|\n| A | knave（无赖） |\n| B | knight（骑士） |\n\n**验证**：A、B 异类 → A 说「同类」是假话 → A 确为无赖 ✓；B 说「不同类」是真话 → B 确为骑士 ✓。\n\n{\"A\": \"knave\", \"B\": \"knight\"}",
+      "used_python_constraint": true,
+      "duration_s": 11.469,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "4cd18747-4a9a-4e91-9879-dbb043c15c06_f574bd8dc9c04b1780ee757bcccc4406",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "tool_calls",
+          "usage": {
+            "prompt_tokens": 794,
+            "completion_tokens": 314,
+            "total_tokens": 1108,
+            "cached_prompt_tokens": 640
+          },
+          "tool_calls": 1
+        },
+        {
+          "turn": 2,
+          "response_id": "fddeeb82-ebed-44bf-a9f9-9bf30bf61224_adf20ab10eb24516b0435f5efb0f81e5",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1134,
+            "completion_tokens": 261,
+            "total_tokens": 1395,
+            "cached_prompt_tokens": 640
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    },
+    {
+      "id": "kk03",
+      "num": 2,
+      "pred": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "gold": {
+        "A": "knight",
+        "B": "knave"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [
+        "\nfrom constraint import Problem\n\np = Problem()\nfor name in ['A', 'B']:\n    p.addVariable(name, [True, False])\n\n# A: \"我们当中至少有一个骑士\"  ->  A == (A or B)\np.addConstraint(lambda a, b: a == (a or b), ['A', 'B'])\n\n# B: \"A 是无赖\"               ->  B == (not A)\np.addConstraint(lambda a, b: b == (not a), ['A', 'B'])\n\nsolutions = p.getSolutions()\nfor s in solutions:\n    print({k: ('knight' if v else 'knave') for k, v in s.items()})\n\nprint(\"num_solutions =\", len(solutions))\n"
+      ],
+      "text": "求解器返回唯一解：\n\n- **A 是骑士**：他说\"我们当中至少有一个骑士\"为真（A 自己就是骑士）✓\n- **B 是无赖**：他说\"A 是无赖\"为假，与 A 是骑士一致 ✓\n\n两条双条件约束同时满足，解唯一。\n\n{\"A\": \"knight\", \"B\": \"knave\"}",
+      "used_python_constraint": true,
+      "duration_s": 8.297,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "45d2d0b2-d9b8-4ca3-a50f-be6dcbd8da1c_aa323b7c89db4e7bbb40ae1d47a55c29",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "tool_calls",
+          "usage": {
+            "prompt_tokens": 782,
+            "completion_tokens": 220,
+            "total_tokens": 1002,
+            "cached_prompt_tokens": 640
+          },
+          "tool_calls": 1
+        },
+        {
+          "turn": 2,
+          "response_id": "6c3d4821-765e-4ec4-b54a-930b3ca67589_f117ed336c9149728d62b26d496013fa",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1029,
+            "completion_tokens": 138,
+            "total_tokens": 1167,
+            "cached_prompt_tokens": 768
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    },
+    {
+      "id": "kk04",
+      "num": 3,
+      "pred": {
+        "A": "knave",
+        "B": "knight",
+        "C": "knave"
+      },
+      "gold": {
+        "A": "knave",
+        "B": "knight",
+        "C": "knave"
+      },
+      "correct": true,
+      "source": null,
+      "codes": [
+        "\nfrom constraint import Problem\n\np = Problem()\nfor name in ['A','B','C']:\n    p.addVariable(name, [True, False])\n\n# A: \"B is a knave\"  ->  A == (not B)\np.addConstraint(lambda a,b: a == (not b), ['A','B'])\n\n# B: \"C is a knave\"  ->  B == (not C)\np.addConstraint(lambda b,c: b == (not c), ['B','C'])\n\n# C: \"A and B are both knaves\"  ->  C == ((not A) and (not B))\np.addConstraint(lambda a,b,c: c == ((not a) and (not b)), ['A','B','C'])\n\nsols = p.getSolutions()\nfor s in sols:\n    print({k:('knight' if v else 'knave') for k,v in s.items()})\nprint(\"count:\", len(sols))\n"
+      ],
+      "text": "求解器给出唯一解：\n\n- **A = 无赖**：A 说「B 是无赖」，但 B 其实是骑士，所以 A 说了假话 → A 确为无赖 ✓\n- **B = 骑士**：B 说「C 是无赖」，C 确为无赖，说了真话 → B 确为骑士 ✓\n- **C = 无赖**：C 说「A 和 B 都是无赖」，但 B 是骑士，此话为假 → C 确为无赖 ✓\n\n三种陈述的双条件约束全部满足，且解唯一。\n\n{\"A\": \"knave\", \"B\": \"knight\", \"C\": \"knave\"}",
+      "used_python_constraint": true,
+      "duration_s": 11.672,
+      "provider_receipts": [
+        {
+          "turn": 1,
+          "response_id": "e25d3a8b-6270-4571-a4f1-85b86fffb012_c7a382054576477e934f54eb21742f5a",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "tool_calls",
+          "usage": {
+            "prompt_tokens": 797,
+            "completion_tokens": 281,
+            "total_tokens": 1078,
+            "cached_prompt_tokens": 640
+          },
+          "tool_calls": 1
+        },
+        {
+          "turn": 2,
+          "response_id": "5d1fa29f-7dbf-424d-baa3-cdb40c03e2aa_7167d826a53c4e1ba56a230d2b37e7eb",
+          "response_model": "mimo-v2.6-pro",
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 1110,
+            "completion_tokens": 250,
+            "total_tokens": 1360,
+            "cached_prompt_tokens": 768
+          },
+          "tool_calls": 0
+        }
+      ],
+      "provider_error": null
+    }
+  ],
+  "code_acc": 1.0,
+  "paired_analysis": {
+    "test": "two-sided exact McNemar/binomial test on discordant pairs",
+    "n": 4,
+    "contingency": {
+      "pure_only": 0,
+      "code_only": 0,
+      "discordant": 0
+    },
+    "pure_accuracy": 1.0,
+    "code_accuracy": 1.0,
+    "accuracy_delta": 0.0,
+    "code_accuracy_wilson_95": [
+      0.5101091635454027,
+      1.0
+    ],
+    "p_value": 1.0,
+    "python_constraint_tool_use_rate": 1.0,
+    "acceptance": {
+      "code_accuracy_over_90_percent": true,
+      "code_significantly_higher_than_pure": false,
+      "all_code_trajectories_used_python_constraint": true
+    }
+  },
+  "completion": {
+    "status": "incomplete",
+    "checks": {
+      "mode_is_full_paired_campaign": true,
+      "exact_pinned_stratified_dataset_manifest": false,
+      "all_84_unique_tasks_present": false,
+      "all_pure_trajectories_complete": false,
+      "all_code_trajectories_complete": false,
+      "zero_provider_errors": true,
+      "every_code_trajectory_used_python_constraint": false
+    },
+    "provider_errors": [],
+    "expected_tasks_per_arm": 84
+  },
+  "official_complete": false
+}
