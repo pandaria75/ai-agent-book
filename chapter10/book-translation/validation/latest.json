@@ -1,8 +1,8 @@
 {
   "experiment": "10-3",
   "status": "complete",
-  "evidence": "validation/real_20260730T061500Z_v4/evidence.json",
-  "evidence_sha256": "9e765aa3d9b194346e1b9b5398018b99c369c2f8c79df231a433cc9e89ab1b5e",
+  "evidence": "validation\\real_20261005T062715Z\\evidence.json",
+  "evidence_sha256": "f265da71d1b1b802aeea703047718a52836733869bd574587781f821287976fb",
   "acceptance_gates": {
     "real_illustrated_code_heavy_technical_book": true,
     "four_agent_roles_executed": true,
@@ -19,43 +19,43 @@
   },
   "comparison": {
     "context_peak": {
-      "orchestration_manager": 4618,
-      "single_agent": 94355
+      "orchestration_manager": 2978,
+      "single_agent": 91049
     },
     "wall_clock_seconds": {
-      "orchestration": 270.8285449161194,
-      "single_agent": 254.12669750023633
+      "orchestration": 1447.3827206999995,
+      "single_agent": 623.5328336999519
     },
     "total_tokens": {
-      "orchestration": 203277,
-      "single_agent": 1317808
+      "orchestration": 270869,
+      "single_agent": 673532
     }
   },
   "quality_aggregate": {
     "modes": {
       "orchestration": {
         "dimension_means": {
-          "accuracy": 4.730769230769231,
-          "fluency": 4.615384615384615,
-          "terminology": 4.846153846153846,
-          "markdown_code_fidelity": 4.423076923076923
+          "accuracy": 3.769230769230769,
+          "fluency": 4.076923076923077,
+          "terminology": 3.6923076923076925,
+          "markdown_code_fidelity": 4.076923076923077
         },
-        "overall_mean": 4.653846153846154
+        "overall_mean": 3.9038461538461537
       },
       "single_agent": {
         "dimension_means": {
-          "accuracy": 4.538461538461538,
-          "fluency": 4.3076923076923075,
-          "terminology": 4.346153846153846,
-          "markdown_code_fidelity": 4.730769230769231
+          "accuracy": 4.3076923076923075,
+          "fluency": 4.384615384615385,
+          "terminology": 4.384615384615385,
+          "markdown_code_fidelity": 4.461538461538462
         },
-        "overall_mean": 4.480769230769231
+        "overall_mean": 4.384615384615385
       }
     },
     "chapter_preferences": {
-      "orchestration": 15,
-      "single_agent": 11,
-      "tie": 0
+      "orchestration": 2,
+      "single_agent": 9,
+      "tie": 2
     }
   }
 }

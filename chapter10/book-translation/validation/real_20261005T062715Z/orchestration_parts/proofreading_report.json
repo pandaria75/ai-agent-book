@@ -1,0 +1,87 @@
+{
+  "issues": [
+    {
+      "chapter": "Getting Started with AI Agents [Part 1/5]",
+      "type": "术语不一致",
+      "detail": "「行动接口」与「动作接口」混用：第1章正文和产品对比表统一使用「行动接口」（如"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 5/5]",
+      "type": "术语不一致",
+      "detail": "章节小结和思考题中改为「动作接口」和「动作空间」，与前文正文的「行动接口」「行动空间」「观测空间」「行动空间」不一致（例如小结写作"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 5/5]",
+      "type": "术语不一致",
+      "detail": "小结中使用「观察空间」和「动作空间」，而第1章正文各处使用「观测空间」和「行动空间」（如标题"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 4/5]",
+      "type": "术语不一致",
+      "detail": "安全护栏一节两处使用「纠偏」（"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 5/5]",
+      "type": "术语不一致",
+      "detail": "设计模式一节回顾前文三条更新路径时写作「外部产物更新」和「上下文内适应」，而第1章前文定义时使用「外部工件」和「上下文自适应」，前后不一致。"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 4/5]",
+      "type": "术语不一致",
+      "detail": "「人工在环」与「人在回路」混用：自主智能体一节使用「人在回路的检查点」，安全护栏和人工干预一节则使用「人工在环」，同一概念出现两种译法。"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 5/5]",
+      "type": "术语不一致",
+      "detail": "小结中的公式写作"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 5/5]",
+      "type": "流畅性",
+      "detail": "章节小结标题为"
+    },
+    {
+      "chapter": "Getting Started with AI Agents [Part 5/5]",
+      "type": "流畅性",
+      "detail": "设计模式一节写作"
+    },
+    {
+      "chapter": "Context Engineering [Part 3/8]",
+      "type": "流畅性",
+      "detail": "「Chat Template」一节严重截断：正文在"
+    },
+    {
+      "chapter": "Context Engineering [Part 5/8]",
+      "type": "前后矛盾",
+      "detail": "思考题引用「实验 2-3 发现，滑动窗口式的历史对话会导致智能体反复执行相同的工具调用」，但全文实验编号从 2-1、2-2 直接跳到 2-4，实验 2-3 在提供的译文中缺失，可能是因 Chat Template 节截断导致遗漏。"
+    },
+    {
+      "chapter": "Context Engineering [Part 6/8]",
+      "type": "术语不一致",
+      "detail": "第2章多处使用「消融研究」（实验 2-4 标题"
+    },
+    {
+      "chapter": "Context Engineering [Part 2/8]",
+      "type": "术语不一致",
+      "detail": "实验 2-1 中将推理-行动循环的括注写作"
+    },
+    {
+      "chapter": "Context Engineering [Part 8/8]",
+      "type": "流畅性",
+      "detail": "实验 2-7 末句「比事先罗列几十条规则更好的迭代起点」缺少谓语"
+    },
+    {
+      "chapter": "Context Engineering [Part 4/8]",
+      "type": "前后矛盾",
+      "detail": "KV缓存技术说明中先给出「不要手动拼接消息」的强指令，随后又补充「手动拼接的前缀只要逐字节保持稳定，同样可以被缓存」。虽然属于补充说明，但语气上前后呈现矛盾关系，建议在首条指令中即加上限定语"
+    }
+  ],
+  "chapters_need_revision": [
+    "Getting Started with AI Agents [Part 5/5]",
+    "Getting Started with AI Agents [Part 4/5]",
+    "Getting Started with AI Agents [Part 1/5]",
+    "Context Engineering [Part 3/8]",
+    "Context Engineering [Part 5/8]"
+  ],
+  "summary": "整体译文质量较高，术语基本遵循术语表（如智能体、上下文、驾驭层、KV缓存、推理-行动、工具调用、提示工程、上下文工程、安全护栏、词元等），章节结构清晰，技术解释准确流畅。主要问题集中在：(1) 同一概念在不同段落间存在多种译法（行动/动作接口、观测/观察空间、纠正/纠偏、外部工件/外部产物、人工在环/人在回路等），建议全文统一；(2) Chat Template 一节截断且导致实验 2-3 缺失；(3) 第1章小结中的公式混用英文「Agent」与中文组件名，与前文不一致；(4) 「消融实验」与「消融研究」跨章不统一。建议优先修订 Getting Started 第1章（统一接口与空间相关术语）和 Context Engineering 第3部分（补全 Chat Template 节），其次统一两章的章节小结标题和消融实验用词。"
+}

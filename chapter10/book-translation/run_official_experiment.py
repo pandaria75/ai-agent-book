@@ -238,6 +238,24 @@ def _parse_json(text: str) -> dict[str, Any]:
 
 
 def make_judge() -> tuple[OpenAI, str, str]:
+    """Build the quality judge from explicit judge settings or the .env model.
+
+    A formal campaign may deliberately use ARK or Mistral as an independent
+    judge.  For ordinary local runs, however, the translation endpoint in
+    ``.env`` is also a valid OpenAI-compatible judge endpoint.  This fallback
+    lets one configuration drive the whole experiment.
+    """
+    judge_key = os.getenv("JUDGE_API_KEY")
+    if judge_key:
+        judge_base_url = os.getenv("JUDGE_BASE_URL")
+        judge_kwargs: dict[str, Any] = {"api_key": judge_key}
+        if judge_base_url:
+            judge_kwargs["base_url"] = judge_base_url
+        return (
+            OpenAI(**judge_kwargs),
+            os.getenv("JUDGE_MODEL") or os.getenv("OPENAI_MODEL", "gpt-5.6-luna"),
+            "Configured judge endpoint",
+        )
     if os.getenv("ARK_API_KEY"):
         return (
             OpenAI(api_key=os.environ["ARK_API_KEY"], base_url="https://ark.cn-beijing.volces.com/api/v3"),
@@ -250,7 +268,24 @@ def make_judge() -> tuple[OpenAI, str, str]:
             "mistral-medium-latest",
             "Mistral API",
         )
-    raise RuntimeError("Official translation quality judging requires ARK_API_KEY or MISTRAL_API_KEY")
+    # Reuse the regular model settings from .env as a practical fallback.  It
+    # supports OpenAI itself and any OpenAI-compatible gateway configured via
+    # OPENAI_BASE_URL (for example the Xiaomi MiMo endpoint).
+    openai_key = os.getenv("OPENAI_API_KEY")
+    if openai_key:
+        openai_kwargs: dict[str, Any] = {"api_key": openai_key}
+        openai_base_url = os.getenv("OPENAI_BASE_URL")
+        if openai_base_url:
+            openai_kwargs["base_url"] = openai_base_url
+        return (
+            OpenAI(**openai_kwargs),
+            os.getenv("JUDGE_MODEL") or os.getenv("OPENAI_MODEL", "gpt-5.6-luna"),
+            "OpenAI-compatible custom endpoint" if openai_base_url else "OpenAI API",
+        )
+    raise RuntimeError(
+        "Quality judging requires JUDGE_API_KEY, ARK_API_KEY, MISTRAL_API_KEY, "
+        "or OPENAI_API_KEY in .env"
+    )
 
 
 def judge_chapter(
@@ -505,7 +540,11 @@ def load_checkpoint(path: Path, fingerprint: str) -> Any | None:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Official full-scope Experiment 10-2 campaign")
     parser.add_argument("--source", action="append", help="Markdown chapter; repeat (default: book-en ch1/ch2)")
-    parser.add_argument("--provider", choices=("mistral", "ark", "openai", "openrouter"), default="mistral")
+    parser.add_argument(
+        "--provider",
+        choices=("mistral", "ark", "openai", "openrouter"),
+        help="override LLM_PROVIDER from .env (default: keep .env or agents.py auto-detection)",
+    )
     parser.add_argument("--model", help="translation model (default chosen for provider)")
     parser.add_argument(
         "--max-unit-characters", type=int, default=20_000,
@@ -514,7 +553,8 @@ def main() -> int:
     parser.add_argument("--output-dir", help="validation directory (default timestamped)")
     args = parser.parse_args()
     load_dotenv(HERE / ".env")
-    os.environ["LLM_PROVIDER"] = args.provider
+    if args.provider:
+        os.environ["LLM_PROVIDER"] = args.provider
     if args.model:
         os.environ["OPENAI_MODEL"] = args.model
 
